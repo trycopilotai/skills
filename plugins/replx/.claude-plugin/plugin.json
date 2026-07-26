@@ -1,0 +1,10 @@
+{
+  "name": "replx",
+  "version": "0.1.0",
+  "description": "A bounded repair loop that declares its success condition instead of trusting the exit status, and refuses the repairs that make a command pass without fixing the defect.",
+  "author": { "name": "Pramod Kotipalli" },
+  "homepage": "https://github.com/trycopilotai/replx",
+  "repository": "https://github.com/trycopilotai/replx",
+  "license": "MIT",
+  "keywords": ["repair-loop", "ralph-wiggum", "program-repair", "benchmark"]
+}

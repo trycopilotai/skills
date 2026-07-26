@@ -1,0 +1,25 @@
+name: replx
+order: 1
+displayName: replx
+status: published
+category: repair
+license: MIT
+use: >-
+  Drive a failing build, test, lint, or health check to a
+  declared success condition in bounded iterations. Rejects
+  exit 0 as sufficient evidence when the command reports its
+  own status, and refuses the repairs that make a command pass
+  without fixing the defect.
+triggers:
+  - replx
+aliases: []
+upstream: github.com/trycopilotai/replx
+upstream_ref: v0.1.0
+upstream_sha: 71487f4d53902fe5b9161ffb8e26dd41ad44433d
+vendored_path: plugins/replx/skills/replx/SKILL.md
+vendored_sha256: 5289139e7874f2b1eeb40585b32697c0e3a179a76267cecbdd6d13a5641392f4
+tested_agents:
+  - Claude Code 2.1.220
+writes: true
+network: false
+executes: true

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "trycopilotai",
+  "description": "Agent skills maintained by trycopilot.ai.",
+  "version": "0.1.0",
+  "owner": {
+    "name": "Pramod Kotipalli",
+    "url": "https://github.com/trycopilotai"
+  },
+  "metadata": {
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "replx",
+      "displayName": "replx",
+      "source": "./replx",
+      "description": "A repair loop that does not assume exit 0 means success. Declares a success condition, refuses the repairs that make a command pass without fixing the defect, and ships a benchmark that scores the difference.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Pramod Kotipalli"
+      },
+      "homepage": "https://github.com/trycopilotai/replx",
+      "repository": "https://github.com/trycopilotai/replx",
+      "license": "MIT",
+      "category": "repair",
+      "tags": [
+        "repair-loop",
+        "ralph-wiggum",
+        "program-repair",
+        "benchmark",
+        "reward-hacking"
+      ]
+    }
+  ]
+}
