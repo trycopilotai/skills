@@ -20,7 +20,7 @@ version.
 
 | Skill                                            | What it does                                                                                                                                                                                                     |
 | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`replx`](https://github.com/trycopilotai/replx) | A repair loop that does not assume exit 0 means success. Declares a success condition, refuses the repairs that make a command pass without fixing the defect, and ships a benchmark that scores the difference. |
+| [`replx`](https://github.com/trycopilotai/replx) | Drive a failing build, test, lint, or health check to a success condition you declare, in bounded iterations. The condition can be stated in prose, so a goal the command does not measure is still a valid target, and the protocol refuses the repairs that make a command pass without fixing the defect. |
 
 ## Layout
 
@@ -36,10 +36,26 @@ skills/
   tools/                            validation, index build, upstream sync
 ```
 
-`meta/` is the only file set a human edits by hand.
-`catalogue.json` and `INDEX.md` are built from it by
-`make catalogue`, and `make catalogue-check` fails when the
-committed copies are stale.
+Three file sets are hand-edited: `meta/`,
+`.claude-plugin/marketplace.json`, and each plugin's
+`.claude-plugin/plugin.json`. `catalogue.json` and `INDEX.md`
+are generated from `meta/` by `make catalogue`, and
+`make catalogue-check` fails when the committed copies are
+stale without rewriting them.
+
+`meta/` and `marketplace.json` deliberately hold two copies of
+each skill's name, licence, and description, because the
+marketplace file is the one Claude Code reads directly.
+`make validate` requires the copies to be identical, so the
+duplication cannot drift.
+
+Files under `tools/` carry a `.gpt` before the extension.
+It records that the file was written by an AI agent rather
+than typed by hand, which is a fact about provenance a reader
+of a public repository is entitled to. It has one practical
+cost: `test_guards.gpt.py` is not a valid Python module name,
+so it is run directly rather than through
+`unittest discover`.
 
 ## Vendoring and drift
 
@@ -66,7 +82,7 @@ becomes:
   "source": {
     "source": "github",
     "repo": "trycopilotai/replx",
-    "ref": "v0.1.0"
+    "ref": "v0.2.0"
   }
 }
 ```
@@ -76,14 +92,26 @@ becomes:
 ```sh
 make validate         # marketplace, plugin manifests, SKILL.md spec, vendor drift
 make catalogue-check  # the generated index is current
-make check            # both, which is what CI runs
+make test             # the tooling's own guards still fire
+make check            # all three; CI runs them as separate steps
 ```
 
 `make validate` enforces the Agent Skills naming rules, the
 1024-character description limit, the rule that a skill's
 frontmatter `name` matches its directory, the 500-line
-guideline for `SKILL.md`, and the requirement that any
-remote plugin source is pinned to a `ref` or a `sha`.
+guideline for `SKILL.md`, the requirement that any remote
+plugin source is pinned to a `ref` or a `sha`, that every
+`meta/` entry declares an explicit integer `order` and all
+three side-effect flags, and that `meta/` agrees with
+`marketplace.json`.
+
+`make test` is the part worth explaining. It copies the
+repository to a temporary directory, breaks it on purpose, and
+checks that the tooling refuses: a `vendored_path` that
+escapes the checkout, an upstream tag that has moved since it
+was pinned, a plugin entry with no source, an unparseable
+`plugin.json`, a missing side-effect flag. A guard with no
+test is a comment.
 
 ## Adding a skill
 
@@ -93,4 +121,13 @@ has to clear before it is listed here.
 ## License
 
 MIT for this repository. Each skill carries its own
-`license` in its `meta/` entry and in its home repository.
+`license` in its `meta/` entry and in its home repository, and
+a vendored skill also carries that repository's `LICENSE` and
+a `NOTICE` beside the copy.
+
+## Not affiliated with GitHub
+
+`trycopilot.ai` is an independent project. It is not
+affiliated with, endorsed by, or connected to GitHub,
+Microsoft, or GitHub Copilot. The name is a domain the author
+owns and predates this repository.

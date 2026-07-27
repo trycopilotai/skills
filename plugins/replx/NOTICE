@@ -1,0 +1,17 @@
+plugins/replx/ is a vendored copy, not the source.
+
+skills/replx/SKILL.md is copied verbatim from the replx
+repository at the tag recorded in meta/replx.skill.yml, and
+LICENSE beside this file is that repository's licence,
+carried along because MIT requires the notice to travel with
+a substantial copy.
+
+    Upstream   https://github.com/trycopilotai/replx
+    Copyright  (c) 2026 Pramod Kotipalli
+    Licence    MIT
+
+Do not edit anything under this directory. `make validate`
+compares the vendored file against the sha256 recorded in
+meta/ and fails on any difference, and `make sync` overwrites
+it from upstream. Changes belong in the upstream repository;
+issues and releases live there too.

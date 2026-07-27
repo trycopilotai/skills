@@ -11,8 +11,8 @@ Checks, in order:
   5. Every SKILL.md frontmatter satisfies the Agent Skills
      spec, including the rule that name matches its
      directory.
-  6. Every meta/ entry declares an explicit display order and
-     honest side-effect flags.
+  6. Every meta/ entry declares an explicit display order,
+     honest side-effect flags, and a worked example.
   7. meta/ and marketplace.json agree, so the two copies of
      each skill's name, licence, and description cannot drift.
   8. Every vendored skill still matches the sha256 recorded
@@ -240,6 +240,23 @@ def main() -> int:
                 raw in ("true", "false"),
                 f"{meta.name}: {flag!r} must be true or false, got {raw!r}",
             )
+
+    # CONTRIBUTING requires a worked example. Until this field
+    # existed the requirement was unenforceable, which is the
+    # same as absent.
+    for meta in sorted((ROOT / "meta").glob("*.skill.yml")):
+        fm = frontmatter_yaml(meta)
+        ex = fm.get("example", "")
+        if not check(
+            bool(ex),
+            f"{meta.name}: missing required 'example'. CONTRIBUTING "
+            f"requires a worked example produced by running the skill.",
+        ):
+            continue
+        check(
+            ex.startswith("http"),
+            f"{meta.name}: example must be a URL, got {ex!r}",
+        )
 
     # meta/ and marketplace.json each carry a copy of the same
     # three facts. Two copies drift; this is what notices.
