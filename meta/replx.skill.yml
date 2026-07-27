@@ -17,7 +17,7 @@ aliases: []
 example: https://github.com/trycopilotai/replx/blob/v0.2.0/examples/smoke-oracle-run.md
 upstream: github.com/trycopilotai/replx
 upstream_ref: v0.2.0
-upstream_sha: 9b3cba4eb54fbbdd32de9a5df4f3c6a4af11dd11
+upstream_sha: 174cba03bc4052fa0f4b255b15b43f4c201fe872
 vendored_path: plugins/replx/skills/replx/SKILL.md
 vendored_sha256: 7c885fd38801e3d0d84879c9ddc46730e975ea5116ea4e7783f58712fc577e61
 tested_agents:
