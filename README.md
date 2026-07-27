@@ -107,11 +107,14 @@ three side-effect flags, and that `meta/` agrees with
 
 `make test` is the part worth explaining. It copies the
 repository to a temporary directory, breaks it on purpose, and
-checks that the tooling refuses: a `vendored_path` that
-escapes the checkout, an upstream tag that has moved since it
-was pinned, a plugin entry with no source, an unparseable
-`plugin.json`, a missing side-effect flag. A guard with no
-test is a comment.
+checks that the tooling refuses each break: a `vendored_path`,
+a `pluginRoot`, or a plugin `source` that escapes the
+checkout; an upstream tag that has moved since it was pinned,
+or a pin deleted so the comparison cannot run; a `ref` naming
+a branch, which moves; a plugin entry that is null or has no
+source; an unparseable `plugin.json`; a missing side-effect
+flag; a `renames` entry pointing at a live or a nonexistent
+name. A guard with no test is a comment.
 
 ## Adding a skill
 

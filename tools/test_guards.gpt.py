@@ -12,7 +12,11 @@ against a copied tree with a deliberately broken meta/ or
 marketplace.json, and assert on what the tool did, not on
 what it says in its source.
 
-    python3 -m unittest discover -s tools -p 'test_*.py' -q
+    python3 tools/test_guards.gpt.py
+
+Run it directly. `unittest discover` cannot import this file:
+`test_guards.gpt` is not a valid module name, which is the one
+practical cost of the `.gpt` provenance infix.
 
 No third-party packages, same as everything else here.
 """
@@ -198,6 +202,97 @@ class GuardTest(unittest.TestCase):
             before, index.read_bytes(),
             "--check rewrote the file it was checking",
         )
+
+    # -- what an independent review found --------------------
+
+    def test_a_null_owner_is_reported_not_crashed(self) -> None:
+        """`{"owner": null}` is valid JSON a pull request can write.
+
+        `mkt.get("owner", {})` returns None when the key exists
+        with a null value, so the default never applied and the
+        validator raised instead of reporting.
+        """
+        self.edit_marketplace(lambda d: d.__setitem__("owner", None))
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn("Traceback", result.stderr)
+        self.assertIn("owner", result.stdout)
+
+    def test_a_null_plugin_entry_is_reported_not_crashed(self) -> None:
+        self.edit_marketplace(lambda d: d["plugins"].append(None))
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn("Traceback", result.stderr)
+        self.assertIn("not an object", result.stdout)
+
+    def test_a_branch_is_not_accepted_as_a_pin(self) -> None:
+        """CONTRIBUTING promises never to track a branch.
+
+        The check was `"ref" in src`, so {"ref": "main"} passed
+        as a pin and the promise was documentation only.
+        """
+        self.edit_marketplace(lambda d: d["plugins"].append(
+            {"name": "remote-thing",
+             "source": {"source": "github", "repo": "a/b", "ref": "main"}}))
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("branch", result.stdout)
+
+    def test_an_empty_ref_is_not_accepted_as_a_pin(self) -> None:
+        self.edit_marketplace(lambda d: d["plugins"].append(
+            {"name": "remote-thing",
+             "source": {"source": "github", "repo": "a/b", "ref": ""}}))
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("no ref or sha pin", result.stdout)
+
+    def test_deleting_upstream_sha_is_not_a_way_out(self) -> None:
+        """sync only compares the pin when the pin is present.
+
+        So removing the line disabled the check entirely, and
+        nothing else required the field.
+        """
+        self.edit_meta("upstream_sha", None)
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("upstream_sha", result.stdout)
+
+    def test_plugin_root_cannot_escape_the_checkout(self) -> None:
+        self.edit_marketplace(
+            lambda d: d.setdefault("metadata", {}).__setitem__(
+                "pluginRoot", "../../../../etc"))
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_plugin_source_cannot_escape_the_plugin_root(self) -> None:
+        self.edit_marketplace(lambda d: d["plugins"].append(
+            {"name": "escapee", "source": "../../../../etc"}))
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_renames_cannot_point_at_a_live_name(self) -> None:
+        """A name cannot be both current and former."""
+        self.edit_marketplace(
+            lambda d: d.__setitem__("renames", {"replx": "replx"}))
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("still a live plugin name", result.stdout)
+
+    def test_renames_cannot_point_at_a_missing_plugin(self) -> None:
+        self.edit_marketplace(
+            lambda d: d.__setitem__("renames", {"old-name": "nonexistent"}))
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("not a plugin in this marketplace", result.stdout)
+
+    def test_a_removal_rename_is_accepted(self) -> None:
+        """Mapping to null records that a plugin is gone."""
+        self.edit_marketplace(
+            lambda d: d.__setitem__("renames", {"old-name": None}))
+        result = self.run_tool("validate.gpt.py")
+        self.assertEqual(result.returncode, 0, result.stdout)
 
     def test_the_committed_repository_passes(self) -> None:
         """The guards above must not be firing on the real tree."""

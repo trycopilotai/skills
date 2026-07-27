@@ -23,6 +23,37 @@ class UnsafePath(Exception):
     """A meta/ path that does not stay inside PLUGIN_ROOT."""
 
 
+def resolve_inside(base: Path, rel: str, source: str = "input") -> Path:
+    """Resolve `rel` under `base`, or raise UnsafePath.
+
+    The general form. `resolve_vendored` is this plus the rule
+    that a vendored skill lives under PLUGIN_ROOT; this one is
+    for marketplace-controlled paths such as `metadata.pluginRoot`
+    and a plugin `source`, which are also data a pull request
+    writes.
+    """
+    if not isinstance(rel, str) or not rel.strip():
+        raise UnsafePath(f"{source}: path is empty")
+    if "\\" in rel:
+        raise UnsafePath(f"{source}: path {rel!r} uses backslashes")
+    pure = PurePosixPath(rel)
+    if pure.is_absolute():
+        raise UnsafePath(f"{source}: path {rel!r} is absolute")
+    if len(rel) > 1 and rel[1] == ":":
+        raise UnsafePath(f"{source}: path {rel!r} looks like a drive path")
+    if ".." in pure.parts:
+        raise UnsafePath(f"{source}: path {rel!r} traverses upward")
+
+    allowed = base.resolve()
+    target = (base / pure).resolve()
+    if target != allowed and allowed not in target.parents:
+        raise UnsafePath(
+            f"{source}: path {rel!r} resolves to {target}, which is "
+            f"outside {allowed}"
+        )
+    return target
+
+
 def resolve_vendored(root: Path, rel: str, source: str = "meta") -> Path:
     """Resolve `rel` under `root/plugins`, or raise UnsafePath.
 

@@ -42,6 +42,9 @@ RESERVED = {
 }
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 
+# Refs that move. A pin to one of these is not a pin.
+MUTABLE_REFS = {"main", "master", "HEAD", "trunk", "develop", "dev"}
+
 # What a skill is allowed to do. Every skill declares all three,
 # because an omitted flag renders as "read-only" in the index and
 # an unearned read-only badge is worse than no badge.
@@ -109,16 +112,46 @@ def main() -> int:
         print(f"FAIL  .claude-plugin/marketplace.json does not parse: {exc}")
         return 1
 
+    if not isinstance(mkt, dict):
+        print("FAIL  marketplace.json is not an object")
+        return 1
+
     for field in ("name", "owner", "plugins"):
         check(field in mkt, f"marketplace.json missing required field {field!r}")
-    name = mkt.get("name", "")
+    name = mkt.get("name") or ""
     check(bool(NAME_RE.match(name)), f"marketplace name {name!r} is not kebab-case")
     check(name not in RESERVED, f"marketplace name {name!r} is reserved by Anthropic")
-    check("name" in mkt.get("owner", {}), "marketplace owner is missing a name")
+    owner = mkt.get("owner")
+    check(
+        isinstance(owner, dict) and bool(str(owner.get("name", "")).strip()),
+        "marketplace owner is missing a name",
+    )
 
-    plugin_root = mkt.get("metadata", {}).get("pluginRoot", ".")
-    for entry in mkt.get("plugins", []):
-        pname = entry.get("name", "<unnamed>")
+    # pluginRoot is marketplace-controlled, so it is resolved
+    # under the checkout like any other path from a data file.
+    metadata = mkt.get("metadata")
+    if not isinstance(metadata, dict):
+        metadata = {}
+    plugin_root_raw = metadata.get("pluginRoot") or "."
+    try:
+        plugin_root_dir = PATHS.resolve_inside(
+            ROOT, plugin_root_raw, source="metadata.pluginRoot")
+    except PATHS.UnsafePath as exc:
+        check(False, str(exc))
+        plugin_root_dir = ROOT
+
+    entries = mkt.get("plugins")
+    if not isinstance(entries, list):
+        check(False, "marketplace.json 'plugins' is not a list")
+        entries = []
+
+    for entry in entries:
+        # A null or non-object entry is valid JSON and used to
+        # raise AttributeError here, hiding every other error.
+        if not isinstance(entry, dict):
+            check(False, f"plugin entry {entry!r} is not an object")
+            continue
+        pname = entry.get("name") or "<unnamed>"
         check("name" in entry, f"plugin entry {entry!r} has no name")
         check(
             bool(NAME_RE.match(pname)),
@@ -135,11 +168,28 @@ def main() -> int:
         src = entry.get("source")
 
         if isinstance(src, dict):
-            # Remote sources must be pinned to a tag or a commit.
-            check(
-                "ref" in src or "sha" in src,
+            # A remote source must be pinned to something that
+            # cannot move. The key being present is not a pin:
+            # {"ref": "main"} and {"ref": ""} both passed, and
+            # CONTRIBUTING promises never to track a branch.
+            ref = str(src.get("ref") or "").strip()
+            sha = str(src.get("sha") or "").strip()
+            if not check(
+                bool(ref or sha),
                 f"plugin {pname!r} has a remote source with no ref or sha pin",
-            )
+            ):
+                continue
+            if sha:
+                check(
+                    bool(re.fullmatch(r"[0-9a-f]{40}", sha)),
+                    f"plugin {pname!r}: sha {sha!r} is not a full commit id",
+                )
+            if ref and not sha:
+                check(
+                    ref not in MUTABLE_REFS and not ref.startswith("refs/heads/"),
+                    f"plugin {pname!r}: ref {ref!r} is a branch, which moves. "
+                    f"Pin a tag or a sha.",
+                )
             continue
         if not isinstance(src, str):
             check(
@@ -149,7 +199,13 @@ def main() -> int:
             )
             continue
 
-        pdir = (ROOT / plugin_root / src.removeprefix("./")).resolve()
+        try:
+            pdir = PATHS.resolve_inside(
+                plugin_root_dir, src.removeprefix("./"),
+                source=f"plugin {pname!r} source")
+        except PATHS.UnsafePath as exc:
+            check(False, str(exc))
+            continue
         if not check(pdir.is_dir(), f"plugin {pname!r} source does not exist: {pdir}"):
             continue
 
@@ -241,6 +297,53 @@ def main() -> int:
                 f"{meta.name}: {flag!r} must be true or false, got {raw!r}",
             )
 
+    # The renames map, which Claude Code reads on startup to
+    # migrate a user off a name that changed. A wrong entry
+    # silently strands them, so both halves are checked.
+    renames = mkt.get("renames")
+    if renames is not None:
+        if isinstance(renames, dict):
+            current = {e.get("name") for e in entries if isinstance(e, dict)}
+            for old_name, new_name in renames.items():
+                check(
+                    old_name not in current,
+                    f"renames maps {old_name!r}, which is still a live "
+                    f"plugin name. A name cannot be both current and former.",
+                )
+                if new_name is None:
+                    continue
+                check(
+                    new_name in current,
+                    f"renames points {old_name!r} at {new_name!r}, which is "
+                    f"not a plugin in this marketplace",
+                )
+        else:
+            check(False, "marketplace.json 'renames' is not an object")
+
+    # A pin that can be deleted is not a pin. sync only
+    # compares upstream_sha when it is already present, so a
+    # pull request that removes the line makes a moved tag
+    # acceptable and nothing notices.
+    for meta in sorted((ROOT / "meta").glob("*.skill.yml")):
+        fm = frontmatter_yaml(meta)
+        if not fm.get("upstream"):
+            continue
+        sha = fm.get("upstream_sha", "")
+        if not check(
+            bool(sha),
+            f"{meta.name}: missing required 'upstream_sha'. Without it "
+            f"`make sync` cannot detect a tag that moved.",
+        ):
+            continue
+        check(
+            bool(re.fullmatch(r"[0-9a-f]{40}", sha)),
+            f"{meta.name}: upstream_sha {sha!r} is not a full commit id",
+        )
+        check(
+            bool(fm.get("upstream_ref")),
+            f"{meta.name}: has an upstream but no 'upstream_ref'",
+        )
+
     # CONTRIBUTING requires a worked example. Until this field
     # existed the requirement was unenforceable, which is the
     # same as absent.
@@ -260,19 +363,24 @@ def main() -> int:
 
     # meta/ and marketplace.json each carry a copy of the same
     # three facts. Two copies drift; this is what notices.
-    entries = {
-        e.get("name"): e for e in mkt.get("plugins", []) if e.get("name")
+    # `entries` was rebuilt here from the raw list rather than
+    # reusing the validated one above, so the null guard did not
+    # apply and this crashed on the same input.
+    by_name = {
+        e.get("name"): e
+        for e in entries
+        if isinstance(e, dict) and e.get("name")
     }
     for meta in sorted((ROOT / "meta").glob("*.skill.yml")):
         fm = frontmatter_yaml(meta)
         sname = fm.get("name", "")
         if not check(
-            sname in entries,
+            sname in by_name,
             f"{meta.name}: name {sname!r} has no plugin entry in "
             f"marketplace.json",
         ):
             continue
-        entry = entries[sname]
+        entry = by_name[sname]
         check(
             entry.get("license", "") == fm.get("license", ""),
             f"{meta.name}: license {fm.get('license')!r} disagrees with "
