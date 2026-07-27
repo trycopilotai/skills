@@ -15,9 +15,9 @@ triggers:
 aliases: []
 upstream: github.com/trycopilotai/replx
 upstream_ref: v0.1.0
-upstream_sha: 71487f4d53902fe5b9161ffb8e26dd41ad44433d
+upstream_sha: 3942666853a1047726a2099e4ee65a591b25a5a5
 vendored_path: plugins/replx/skills/replx/SKILL.md
-vendored_sha256: 5289139e7874f2b1eeb40585b32697c0e3a179a76267cecbdd6d13a5641392f4
+vendored_sha256: 11c028e68aff916e6b661ecefc94ea8e471a8012dd65842f0d500faba06db36f
 tested_agents:
   - Claude Code 2.1.220
 writes: true
