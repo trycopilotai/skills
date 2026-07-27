@@ -16,7 +16,7 @@
       "example": "https://github.com/trycopilotai/replx/blob/v0.2.0/examples/smoke-oracle-run.md",
       "upstream": "github.com/trycopilotai/replx",
       "upstream_ref": "v0.2.0",
-      "upstream_sha": "174cba03bc4052fa0f4b255b15b43f4c201fe872",
+      "upstream_sha": "8669615675a920b7c8926e0377cc75b4d963ee7b",
       "vendored_path": "plugins/replx/skills/replx/SKILL.md",
       "vendored_sha256": "7c885fd38801e3d0d84879c9ddc46730e975ea5116ea4e7783f58712fc577e61",
       "tested_agents": [
