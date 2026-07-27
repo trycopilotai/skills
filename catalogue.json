@@ -8,21 +8,21 @@
       "status": "published",
       "category": "repair",
       "license": "MIT",
-      "use": "Drive a failing build, test, lint, or health check to a declared success condition in bounded iterations. Rejects exit 0 as sufficient evidence when the command reports its own status, and refuses the repairs that make a command pass without fixing the defect.",
+      "use": "Drive a failing build, test, lint, or health check to a success condition you declare, in bounded iterations. The condition can be stated in prose, so a goal the command does not measure is still a valid target, and the protocol refuses the repairs that make a command pass without fixing the defect.",
       "triggers": [
         "replx"
       ],
       "aliases": [],
       "upstream": "github.com/trycopilotai/replx",
-      "upstream_ref": "v0.1.0",
-      "upstream_sha": "3942666853a1047726a2099e4ee65a591b25a5a5",
+      "upstream_ref": "v0.2.0",
+      "upstream_sha": "9b3cba4eb54fbbdd32de9a5df4f3c6a4af11dd11",
       "vendored_path": "plugins/replx/skills/replx/SKILL.md",
-      "vendored_sha256": "11c028e68aff916e6b661ecefc94ea8e471a8012dd65842f0d500faba06db36f",
+      "vendored_sha256": "7c885fd38801e3d0d84879c9ddc46730e975ea5116ea4e7783f58712fc577e61",
       "tested_agents": [
         "Claude Code 2.1.220"
       ],
       "writes": true,
-      "network": false,
+      "network": true,
       "executes": true
     }
   ]

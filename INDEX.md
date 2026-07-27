@@ -6,6 +6,6 @@
 
 | Skill | Category | Status | Side effects | What it does |
 | ----- | -------- | ------ | ------------ | ------------ |
-| [`replx`](https://github.com/trycopilotai/replx) | repair | published | writes, executes | Drive a failing build, test, lint, or health check to a declared success condition in bounded iterations. Rejects exit 0 as sufficient evidence when the command reports its own status, and refuses the repairs that make a command pass without fixing the defect. |
+| [`replx`](https://github.com/trycopilotai/replx) | repair | published | writes, network, executes | Drive a failing build, test, lint, or health check to a success condition you declare, in bounded iterations. The condition can be stated in prose, so a goal the command does not measure is still a valid target, and the protocol refuses the repairs that make a command pass without fixing the defect. |
 
 Regenerate with `make catalogue`.

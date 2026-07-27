@@ -15,8 +15,8 @@
       "name": "replx",
       "displayName": "replx",
       "source": "./replx",
-      "description": "A repair loop that does not assume exit 0 means success. Declares a success condition, refuses the repairs that make a command pass without fixing the defect, and ships a benchmark that scores the difference.",
-      "version": "0.1.0",
+      "description": "Drive a failing build, test, lint, or health check to a success condition you declare, in bounded iterations. The condition can be stated in prose, so a goal the command does not measure is still a valid target, and the protocol refuses the repairs that make a command pass without fixing the defect.",
+      "version": "0.2.0",
       "author": {
         "name": "Pramod Kotipalli"
       },

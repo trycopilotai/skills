@@ -11,14 +11,14 @@ catalogue: ## Regenerate catalogue.json and INDEX.md from meta/*.skill.yml.
 	@python3 tools/build_catalogue.gpt.py
 
 catalogue-check: ## Fail if the committed catalogue differs from a fresh build.
-	@python3 tools/build_catalogue.gpt.py >/dev/null
-	@git diff --quiet -- catalogue.json INDEX.md \
-	  || { echo "catalogue.json or INDEX.md is stale; run 'make catalogue'"; exit 1; }
-	@echo "OK    catalogue is current"
+	@python3 tools/build_catalogue.gpt.py --check
 
 sync: ## Refresh vendored SKILL.md copies from their pinned upstream refs.
 	@python3 tools/sync_skills.gpt.py
 
-check: validate catalogue-check ## Everything CI runs.
+test: ## Prove the tooling's guards fire, on a throwaway copy.
+	@python3 tools/test_guards.gpt.py
 
-.PHONY: help validate catalogue catalogue-check sync check
+check: validate catalogue-check test ## Everything CI runs.
+
+.PHONY: help validate catalogue catalogue-check sync test check
