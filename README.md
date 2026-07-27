@@ -116,6 +116,10 @@ source; an unparseable `plugin.json`; a missing side-effect
 flag; a `renames` entry pointing at a live or a nonexistent
 name. A guard with no test is a comment.
 
+It builds its own upstream repository on disk rather than
+cloning one, so the suite needs no network and cannot fail
+for a reason unrelated to the guard under test.
+
 ## Adding a skill
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the bar a skill

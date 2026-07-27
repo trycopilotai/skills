@@ -68,10 +68,20 @@ def main(argv=None):
             return 1
 
         with tempfile.TemporaryDirectory() as td:
-            subprocess.run(
+            # `upstream` is normally a bare host/org/repo, which
+            # means https. A value that already carries a scheme
+            # is used as given, so the guards below can be tested
+            # against a local repository instead of reaching the
+            # network from a unit test.
+            url = repo if "://" in repo else f"https://{repo}"
+            clone = subprocess.run(
                 ["git", "-c", "advice.detachedHead=false", "clone", "--quiet",
-                 "--depth", "1", "--branch", ref,
-                 f"https://{repo}", f"{td}/src"], check=True)
+                 "--depth", "1", "--branch", ref, url, f"{td}/src"],
+                capture_output=True, text=True)
+            if clone.returncode != 0:
+                print(f"  {meta.name}: cannot fetch {url}@{ref}\n"
+                      f"      {clone.stderr.strip().splitlines()[-1] if clone.stderr.strip() else 'clone failed'}")
+                return 1
             src = Path(td) / "src" / UPSTREAM_SKILL_PATH
             if not src.exists():
                 print(f"  {meta.name}: {UPSTREAM_SKILL_PATH} not found at {ref}")

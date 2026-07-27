@@ -113,6 +113,33 @@ class GuardTest(unittest.TestCase):
 
     # -- the pin ---------------------------------------------
 
+    def _local_upstream(self) -> str:
+        """A real git repository on disk, with the expected layout.
+
+        The pin tests used to clone from GitHub, which made them
+        fail in CI for reasons that had nothing to do with the
+        guard under test. A unit test should not need a network.
+        """
+        up = self.tmp / "upstream"
+        (up / "skill").mkdir(parents=True)
+        (up / "skill" / "SKILL.md").write_text(
+            (self.repo / "plugins/replx/skills/replx/SKILL.md").read_text()
+        )
+        git = lambda *a: subprocess.run(
+            ["git", *a], cwd=up, capture_output=True, text=True, check=True)
+        git("init", "-q")
+        git("config", "user.email", "t@example.com")
+        git("config", "user.name", "t")
+        git("config", "commit.gpgsign", "false")
+        git("add", "-A")
+        git("commit", "-q", "-m", "upstream")
+        git("tag", "v0.2.0")
+        head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=up,
+                              capture_output=True, text=True,
+                              check=True).stdout.strip()
+        self.edit_meta("upstream", up.as_uri())
+        return head
+
     def test_sync_refuses_a_tag_that_moved(self) -> None:
         """A tag is mutable, so cloning it is not evidence.
 
@@ -121,6 +148,7 @@ class GuardTest(unittest.TestCase):
         pin was rewritten by the tool that should have checked
         it.
         """
+        self._local_upstream()
         self.edit_meta("upstream_sha", "0" * 40)
         result = self.run_tool("sync_skills.gpt.py")
         self.assertNotEqual(result.returncode, 0)
@@ -130,6 +158,27 @@ class GuardTest(unittest.TestCase):
             (self.repo / META).read_text(),
             "sync overwrote the pin it was supposed to verify",
         )
+
+    def test_sync_accepts_the_pin_it_was_given(self) -> None:
+        """The guard must not fire when the tag has not moved."""
+        head = self._local_upstream()
+        self.edit_meta("upstream_sha", head)
+        result = self.run_tool("sync_skills.gpt.py")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("unchanged", result.stdout)
+
+    def test_sync_reports_an_unreachable_upstream(self) -> None:
+        """A failed clone used to raise CalledProcessError.
+
+        Empty stdout and a traceback, which is what a network
+        problem in CI looked like: indistinguishable from the
+        guard under test not firing.
+        """
+        self.edit_meta("upstream", (self.tmp / "does-not-exist").as_uri())
+        result = self.run_tool("sync_skills.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("cannot fetch", result.stdout)
+        self.assertNotIn("Traceback", result.stderr)
 
     # -- the validator's own robustness ----------------------
 
