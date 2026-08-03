@@ -1,0 +1,35 @@
+plugins/lint/ is a vendored copy, not the source.
+
+skills/lint/ is copied verbatim from the lint repository at
+the tag recorded in meta/lint.skill.yml. The copy is a whole
+package, not one file: SKILL.md, the runner it invokes, and
+the agent metadata each client reads. LICENSE beside this
+file is that repository's licence, carried along because MIT
+requires the notice to travel with a substantial copy.
+
+    Upstream   https://github.com/trycopilotai/lint
+    Copyright  (c) 2026 Try Copilot AI
+    Licence    MIT
+
+That tag is not published yet. meta/lint.skill.yml records
+`upstream_sha: UNRESOLVED` rather than a commit id, because
+no commit has been tagged v0.1.5 in public and writing the
+one it is expected to get would make every check that exists
+to catch a mismatch pass anyway. The bytes here are the
+package intended for that release, and the digest recorded in
+meta/ is a digest of these bytes, which is a fact about this
+repository rather than a claim about the remote.
+
+Until the tag exists, this entry is `pending-publication`:
+`make release-gate` holds it, and the generated index does
+not link it to an upstream that cannot be visited yet. When
+v0.1.5 is pushed, `make release-gate` is what confirms the
+tag resolves, the pin matches, and the published package is
+byte for byte what is vendored here.
+
+Do not edit anything under this directory. `make validate`
+compares the whole vendored tree against the deterministic
+digest recorded in meta/ and fails on any difference, and
+`make sync` replaces the tree from upstream. Changes belong
+in the upstream repository; issues and releases live there
+too.

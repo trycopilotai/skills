@@ -138,6 +138,68 @@ class ReplxNonRegressionTest(unittest.TestCase):
         self.assertEqual(manifest["version"], REPLX_PUBLISHED["version"])
 
 
+class UnresolvedEntryTest(unittest.TestCase):
+    """What must hold while an entry has no upstream commit.
+
+    An entry may be vendored before its tag is public, which is
+    how a release gets staged. What it may not do is look
+    published while it is in that state. These run against the
+    tracked tree and pass trivially once nothing is unresolved.
+    """
+
+    def unresolved(self) -> list:
+        out = []
+        for meta in sorted((ROOT / "meta").glob("*.skill.yml")):
+            fields = {}
+            for line in meta.read_text().splitlines():
+                key, sep, value = line.partition(":")
+                if sep and not line.startswith((" ", "#")):
+                    fields[key.strip()] = value.strip()
+            if fields.get("upstream_sha") == "UNRESOLVED":
+                out.append(fields)
+        return out
+
+    def test_an_unresolved_entry_is_not_called_published(self) -> None:
+        for fields in self.unresolved():
+            self.assertEqual(
+                fields.get("status"), "pending-publication",
+                f"{fields.get('name')} has no pin but calls itself "
+                f"{fields.get('status')!r}",
+            )
+
+    def test_an_unresolved_entry_is_not_linked_to_its_upstream(self) -> None:
+        """The link would be a 404 offered as evidence."""
+        index = (ROOT / "INDEX.md").read_text()
+        readme = (ROOT / "README.md").read_text()
+        for fields in self.unresolved():
+            link = f"[`{fields['name']}`](https://{fields['upstream']})"
+            self.assertNotIn(link, index)
+            self.assertNotIn(link, readme)
+
+    def test_an_unresolved_entry_still_records_a_real_digest(self) -> None:
+        """The pin is unknown. The bytes are not.
+
+        `vendored_sha256` describes files in this commit, so it
+        stays checkable even while the remote cannot be.
+        """
+        for fields in self.unresolved():
+            package = ROOT / fields["vendored_path"]
+            self.assertTrue(package.exists(), fields["vendored_path"])
+            digest = hashlib.sha256()
+            for member in sorted(package.rglob("*")):
+                if not member.is_file():
+                    continue
+                digest.update(
+                    member.relative_to(package).as_posix().encode())
+                digest.update(b"\0")
+                digest.update(member.read_bytes())
+                digest.update(b"\0")
+            self.assertEqual(
+                digest.hexdigest(), fields["vendored_sha256"],
+                f"{fields['name']} vendored bytes do not match meta/",
+            )
+
+
 class GuardTest(unittest.TestCase):
     """Each test gets its own copy of the repository."""
 
@@ -673,16 +735,41 @@ class GuardTest(unittest.TestCase):
     # -- generating more than one row ------------------------
 
     def test_every_meta_entry_reaches_every_generated_surface(self) -> None:
-        """One entry rendered by hand; two have to be generated."""
+        """One entry can be written by hand; several cannot.
+
+        The expected order is derived from meta/ rather than
+        written out, so this asserts the ordering rule instead
+        of a snapshot that a new skill would invalidate.
+        """
+        expected = []
+        for meta in sorted((self.repo / "meta").glob("*.skill.yml")):
+            fields = dict(
+                line.split(":", 1)
+                for line in meta.read_text().splitlines()
+                if ":" in line and not line.startswith((" ", "#"))
+            )
+            expected.append(
+                (int(fields["order"].strip()), fields["name"].strip())
+            )
+        expected.sort()
+        names_in_order = [name for _, name in expected]
+
         self.run_tool("build_catalogue.gpt.py")
         catalogue = json.loads((self.repo / "catalogue.json").read_text())
-        names = [s["name"] for s in catalogue["skills"]]
-        self.assertEqual(names, ["replx", "htmlify"], "order key ignored")
+        self.assertEqual(
+            [s["name"] for s in catalogue["skills"]],
+            names_in_order,
+            "the catalogue is not in meta/ order",
+        )
 
         index = (self.repo / "INDEX.md").read_text()
         readme = (self.repo / "README.md").read_text()
-        self.assertIn("2 skills in the `trycopilotai` marketplace.", index)
-        for name in names:
+        self.assertIn(
+            f"{len(names_in_order)} skills in the `trycopilotai` "
+            f"marketplace.",
+            index,
+        )
+        for name in names_in_order:
             self.assertIn(f"`{name}`", index)
             self.assertIn(f"`{name}`", readme)
 
@@ -745,6 +832,21 @@ class GuardTest(unittest.TestCase):
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("pending-publication", result.stdout)
+
+    def test_sync_skips_an_unresolved_pin_without_reaching_out(self) -> None:
+        """There is nothing to fetch, and no tag to fetch it by.
+
+        Letting the clone run would fail with the same message
+        an unreachable network produces, which is the one
+        confusion this repository has already fixed once.
+        """
+        self.isolate_sync_fixture()
+        self.edit_meta("upstream_sha", "UNRESOLVED")
+        self.edit_meta("upstream", "example.invalid/nobody/nothing")
+        result = self.run_tool("sync_skills.gpt.py")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("UNRESOLVED", result.stdout)
+        self.assertNotIn("cannot fetch", result.stdout)
 
     def test_the_committed_repository_passes(self) -> None:
         """The guards above must not be firing on the real tree."""
@@ -899,6 +1001,7 @@ def load_tests(loader, tests, pattern):
     """Keep ReleaseGateTest from re-running everything it inherits."""
     suite = unittest.TestSuite()
     suite.addTests(loader.loadTestsFromTestCase(ReplxNonRegressionTest))
+    suite.addTests(loader.loadTestsFromTestCase(UnresolvedEntryTest))
     suite.addTests(loader.loadTestsFromTestCase(GuardTest))
     for name in loader.getTestCaseNames(ReleaseGateTest):
         if name in loader.getTestCaseNames(GuardTest):

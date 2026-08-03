@@ -61,6 +61,39 @@
       "writes": true,
       "network": true,
       "executes": true
+    },
+    {
+      "name": "lint",
+      "order": 3,
+      "displayName": "lint",
+      "status": "pending-publication",
+      "category": "formatting",
+      "license": "MIT",
+      "use": "Check or apply canonical formatting across mixed-language repositories with a read-only default.",
+      "triggers": [
+        "lint",
+        "format",
+        "check formatting"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/lint/blob/v0.1.5/evidence/demo-transcript.txt",
+      "upstream": "github.com/trycopilotai/lint",
+      "upstream_ref": "v0.1.5",
+      "upstream_sha": "UNRESOLVED",
+      "upstream_path": "skills/lint",
+      "vendored_path": "plugins/lint/skills/lint",
+      "vendored_sha256": "f05657738b7772640bd8b06dfe17bc2da454548dd42eb91eef7a55cc93cef7ed",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": true,
+      "network": true,
+      "executes": true
     }
   ]
 }

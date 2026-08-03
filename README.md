@@ -39,6 +39,7 @@ version.
 | ---------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | [`replx`](https://github.com/trycopilotai/replx)     | Claude Code        | Drive a failing build, test, lint, or health check to a success condition you declare, in bounded iterations. The condition can be stated in prose, so a goal the command does not measure is still a valid target, and the protocol refuses the repairs that make a command pass without fixing the defect. |
 | [`htmlify`](https://github.com/trycopilotai/htmlify) | Claude Code, Codex | Turn dense Markdown into source-checked HTML timelines, decision surfaces, system explainers, visual progressions, evidence reviews, or deterministic formal HTML with optional PDF export.                                                                                                                  |
+| `lint`                                               | Claude Code, Codex | Check or apply canonical formatting across mixed-language repositories with a read-only default.                                                                                                                                                                                                             |
 
 <!-- End generated table. -->
 
@@ -95,9 +96,11 @@ so it is run directly rather than through
 
 Each skill has a home repository, which is where its
 examples, issues, and releases are. `replx` lives at
-[`trycopilotai/replx`](https://github.com/trycopilotai/replx)
-and `htmlify` at
-[`trycopilotai/htmlify`](https://github.com/trycopilotai/htmlify).
+[`trycopilotai/replx`](https://github.com/trycopilotai/replx),
+`htmlify` at
+[`trycopilotai/htmlify`](https://github.com/trycopilotai/htmlify),
+and `lint` at
+[`trycopilotai/lint`](https://github.com/trycopilotai/lint).
 
 This repository vendors a copy of each skill so the
 marketplace resolves from a single clone. What gets copied is
