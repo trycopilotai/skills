@@ -6,7 +6,7 @@ one command installs any skill in it.
 In Claude Code:
 
 ```sh
-/plugin marketplace add trycopilotai/skills@v0.5.0
+/plugin marketplace add trycopilotai/skills@v0.5.1
 /plugin install lint@trycopilotai
 ```
 
@@ -14,7 +14,7 @@ In Codex:
 
 ```sh
 npx -y @openai/codex@0.146.0 plugin marketplace add \
-  trycopilotai/skills --ref v0.5.0
+  trycopilotai/skills --ref v0.5.1
 npx -y @openai/codex@0.146.0 plugin add \
   lint@trycopilotai
 ```
@@ -28,6 +28,31 @@ clients it was actually installed and invoked under, in the
 table below and in `catalogue.json`; a skill missing from
 that list has no metadata for that client, so it would
 install and then not load.
+
+## Verifying the release tag
+
+Release tags are SSH signed from `v0.5.0` on. The key that
+signs them is `.github/release-allowed-signers`, so a clone
+can check a tag against it:
+
+```sh
+git -c gpg.format=ssh \
+  -c gpg.ssh.allowedSignersFile=.github/release-allowed-signers \
+  verify-tag v0.5.1
+```
+
+The trusted ED25519 fingerprint is
+`SHA256:DfKMRhe4zXosajTxEcDqVDi7dnQ/pwtvj/lLBDn7a9k`. The
+`lint` home repository publishes the same key for its own
+releases, so the file here is byte identical to the one
+there.
+
+That command proves the tag matches the key in the
+checked-out file, and nothing further. The key, the
+fingerprint, and these instructions all ship inside the
+repository being verified, so a clone of the wrong remote
+would read a consistent set of wrong values. It is tamper
+evidence within a clone, not independent identity proof.
 
 ## What is in it
 

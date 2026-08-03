@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "trycopilotai",
   "description": "Agent skills maintained by trycopilot.ai.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "owner": {
     "name": "Pramod Kotipalli",
     "url": "https://github.com/trycopilotai"
@@ -55,7 +55,7 @@
       "displayName": "lint",
       "source": "./plugins/lint",
       "description": "Check or apply canonical formatting across mixed-language repositories with a read-only default.",
-      "version": "0.1.5",
+      "version": "0.1.6",
       "author": {
         "name": "Pramod Kotipalli"
       },

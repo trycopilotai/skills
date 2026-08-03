@@ -15,13 +15,13 @@ aliases: []
 clients:
   - claude-code
   - codex
-example: https://github.com/trycopilotai/lint/blob/v0.1.5/evidence/demo-transcript.txt
+example: https://github.com/trycopilotai/lint/blob/v0.1.6/evidence/demo-transcript.txt
 upstream: github.com/trycopilotai/lint
-upstream_ref: v0.1.5
-upstream_sha: 1433abfc011996813d5d24837d1a6d47466d6aa1
+upstream_ref: v0.1.6
+upstream_sha: 8873c96c938ec4eb75c3b123f01c38776858d8b1
 upstream_path: skills/lint
 vendored_path: plugins/lint/skills/lint
-vendored_sha256: 375a5e761890626fbc8a8941eccc73ddac50b2302278b640fb56faa69121d659
+vendored_sha256: f409923f7d326c9427a7bdf8353b13883d77d558a732edf530958c87db77e2f6
 tested_agents:
   - Claude Code 2.1.220
   - Codex CLI 0.146.0

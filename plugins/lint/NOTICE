@@ -11,8 +11,8 @@ requires the notice to travel with a substantial copy.
     Copyright  (c) 2026 Try Copilot AI
     Licence    MIT
 
-The published v0.1.5 tag resolves to commit
-1433abfc011996813d5d24837d1a6d47466d6aa1.
+The published v0.1.6 tag resolves to commit
+8873c96c938ec4eb75c3b123f01c38776858d8b1.
 meta/lint.skill.yml records that commit, and
 `make release-gate` confirms that the public tag resolves to
 the pin and that the published package is byte for byte what
