@@ -1,0 +1,20 @@
+plugins/htmlify/ is a vendored copy, not the source.
+
+skills/htmlify/ is copied verbatim from the htmlify
+repository at the tag recorded in meta/htmlify.skill.yml.
+The copy is a whole package, not one file: SKILL.md, the
+scripts it runs, and the agent metadata each client reads.
+LICENSE beside this file is that repository's licence,
+carried along because MIT requires the notice to travel with
+a substantial copy.
+
+    Upstream   https://github.com/trycopilotai/htmlify
+    Copyright  (c) 2026 Pramod Kotipalli
+    Licence    MIT
+
+Do not edit anything under this directory. `make validate`
+compares the whole vendored tree against the deterministic
+digest recorded in meta/ and fails on any difference, and
+`make sync` replaces the tree from upstream. Changes belong
+in the upstream repository; issues and releases live there
+too.

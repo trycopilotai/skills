@@ -2,10 +2,11 @@
 
 # Skill index
 
-1 skill in the `trycopilotai` marketplace.
+2 skills in the `trycopilotai` marketplace.
 
-| Skill | Category | Status | Side effects | What it does |
-| ----- | -------- | ------ | ------------ | ------------ |
-| [`replx`](https://github.com/trycopilotai/replx) | repair | published | writes, network, executes | Drive a failing build, test, lint, or health check to a success condition you declare, in bounded iterations. The condition can be stated in prose, so a goal the command does not measure is still a valid target, and the protocol refuses the repairs that make a command pass without fixing the defect. |
+| Skill                                                | Category      | Status    | Clients            | Side effects              | What it does                                                                                                                                                                                                                                                                                                 |
+| ---------------------------------------------------- | ------------- | --------- | ------------------ | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`replx`](https://github.com/trycopilotai/replx)     | repair        | published | Claude Code        | writes, network, executes | Drive a failing build, test, lint, or health check to a success condition you declare, in bounded iterations. The condition can be stated in prose, so a goal the command does not measure is still a valid target, and the protocol refuses the repairs that make a command pass without fixing the defect. |
+| [`htmlify`](https://github.com/trycopilotai/htmlify) | visualization | published | Claude Code, Codex | writes, network, executes | Turn dense Markdown into source-checked HTML timelines, decision surfaces, system explainers, visual progressions, evidence reviews, or deterministic formal HTML with optional PDF export.                                                                                                                  |
 
 Regenerate with `make catalogue`.

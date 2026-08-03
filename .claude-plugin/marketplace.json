@@ -7,14 +7,32 @@
     "name": "Pramod Kotipalli",
     "url": "https://github.com/trycopilotai"
   },
-  "metadata": {
-    "pluginRoot": "./plugins"
-  },
   "plugins": [
+    {
+      "name": "htmlify",
+      "displayName": "htmlify",
+      "source": "./plugins/htmlify",
+      "description": "Turn dense Markdown into source-checked HTML timelines, decision surfaces, system explainers, visual progressions, evidence reviews, or deterministic formal HTML with optional PDF export.",
+      "version": "0.2.3",
+      "author": {
+        "name": "Pramod Kotipalli"
+      },
+      "homepage": "https://github.com/trycopilotai/htmlify",
+      "repository": "https://github.com/trycopilotai/htmlify",
+      "license": "MIT",
+      "category": "visualization",
+      "tags": [
+        "markdown",
+        "visualization",
+        "html",
+        "pdf",
+        "decision-surface"
+      ]
+    },
     {
       "name": "replx",
       "displayName": "replx",
-      "source": "./replx",
+      "source": "./plugins/replx",
       "description": "Drive a failing build, test, lint, or health check to a success condition you declare, in bounded iterations. The condition can be stated in prose, so a goal the command does not measure is still a valid target, and the protocol refuses the repairs that make a command pass without fixing the defect.",
       "version": "0.2.0",
       "author": {

@@ -1,0 +1,20 @@
+{
+  "name": "trycopilotai",
+  "interface": {
+    "displayName": "trycopilot.ai"
+  },
+  "plugins": [
+    {
+      "name": "htmlify",
+      "source": {
+        "source": "local",
+        "path": "./plugins/htmlify"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

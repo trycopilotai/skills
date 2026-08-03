@@ -68,12 +68,23 @@ CARD = """<!doctype html>
 def main() -> int:
     marketplace = json.loads(
         (ROOT / ".claude-plugin/marketplace.json").read_text())
+    codex_marketplace = json.loads(
+        (ROOT / ".agents/plugins/marketplace.json").read_text())
     catalogue = json.loads((ROOT / "catalogue.json").read_text())
 
     name = marketplace["name"]
+    codex_name = codex_marketplace["name"]
     count = len(catalogue["skills"])
     tagline = "%d agent skill%s, pinned and checked." % (
         count, "" if count == 1 else "s")
+
+    # The card prints one marketplace name for two client
+    # files. If those ever disagree, the card is advertising a
+    # name that only half the readers can install from.
+    if name != codex_name:
+        raise SystemExit(
+            "marketplace names disagree: %r in .claude-plugin, %r in "
+            ".agents/plugins" % (name, codex_name))
 
     if name != "trycopilotai":
         raise SystemExit(

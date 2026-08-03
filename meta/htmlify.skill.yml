@@ -1,0 +1,32 @@
+name: htmlify
+order: 2
+displayName: htmlify
+status: published
+category: visualization
+license: MIT
+use: >-
+  Turn dense Markdown into source-checked HTML timelines,
+  decision surfaces, system explainers, visual progressions,
+  evidence reviews, or deterministic formal HTML with
+  optional PDF export.
+triggers:
+  - htmlify
+  - markdown to html
+  - decision surface
+aliases: []
+clients:
+  - claude-code
+  - codex
+example: https://github.com/trycopilotai/htmlify/tree/v0.2.3/examples/showcase
+upstream: github.com/trycopilotai/htmlify
+upstream_ref: v0.2.3
+upstream_sha: a0b77d6bc76c4227ce604e857c0a5f54d1f8f595
+upstream_path: skills/htmlify
+vendored_path: plugins/htmlify/skills/htmlify
+vendored_sha256: 7da407dd7730e5e126bf46beec72f42ce25c93e62ef780e89e2a5c3610a9940a
+tested_agents:
+  - Claude Code 2.1.220
+  - Codex CLI 0.146.0
+writes: true
+network: true
+executes: true

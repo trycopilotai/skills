@@ -1,0 +1,7 @@
+interface:
+  display_name: "htmlify"
+  short_description:
+    "Turn Markdown into source-checked HTML"
+  default_prompt:
+    "Use $htmlify to turn this Markdown into a
+    source-checked HTML decision surface."

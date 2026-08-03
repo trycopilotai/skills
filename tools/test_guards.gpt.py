@@ -23,6 +23,7 @@ No third-party packages, same as everything else here.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import shutil
 import subprocess
@@ -33,6 +34,108 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 META = "meta/replx.skill.yml"
+HTMLIFY_META = "meta/htmlify.skill.yml"
+
+# What the published replx entry is, written out rather than
+# read from the file the tests are checking. These are the
+# values that went out to everyone who has already run
+# `/plugin install replx@trycopilotai`, so a change to any of
+# them changes what an existing user's next update installs.
+REPLX_PUBLISHED = {
+    "version": "0.2.0",
+    "upstream_ref": "v0.2.0",
+    "upstream_sha": "8669615675a920b7c8926e0377cc75b4d963ee7b",
+    "vendored_path": "plugins/replx/skills/replx/SKILL.md",
+    "vendored_sha256":
+        "7c885fd38801e3d0d84879c9ddc46730e975ea5116ea4e7783f58712fc577e61",
+}
+
+
+class ReplxNonRegressionTest(unittest.TestCase):
+    """The first published entry, checked against its own past.
+
+    Every other test here runs against a throwaway copy. These
+    run against the tracked tree, because the question is not
+    whether the tooling would catch a change to replx, it is
+    whether this commit made one.
+    """
+
+    def meta_fields(self) -> dict:
+        out = {}
+        for line in (ROOT / META).read_text().splitlines():
+            key, sep, value = line.partition(":")
+            if sep and not line.startswith(" "):
+                out[key.strip()] = value.strip()
+        return out
+
+    def test_the_published_pin_and_digest_are_untouched(self) -> None:
+        fields = self.meta_fields()
+        for key, expected in REPLX_PUBLISHED.items():
+            if key == "version":
+                continue
+            self.assertEqual(
+                fields.get(key), expected,
+                f"replx {key} moved away from the published entry",
+            )
+
+    def test_the_vendored_bytes_still_hash_to_the_published_digest(
+        self,
+    ) -> None:
+        """Recorded and actual, checked independently of meta/.
+
+        A commit that changed the bytes and the recorded digest
+        together would pass `make validate`, which only compares
+        the two against each other.
+        """
+        vendored = ROOT / REPLX_PUBLISHED["vendored_path"]
+        self.assertEqual(
+            hashlib.sha256(vendored.read_bytes()).hexdigest(),
+            REPLX_PUBLISHED["vendored_sha256"],
+            "replx's vendored SKILL.md is not the published copy",
+        )
+
+    def test_it_is_still_vendored_as_a_single_file(self) -> None:
+        """Repackaging replx would change every existing install."""
+        self.assertTrue((ROOT / REPLX_PUBLISHED["vendored_path"]).is_file())
+
+    def test_it_still_claims_only_the_client_it_was_tested_on(self) -> None:
+        """replx ships no Codex metadata, so it must claim none.
+
+        The marketplace gained a second client. Quietly listing
+        an untested skill for it would be the marketplace making
+        a claim the skill cannot support.
+        """
+        self.assertFalse(
+            (ROOT / "plugins/replx/.codex-plugin").exists(),
+            "replx grew a Codex manifest it was never tested with",
+        )
+        codex = json.loads(
+            (ROOT / ".agents/plugins/marketplace.json").read_text()
+        )
+        self.assertNotIn(
+            "replx",
+            {p.get("name") for p in codex["plugins"]},
+            "replx is listed for Codex without shipping Codex metadata",
+        )
+        catalogue = json.loads((ROOT / "catalogue.json").read_text())
+        entry = next(
+            s for s in catalogue["skills"] if s["name"] == "replx"
+        )
+        self.assertEqual(entry["clients"], ["claude-code"])
+
+    def test_its_marketplace_entry_still_describes_the_same_plugin(
+        self,
+    ) -> None:
+        mkt = json.loads(
+            (ROOT / ".claude-plugin/marketplace.json").read_text()
+        )
+        entry = next(p for p in mkt["plugins"] if p["name"] == "replx")
+        self.assertEqual(entry["version"], REPLX_PUBLISHED["version"])
+        self.assertEqual(entry["license"], "MIT")
+        manifest = json.loads(
+            (ROOT / "plugins/replx/.claude-plugin/plugin.json").read_text()
+        )
+        self.assertEqual(manifest["version"], REPLX_PUBLISHED["version"])
 
 
 class GuardTest(unittest.TestCase):
@@ -79,6 +182,49 @@ class GuardTest(unittest.TestCase):
         mutate(data)
         path.write_text(json.dumps(data, indent=2) + "\n")
 
+    def edit_codex_marketplace(self, mutate) -> None:
+        path = self.repo / ".agents/plugins/marketplace.json"
+        data = json.loads(path.read_text())
+        mutate(data)
+        path.write_text(json.dumps(data, indent=2) + "\n")
+
+    def edit_json(self, relative: str, mutate) -> None:
+        path = self.repo / relative
+        data = json.loads(path.read_text())
+        mutate(data)
+        path.write_text(json.dumps(data, indent=2) + "\n")
+
+    def edit_meta_file(self, relative: str, key: str, value) -> None:
+        """Set a top-level key in any meta/ file, or drop it."""
+        path = self.repo / relative
+        out = []
+        skipping = False
+        for line in path.read_text().split("\n"):
+            if line.startswith(key + ":"):
+                skipping = True
+                if value is not None:
+                    out.append(f"{key}: {value}")
+                continue
+            # A sequence value's items are indented under it, so
+            # dropping the key has to drop them too.
+            if skipping and line.startswith("  "):
+                continue
+            skipping = False
+            out.append(line)
+        path.write_text("\n".join(out))
+
+    def isolate_sync_fixture(self) -> None:
+        """Leave only replx's meta entry in the copy.
+
+        `make sync` walks every entry, so a guard case aimed at
+        one of them would otherwise reach the network on behalf
+        of the others and fail for a reason unrelated to the
+        guard under test.
+        """
+        for meta in (self.repo / "meta").glob("*.skill.yml"):
+            if meta.name != Path(META).name:
+                meta.unlink()
+
     # -- containment -----------------------------------------
 
     def test_sync_refuses_a_traversing_vendored_path(self) -> None:
@@ -88,6 +234,7 @@ class GuardTest(unittest.TestCase):
         the repository root with no check, it is an arbitrary
         file write.
         """
+        self.isolate_sync_fixture()
         self.edit_meta("vendored_path", "../../../../CANARY")
         result = self.run_tool("sync_skills.gpt.py")
         self.assertNotEqual(result.returncode, 0, result.stdout)
@@ -98,6 +245,7 @@ class GuardTest(unittest.TestCase):
 
     def test_sync_refuses_an_absolute_vendored_path(self) -> None:
         """`Path('/a') / '/etc/x'` is `/etc/x`, not `/a/etc/x`."""
+        self.isolate_sync_fixture()
         self.edit_meta("vendored_path", "/tmp/CANARY-absolute")
         result = self.run_tool("sync_skills.gpt.py")
         self.assertNotEqual(result.returncode, 0)
@@ -125,8 +273,11 @@ class GuardTest(unittest.TestCase):
         (up / "skill" / "SKILL.md").write_text(
             (self.repo / "plugins/replx/skills/replx/SKILL.md").read_text()
         )
-        git = lambda *a: subprocess.run(
-            ["git", *a], cwd=up, capture_output=True, text=True, check=True)
+        def git(*a):
+            return subprocess.run(
+                ["git", *a], cwd=up, capture_output=True, text=True,
+                check=True)
+
         git("init", "-q")
         git("config", "user.email", "t@example.com")
         git("config", "user.name", "t")
@@ -148,6 +299,7 @@ class GuardTest(unittest.TestCase):
         pin was rewritten by the tool that should have checked
         it.
         """
+        self.isolate_sync_fixture()
         self._local_upstream()
         self.edit_meta("upstream_sha", "0" * 40)
         result = self.run_tool("sync_skills.gpt.py")
@@ -161,6 +313,7 @@ class GuardTest(unittest.TestCase):
 
     def test_sync_accepts_the_pin_it_was_given(self) -> None:
         """The guard must not fire when the tag has not moved."""
+        self.isolate_sync_fixture()
         head = self._local_upstream()
         self.edit_meta("upstream_sha", head)
         result = self.run_tool("sync_skills.gpt.py")
@@ -174,6 +327,7 @@ class GuardTest(unittest.TestCase):
         problem in CI looked like: indistinguishable from the
         guard under test not firing.
         """
+        self.isolate_sync_fixture()
         self.edit_meta("upstream", (self.tmp / "does-not-exist").as_uri())
         result = self.run_tool("sync_skills.gpt.py")
         self.assertNotEqual(result.returncode, 0)
@@ -343,6 +497,255 @@ class GuardTest(unittest.TestCase):
         result = self.run_tool("validate.gpt.py")
         self.assertEqual(result.returncode, 0, result.stdout)
 
+    # -- a second entry, and a second client -----------------
+
+    def test_a_source_that_omits_the_plugin_directory_is_refused(
+        self,
+    ) -> None:
+        """The shorter form validated, then failed at install.
+
+        `metadata.pluginRoot` reads like a base directory for
+        every `source`. Claude Code 2.1.220 ignores it and
+        resolves `source` against the marketplace root, so
+        {"pluginRoot": "./plugins"} with {"source": "./replx"}
+        passed every check here and then failed with "Source
+        path does not exist".
+        """
+        self.edit_marketplace(
+            lambda d: self.plugin(d, "replx").__setitem__("source", "./replx")
+        )
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("./plugins/replx", result.stdout)
+
+    def test_plugin_root_metadata_is_refused(self) -> None:
+        """The key that made the broken form look deliberate."""
+        self.edit_marketplace(
+            lambda d: d.setdefault("metadata", {}).__setitem__(
+                "pluginRoot", "./plugins")
+        )
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("pluginRoot", result.stdout)
+
+    def test_a_codex_manifest_nobody_declared_is_reported(self) -> None:
+        """Shipping for a client without saying so is still a claim."""
+        self.edit_meta_file(HTMLIFY_META, "clients", "\n  - claude-code")
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(".codex-plugin/plugin.json", result.stdout)
+
+    def test_declaring_codex_without_the_manifest_is_reported(self) -> None:
+        shutil.rmtree(self.repo / "plugins/htmlify/.codex-plugin")
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(".codex-plugin/plugin.json", result.stdout)
+
+    def test_declaring_codex_without_the_agent_metadata_is_reported(
+        self,
+    ) -> None:
+        """Codex installs the plugin, then cannot invoke the skill."""
+        (self.repo
+         / "plugins/htmlify/skills/htmlify/agents/openai.yaml").unlink()
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("agents/openai.yaml", result.stdout)
+
+    def test_a_plugin_missing_from_the_codex_marketplace_is_reported(
+        self,
+    ) -> None:
+        self.edit_codex_marketplace(
+            lambda d: d.__setitem__(
+                "plugins",
+                [p for p in d["plugins"] if p.get("name") != "htmlify"],
+            )
+        )
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Codex marketplace", result.stdout)
+
+    def test_a_codex_entry_for_no_such_plugin_is_reported(self) -> None:
+        self.edit_codex_marketplace(
+            lambda d: d["plugins"].append({
+                "name": "ghost",
+                "source": {"source": "local", "path": "./plugins/ghost"},
+                "policy": {
+                    "installation": "AVAILABLE",
+                    "authentication": "ON_INSTALL",
+                },
+                "category": "Developer Tools",
+            })
+        )
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("not a plugin in the Claude Code marketplace",
+                      result.stdout)
+
+    def test_manifests_that_disagree_are_reported(self) -> None:
+        """Two manifests are two copies of one plugin's identity."""
+        self.edit_json(
+            "plugins/htmlify/.codex-plugin/plugin.json",
+            lambda d: d.__setitem__("description", "something else"),
+        )
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("disagree on 'description'", result.stdout)
+
+    def test_the_two_codex_interfaces_must_agree(self) -> None:
+        """The manifest and agents/openai.yaml both name the skill."""
+        self.edit_json(
+            "plugins/htmlify/.codex-plugin/plugin.json",
+            lambda d: d["interface"].__setitem__(
+                "shortDescription", "a different summary"),
+        )
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("short_description", result.stdout)
+
+    def test_a_default_prompt_naming_another_skill_is_reported(self) -> None:
+        path = (self.repo
+                / "plugins/htmlify/skills/htmlify/agents/openai.yaml")
+        path.write_text(path.read_text().replace("$htmlify", "$something"))
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("$htmlify", result.stdout)
+
+    def test_a_manifest_version_that_is_not_the_vendored_tag_is_reported(
+        self,
+    ) -> None:
+        """Otherwise the listing advertises bytes it did not ship."""
+        self.edit_json(
+            "plugins/htmlify/.claude-plugin/plugin.json",
+            lambda d: d.__setitem__("version", "9.9.9"),
+        )
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("does not match the vendored tag", result.stdout)
+
+    # -- the digest over a whole package ---------------------
+
+    def package_file(self, name: str) -> Path:
+        return self.repo / "plugins/htmlify/skills/htmlify" / name
+
+    def test_an_edited_byte_in_a_vendored_package_is_caught(self) -> None:
+        path = self.package_file("scripts/formal_render.py")
+        path.write_text(path.read_text() + "\n# edited\n")
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("drifted from upstream", result.stdout)
+
+    def test_a_file_added_to_a_vendored_package_is_caught(self) -> None:
+        """A file-by-file check would not see an addition."""
+        self.package_file("scripts/extra.py").write_text("print('extra')\n")
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("drifted from upstream", result.stdout)
+
+    def test_a_file_removed_from_a_vendored_package_is_caught(self) -> None:
+        self.package_file("scripts/formal_render.py").unlink()
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("drifted from upstream", result.stdout)
+
+    def test_a_renamed_file_in_a_vendored_package_is_caught(self) -> None:
+        """The same bytes under a new name install differently.
+
+        A digest over concatenated contents alone would call
+        this unchanged, which is why the relative path is inside
+        the hash.
+        """
+        source = self.package_file("scripts/formal_render.py")
+        source.rename(self.package_file("scripts/renderer.py"))
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("drifted from upstream", result.stdout)
+
+    def test_a_symlink_in_a_vendored_package_is_refused(self) -> None:
+        """A link makes the digest describe bytes it does not ship."""
+        outside = self.tmp / "outside.txt"
+        outside.write_text("not part of the package\n")
+        self.package_file("scripts/link.py").symlink_to(outside)
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("symbolic links are not allowed", result.stdout)
+        self.assertNotIn("Traceback", result.stderr)
+
+    # -- generating more than one row ------------------------
+
+    def test_every_meta_entry_reaches_every_generated_surface(self) -> None:
+        """One entry rendered by hand; two have to be generated."""
+        self.run_tool("build_catalogue.gpt.py")
+        catalogue = json.loads((self.repo / "catalogue.json").read_text())
+        names = [s["name"] for s in catalogue["skills"]]
+        self.assertEqual(names, ["replx", "htmlify"], "order key ignored")
+
+        index = (self.repo / "INDEX.md").read_text()
+        readme = (self.repo / "README.md").read_text()
+        self.assertIn("2 skills in the `trycopilotai` marketplace.", index)
+        for name in names:
+            self.assertIn(f"`{name}`", index)
+            self.assertIn(f"`{name}`", readme)
+
+    def test_a_new_entry_makes_the_committed_surfaces_stale(self) -> None:
+        """--check has to notice a row that was never rendered."""
+        source = (self.repo / HTMLIFY_META).read_text()
+        (self.repo / "meta/zzz.skill.yml").write_text(
+            source.replace("name: htmlify", "name: zzz").replace(
+                "order: 2", "order: 9")
+        )
+        result = self.run_tool("build_catalogue.gpt.py", "--check")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("stale", result.stdout)
+
+    def test_a_hand_edited_readme_table_is_stale(self) -> None:
+        """The README's table is generated, so it can rot too."""
+        readme = self.repo / "README.md"
+        readme.write_text(
+            readme.read_text().replace("Claude Code, Codex", "Every client")
+        )
+        result = self.run_tool("build_catalogue.gpt.py", "--check")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("README.md", result.stdout)
+
+    def test_the_readme_table_region_is_rewritten_not_appended(self) -> None:
+        """Regenerating must be idempotent, not additive."""
+        first = self.run_tool("build_catalogue.gpt.py")
+        self.assertEqual(first.returncode, 0, first.stdout + first.stderr)
+        once = (self.repo / "README.md").read_text()
+        self.run_tool("build_catalogue.gpt.py")
+        self.assertEqual(once, (self.repo / "README.md").read_text())
+        self.assertEqual(once.count("# skills"), 1)
+
+    def test_a_pending_entry_is_not_linked_to_a_missing_upstream(
+        self,
+    ) -> None:
+        """A link is a claim the repository exists at that name."""
+        self.edit_meta_file(HTMLIFY_META, "status", "pending-publication")
+        self.run_tool("build_catalogue.gpt.py")
+        index = (self.repo / "INDEX.md").read_text()
+        self.assertIn("`htmlify`", index)
+        self.assertNotIn(
+            "[`htmlify`](https://github.com/trycopilotai/htmlify)", index
+        )
+
+    def test_an_unknown_status_is_reported(self) -> None:
+        self.edit_meta_file(HTMLIFY_META, "status", "probably-fine")
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("status", result.stdout)
+
+    def test_an_unresolved_pin_must_say_it_is_unpublished(self) -> None:
+        """The sentinel is not a way to skip the pin check.
+
+        An entry may record UNRESOLVED instead of a commit id,
+        because inventing one would make every later check pass.
+        It may not do that while also calling itself published.
+        """
+        self.edit_meta_file(HTMLIFY_META, "upstream_sha", "UNRESOLVED")
+        result = self.run_tool("validate.gpt.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("pending-publication", result.stdout)
+
     def test_the_committed_repository_passes(self) -> None:
         """The guards above must not be firing on the real tree."""
         self.assertEqual(
@@ -351,6 +754,157 @@ class GuardTest(unittest.TestCase):
         self.assertEqual(
             self.run_tool("build_catalogue.gpt.py", "--check").returncode, 0
         )
+
+    def plugin(self, data: dict, name: str) -> dict:
+        for entry in data["plugins"]:
+            if entry.get("name") == name:
+                return entry
+        self.fail(f"no {name!r} plugin in the fixture")
+
+
+class ReleaseGateTest(GuardTest):
+    """The gate that decides whether an entry may be published.
+
+    Every case here builds its own remote on disk, so the suite
+    still needs no network. The gate's whole point is that it
+    asks a remote, and a test that asked the real one would
+    fail for reasons that have nothing to do with the gate.
+    """
+
+    def remote(self, package_bytes: str | None = None,
+               tag: str | None = "v0.2.3") -> str:
+        """A git repository laid out the way htmlify is."""
+        up = self.tmp / "remote"
+        package = up / "skills" / "htmlify"
+        package.mkdir(parents=True)
+        shutil.copytree(
+            self.repo / "plugins/htmlify/skills/htmlify",
+            package, dirs_exist_ok=True,
+        )
+        if package_bytes is not None:
+            (package / "SKILL.md").write_text(package_bytes)
+        def git(*a):
+            return subprocess.run(
+                ["git", *a], cwd=up, capture_output=True, text=True,
+                check=True)
+
+        git("init", "-q")
+        git("config", "user.email", "t@example.com")
+        git("config", "user.name", "t")
+        git("config", "commit.gpgsign", "false")
+        git("add", "-A")
+        git("commit", "-q", "-m", "upstream")
+        if tag:
+            git("tag", tag)
+        head = subprocess.run(
+            ["git", "rev-parse", "HEAD"], cwd=up,
+            capture_output=True, text=True, check=True).stdout.strip()
+        self.edit_meta_file(HTMLIFY_META, "upstream", up.as_uri())
+        return head
+
+    def gate(self, *args: str):
+        return self.run_tool("release_gate.gpt.py", "--entry", "htmlify",
+                             *args)
+
+    def test_it_passes_when_the_remote_matches(self) -> None:
+        """The positive control. Without it the rest proves nothing."""
+        head = self.remote()
+        self.edit_meta_file(HTMLIFY_META, "upstream_sha", head)
+        result = self.gate()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertIn("PUBLISHABLE", result.stdout)
+
+    def test_it_holds_an_unresolved_pin(self) -> None:
+        """The lint case: a tag that has not been pushed yet."""
+        self.edit_meta_file(HTMLIFY_META, "upstream_sha", "UNRESOLVED")
+        self.edit_meta_file(HTMLIFY_META, "status", "pending-publication")
+        result = self.gate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("HELD", result.stdout)
+        self.assertIn("UNRESOLVED", result.stdout)
+
+    def test_it_holds_a_tag_the_remote_does_not_have(self) -> None:
+        head = self.remote(tag=None)
+        self.edit_meta_file(HTMLIFY_META, "upstream_sha", head)
+        result = self.gate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("no tag v0.2.3", result.stdout)
+
+    def test_it_holds_a_tag_that_points_somewhere_else(self) -> None:
+        self.remote()
+        self.edit_meta_file(HTMLIFY_META, "upstream_sha", "0" * 40)
+        result = self.gate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("pinned 000000000000", result.stdout)
+
+    def test_it_holds_when_the_remote_ships_different_bytes(self) -> None:
+        """A tag can exist, match the pin, and still not match.
+
+        This is the case the pin alone cannot catch: the commit
+        is right and the vendored copy is not what that commit
+        contains.
+        """
+        head = self.remote(package_bytes="---\nname: htmlify\n---\nother\n")
+        self.edit_meta_file(HTMLIFY_META, "upstream_sha", head)
+        result = self.gate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("this repository vendored", result.stdout)
+
+    def test_it_holds_an_unreachable_remote(self) -> None:
+        """Not being able to check is a failure, not a pass.
+
+        The reason is asserted, not just the verdict. A remote
+        that cannot be reached and a remote that simply has no
+        such tag are different diagnoses, and reporting the
+        second for the first is the confusion `make sync`
+        already had to be fixed for once: a network problem read
+        as evidence about the pin.
+        """
+        self.edit_meta_file(
+            HTMLIFY_META, "upstream", (self.tmp / "nothing-here").as_uri()
+        )
+        result = self.gate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("HELD", result.stdout)
+        self.assertIn("cannot reach", result.stdout)
+        self.assertNotIn("has no tag", result.stdout)
+        self.assertNotIn("Traceback", result.stderr)
+
+    def test_it_holds_a_pending_entry(self) -> None:
+        """Publishable means published, not merely consistent."""
+        head = self.remote()
+        self.edit_meta_file(HTMLIFY_META, "upstream_sha", head)
+        self.edit_meta_file(HTMLIFY_META, "status", "pending-publication")
+        result = self.gate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("not 'published'", result.stdout)
+
+    def test_it_holds_a_vendored_copy_that_drifted(self) -> None:
+        head = self.remote()
+        self.edit_meta_file(HTMLIFY_META, "upstream_sha", head)
+        path = self.repo / "plugins/htmlify/skills/htmlify/SKILL.md"
+        path.write_text(path.read_text() + "\nlocal edit\n")
+        result = self.gate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("HELD", result.stdout)
+
+    # The inherited cases exercise validate and sync, not the
+    # gate, and running them a second time only doubles the
+    # suite's cost.
+    def test_the_committed_repository_passes(self) -> None:
+        raise unittest.SkipTest("covered by GuardTest")
+
+
+def load_tests(loader, tests, pattern):
+    """Keep ReleaseGateTest from re-running everything it inherits."""
+    suite = unittest.TestSuite()
+    suite.addTests(loader.loadTestsFromTestCase(ReplxNonRegressionTest))
+    suite.addTests(loader.loadTestsFromTestCase(GuardTest))
+    for name in loader.getTestCaseNames(ReleaseGateTest):
+        if name in loader.getTestCaseNames(GuardTest):
+            continue
+        suite.addTest(ReleaseGateTest(name))
+    return suite
 
 
 if __name__ == "__main__":

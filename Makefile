@@ -7,13 +7,13 @@ help: ## Show available targets.
 validate: ## Validate the marketplace, every plugin, and every SKILL.md.
 	@python3 tools/validate.gpt.py
 
-catalogue: ## Regenerate catalogue.json and INDEX.md from meta/*.skill.yml.
+catalogue: ## Regenerate catalogue.json, INDEX.md, and the README table.
 	@python3 tools/build_catalogue.gpt.py
 
 catalogue-check: ## Fail if the committed catalogue differs from a fresh build.
 	@python3 tools/build_catalogue.gpt.py --check
 
-sync: ## Refresh vendored SKILL.md copies from their pinned upstream refs.
+sync: ## Refresh vendored skill packages from their pinned upstream refs.
 	@python3 tools/sync_skills.gpt.py
 
 test: ## Prove the tooling's guards fire, on a throwaway copy.
@@ -21,4 +21,14 @@ test: ## Prove the tooling's guards fire, on a throwaway copy.
 
 check: validate catalogue-check test ## Everything CI runs.
 
-.PHONY: help validate catalogue catalogue-check sync test check
+release-gate: ## Verify every entry against its public remote. Needs network.
+	@python3 tools/release_gate.gpt.py
+
+install-smoke: ## Install into throwaway Claude Code and Codex homes.
+	@python3 tools/install_smoke.gpt.py
+
+asset-check: ## Rebuild the social preview and fail on byte drift.
+	@python3 assets/check_rebuild.gpt.py
+
+.PHONY: help validate catalogue catalogue-check sync test check \
+        release-gate install-smoke asset-check
