@@ -50,8 +50,11 @@ CODEX = ["npx", "--yes", "@openai/codex@0.146.0"]
 # Cleared for every client run. A smoke test that passes only
 # on a machine with credentials is not testing installation.
 CREDENTIAL_VARS = (
-    "ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "CLAUDE_CODE_OAUTH_TOKEN",
-    "OPENAI_API_KEY", "OPENAI_BASE_URL",
+    "ANTHROPIC_API_KEY",
+    "ANTHROPIC_AUTH_TOKEN",
+    "CLAUDE_CODE_OAUTH_TOKEN",
+    "OPENAI_API_KEY",
+    "OPENAI_BASE_URL",
 )
 
 
@@ -66,9 +69,7 @@ def catalogue_entries() -> list:
 
 
 def run(argv: list, env: dict, cwd: Path) -> subprocess.CompletedProcess:
-    return subprocess.run(
-        argv, env=env, cwd=cwd, capture_output=True, text=True
-    )
+    return subprocess.run(argv, env=env, cwd=cwd, capture_output=True, text=True)
 
 
 def client_env(home_var: str, home: Path) -> dict:
@@ -86,6 +87,42 @@ def require(result: subprocess.CompletedProcess, what: str) -> str:
     return output
 
 
+def smoke_lint_runtime(repo: Path) -> None:
+    """Run the vendored lint package without repository fallbacks."""
+    plugin = repo / "plugins" / "lint"
+    runner = plugin / "skills" / "lint" / "run.py"
+    if not runner.is_file():
+        return
+
+    env = os.environ.copy()
+    for name in CREDENTIAL_VARS:
+        env.pop(name, None)
+    output = require(
+        run([sys.executable, str(runner), "--list-languages"], env, repo),
+        "lint package runtime",
+    )
+    try:
+        observed = json.loads(output)
+        expected = json.loads(
+            (runner.parent / "languages.json").read_text(encoding="utf-8")
+        )
+        matrix = json.loads(
+            (runner.parent / "images" / "matrix.json").read_text(encoding="utf-8")
+        )
+        manifest = json.loads(
+            (plugin / ".claude-plugin" / "plugin.json").read_text(encoding="utf-8")
+        )
+    except (FileNotFoundError, json.JSONDecodeError) as exc:
+        raise SmokeFailure(f"lint package data is unreadable: {exc}") from exc
+    if observed != expected:
+        raise SmokeFailure("lint package loaded a different language manifest")
+    if matrix.get("version") != manifest.get("version"):
+        raise SmokeFailure(
+            "lint package image version disagrees with the plugin version"
+        )
+    print("  package lint: runtime and data loaded")
+
+
 def smoke_claude(repo: Path, home: Path, names: list) -> None:
     """Add, install, and confirm the skill is in the inventory."""
     env = client_env("CLAUDE_CONFIG_DIR", home)
@@ -98,14 +135,16 @@ def smoke_claude(repo: Path, home: Path, names: list) -> None:
         require(
             run(
                 CLAUDE + ["plugin", "install", f"{name}@trycopilotai"],
-                env, repo,
+                env,
+                repo,
             ),
             f"claude plugin install {name}",
         )
         details = require(
             run(
                 CLAUDE + ["plugin", "details", f"{name}@trycopilotai"],
-                env, repo,
+                env,
+                repo,
             ),
             f"claude plugin details {name}",
         )
@@ -128,9 +167,7 @@ def smoke_codex(repo: Path, home: Path, names: list) -> None:
         run(CODEX + ["plugin", "marketplace", "add", str(repo)], env, repo),
         "codex plugin marketplace add",
     )
-    listed = require(
-        run(CODEX + ["plugin", "list"], env, repo), "codex plugin list"
-    )
+    listed = require(run(CODEX + ["plugin", "list"], env, repo), "codex plugin list")
     for name in names:
         if f"{name}@trycopilotai" not in listed:
             raise SmokeFailure(
@@ -143,8 +180,7 @@ def smoke_codex(repo: Path, home: Path, names: list) -> None:
         )
         if "Installed plugin root" not in added:
             raise SmokeFailure(
-                f"codex add {name!r} reported no installed root:\n"
-                f"{added.strip()}"
+                f"codex add {name!r} reported no installed root:\n" f"{added.strip()}"
             )
         print(f"  codex   {name}: listed and installed")
 
@@ -162,12 +198,8 @@ def main(argv=None) -> int:
     wanted = args.client or ["claude", "codex"]
 
     entries = catalogue_entries()
-    claude_names = [
-        e["name"] for e in entries if "claude-code" in e.get("clients", [])
-    ]
-    codex_names = [
-        e["name"] for e in entries if "codex" in e.get("clients", [])
-    ]
+    claude_names = [e["name"] for e in entries if "claude-code" in e.get("clients", [])]
+    codex_names = [e["name"] for e in entries if "codex" in e.get("clients", [])]
 
     failures = []
     with tempfile.TemporaryDirectory() as td:
@@ -177,9 +209,14 @@ def main(argv=None) -> int:
         # able to dirty the tree it is testing.
         repo = temporary / "skills"
         shutil.copytree(
-            ROOT, repo,
+            ROOT,
+            repo,
             ignore=shutil.ignore_patterns(".git", "__pycache__"),
         )
+        try:
+            smoke_lint_runtime(repo)
+        except SmokeFailure as exc:
+            failures.append(f"package: {exc}")
         arms = {
             "claude": (smoke_claude, temporary / "claude-home", claude_names),
             "codex": (smoke_codex, temporary / "codex-home", codex_names),

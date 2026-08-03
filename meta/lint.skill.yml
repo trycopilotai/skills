@@ -1,7 +1,7 @@
 name: lint
 order: 3
 displayName: lint
-status: pending-publication
+status: published
 category: formatting
 license: MIT
 use: >-
@@ -18,14 +18,10 @@ clients:
 example: https://github.com/trycopilotai/lint/blob/v0.1.5/evidence/demo-transcript.txt
 upstream: github.com/trycopilotai/lint
 upstream_ref: v0.1.5
-# No commit id: v0.1.5 has not been published, so there is
-# nothing to pin to. A guess here would make `make sync` and
-# `make release-gate` compare against a value invented in this
-# repository and pass. See plugins/lint/NOTICE.
-upstream_sha: UNRESOLVED
+upstream_sha: 1433abfc011996813d5d24837d1a6d47466d6aa1
 upstream_path: skills/lint
 vendored_path: plugins/lint/skills/lint
-vendored_sha256: f05657738b7772640bd8b06dfe17bc2da454548dd42eb91eef7a55cc93cef7ed
+vendored_sha256: 375a5e761890626fbc8a8941eccc73ddac50b2302278b640fb56faa69121d659
 tested_agents:
   - Claude Code 2.1.220
   - Codex CLI 0.146.0

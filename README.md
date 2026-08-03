@@ -6,15 +6,17 @@ one command installs any skill in it.
 In Claude Code:
 
 ```sh
-/plugin marketplace add trycopilotai/skills
-/plugin install replx@trycopilotai
+/plugin marketplace add trycopilotai/skills@v0.5.0
+/plugin install lint@trycopilotai
 ```
 
 In Codex:
 
 ```sh
-codex plugin marketplace add trycopilotai/skills
-codex plugin add htmlify@trycopilotai
+npx -y @openai/codex@0.146.0 plugin marketplace add \
+  trycopilotai/skills --ref v0.5.0
+npx -y @openai/codex@0.146.0 plugin add \
+  lint@trycopilotai
 ```
 
 The marketplace name is `trycopilotai`, so skills are
@@ -39,7 +41,7 @@ version.
 | ---------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | [`replx`](https://github.com/trycopilotai/replx)     | Claude Code        | Drive a failing build, test, lint, or health check to a success condition you declare, in bounded iterations. The condition can be stated in prose, so a goal the command does not measure is still a valid target, and the protocol refuses the repairs that make a command pass without fixing the defect. |
 | [`htmlify`](https://github.com/trycopilotai/htmlify) | Claude Code, Codex | Turn dense Markdown into source-checked HTML timelines, decision surfaces, system explainers, visual progressions, evidence reviews, or deterministic formal HTML with optional PDF export.                                                                                                                  |
-| `lint`                                               | Claude Code, Codex | Check or apply canonical formatting across mixed-language repositories with a read-only default.                                                                                                                                                                                                             |
+| [`lint`](https://github.com/trycopilotai/lint)       | Claude Code, Codex | Check or apply canonical formatting across mixed-language repositories with a read-only default.                                                                                                                                                                                                             |
 
 <!-- End generated table. -->
 
@@ -84,12 +86,12 @@ time with `Source path does not exist`. `make validate`
 refuses the key for that reason, and `make install-smoke` is
 what would have caught it.
 
-Files under `tools/` carry a `.gpt` before the extension.
-It records that the file was written by an AI agent rather
-than typed by hand, which is a fact about provenance a reader
-of a public repository is entitled to. It has one practical
-cost: `test_guards.gpt.py` is not a valid Python module name,
-so it is run directly rather than through
+Files under `tools/` carry a `.gpt` before the extension. It
+records that the file was written by an AI agent rather than
+typed by hand, which is a fact about provenance a reader of
+a public repository is entitled to. It has one practical
+cost: `test_guards.gpt.py` is not a valid Python module
+name, so it is run directly rather than through
 `unittest discover`.
 
 ## Vendoring and drift
@@ -103,27 +105,28 @@ and `lint` at
 [`trycopilotai/lint`](https://github.com/trycopilotai/lint).
 
 This repository vendors a copy of each skill so the
-marketplace resolves from a single clone. What gets copied is
-a file for a skill that is only prose, and a whole directory
-for a skill that ships scripts or per-client agent metadata;
-`upstream_path` in `meta/` names the source and
+marketplace resolves from a single clone. What gets copied
+is a file for a skill that is only prose, and a whole
+directory for a skill that ships scripts or per-client agent
+metadata; `upstream_path` in `meta/` names the source and
 `vendored_path` names where it lands.
 
-Every vendored copy records the upstream ref, the commit that
-tag pointed at, and a `vendored_sha256` in its `meta/` entry,
-and `make validate` fails if what is on disk no longer
-matches. A directory's digest is a sorted tree hash over each
-file's relative path and bytes, so an added file, a removed
-file, and a rename with no edit are all differences. Symbolic
-links are refused rather than followed, because a link makes
-a digest describe bytes the package does not ship. Refresh
-with `make sync`, which fetches the pinned upstream tag and
-rewrites the recorded hashes.
+Every vendored copy records the upstream ref, the commit
+that tag pointed at, and a `vendored_sha256` in its `meta/`
+entry, and `make validate` fails if what is on disk no
+longer matches. A directory's digest is a sorted tree hash
+over each file's relative path and bytes, so an added file,
+a removed file, and a rename with no edit are all
+differences. Symbolic links are refused rather than
+followed, because a link makes a digest describe bytes the
+package does not ship. Refresh with `make sync`, which
+fetches the pinned upstream tag and rewrites the recorded
+hashes.
 
 `make validate` compares this repository against itself.
 `make release-gate` compares it against the world: it
-resolves each `upstream_ref` on the real remote, requires the
-tag to exist and to point at the recorded commit, and
+resolves each `upstream_ref` on the real remote, requires
+the tag to exist and to point at the recorded commit, and
 re-digests the upstream package to confirm it is the one
 vendored here. It fails closed, so an unreachable remote, a
 tag that was never pushed, and bytes that differ all count
@@ -177,29 +180,31 @@ browser. `make install-smoke` adds the marketplace to a
 throwaway Claude Code and Codex home, installs each plugin,
 and then asks the client what it loaded, because installing
 successfully is not the same as the skill being picked up.
-It clears the API-key variables first, so it cannot pass on a
-credentialed machine in a way it would fail on a clean one.
+It clears the API-key variables first, so it cannot pass on
+a credentialed machine in a way it would fail on a clean
+one.
 
 `make test` is the part worth explaining. It copies the
-repository to a temporary directory, breaks it on purpose, and
-checks that the tooling refuses each break: a `vendored_path`,
-a `pluginRoot`, or a plugin `source` that escapes the
-checkout; an upstream tag that has moved since it was pinned,
-or a pin deleted so the comparison cannot run; a `ref` naming
-a branch, which moves; a plugin entry that is null or has no
-source; an unparseable `plugin.json`; a missing side-effect
-flag; a `renames` entry pointing at a live or a nonexistent
-name; a vendored package with an edited, added, removed, or
-renamed file, or a symbolic link; a plugin that ships Codex
-metadata without declaring it, or declares it without
-shipping it; two manifests that disagree; a generated surface
-left stale. A guard with no test is a comment.
+repository to a temporary directory, breaks it on purpose,
+and checks that the tooling refuses each break: a
+`vendored_path`, a `pluginRoot`, or a plugin `source` that
+escapes the checkout; an upstream tag that has moved since
+it was pinned, or a pin deleted so the comparison cannot
+run; a `ref` naming a branch, which moves; a plugin entry
+that is null or has no source; an unparseable `plugin.json`;
+a missing side-effect flag; a `renames` entry pointing at a
+live or a nonexistent name; a vendored package with an
+edited, added, removed, or renamed file, or a symbolic link;
+a plugin that ships Codex metadata without declaring it, or
+declares it without shipping it; two manifests that
+disagree; a generated surface left stale. A guard with no
+test is a comment.
 
 It builds its own upstream repository on disk rather than
 cloning one, so the suite needs no network and cannot fail
-for a reason unrelated to the guard under test. That includes
-the release gate's cases, which stand up a local remote with
-a missing tag, a moved tag, or different bytes.
+for a reason unrelated to the guard under test. That
+includes the release gate's cases, which stand up a local
+remote with a missing tag, a moved tag, or different bytes.
 
 ## Adding a skill
 
@@ -209,13 +214,13 @@ has to clear before it is listed here.
 ## License
 
 MIT for this repository. Each skill carries its own
-`license` in its `meta/` entry and in its home repository, and
-a vendored skill also carries that repository's `LICENSE` and
-a `NOTICE` beside the copy.
+`license` in its `meta/` entry and in its home repository,
+and a vendored skill also carries that repository's
+`LICENSE` and a `NOTICE` beside the copy.
 
 ## Not affiliated with GitHub
 
 `trycopilot.ai` is an independent project. It is not
 affiliated with, endorsed by, or connected to GitHub,
-Microsoft, or GitHub Copilot. The name is a domain the author
-owns and predates this repository.
+Microsoft, or GitHub Copilot. The name is a domain the
+author owns and predates this repository.
