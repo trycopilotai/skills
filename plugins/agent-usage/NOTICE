@@ -1,0 +1,9 @@
+plugins/agent-usage/skills/agent-usage/ is a vendored copy,
+not the source.
+
+skills/agent-usage/ is copied verbatim from the agent-usage
+repository at the tag recorded in meta/agent-usage.skill.yml,
+including SKILL.md, its launcher, and its agent metadata.
+LICENSE beside this file is that repository's licence,
+carried along because MIT requires the notice to travel with
+a substantial copy.

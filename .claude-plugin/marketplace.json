@@ -69,6 +69,27 @@
         "docker",
         "developer-tools"
       ]
+    },
+    {
+      "name": "agent-usage",
+      "displayName": "agent-usage",
+      "source": "./plugins/agent-usage",
+      "description": "Read how much of each AI provider's usage limit is left, when it resets, and which provider still has headroom. Answers from measured readings and declines when it cannot: a provider that did not respond is reported as not responding, never as zero usage, and a forecast with too little history returns a reason instead of a number.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Pramod Kotipalli"
+      },
+      "homepage": "https://github.com/trycopilotai/agent-usage",
+      "repository": "https://github.com/trycopilotai/agent-usage",
+      "license": "MIT",
+      "category": "observability",
+      "tags": [
+        "usage",
+        "quota",
+        "rate-limits",
+        "ai-agents",
+        "developer-tools"
+      ]
     }
   ]
 }
