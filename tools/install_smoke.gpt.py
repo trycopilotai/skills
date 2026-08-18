@@ -44,8 +44,23 @@ ROOT = Path(__file__).resolve().parent.parent
 # AGENTS-mandated invocation: both clients are reached through
 # npx, never a PATH or Homebrew binary, so the version under
 # test is the one named here rather than whatever is installed.
-CLAUDE = ["npx", "--yes", "@anthropic-ai/claude-code@2.1.220"]
-CODEX = ["npx", "--yes", "@openai/codex@0.146.0"]
+#
+# The `--package ... -- <bin>` form is required, not stylistic.
+# Given a bare `npx --yes @openai/codex@0.146.0`, npm 11 looks
+# for a command named after the whole specifier and reports
+# "sh: @openai/codex@0.146.0: No such file or directory". Both
+# packages publish a bin whose name is not the package name, so
+# naming the package and the binary separately is the only form
+# that resolves.
+CLAUDE = [
+    "npx",
+    "--yes",
+    "--package",
+    "@anthropic-ai/claude-code@2.1.220",
+    "--",
+    "claude",
+]
+CODEX = ["npx", "--yes", "--package", "@openai/codex@0.146.0", "--", "codex"]
 
 # Cleared for every client run. A smoke test that passes only
 # on a machine with credentials is not testing installation.

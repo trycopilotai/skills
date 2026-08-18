@@ -5,6 +5,18 @@
   },
   "plugins": [
     {
+      "name": "agent-usage",
+      "source": {
+        "source": "local",
+        "path": "./plugins/agent-usage"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
       "name": "htmlify",
       "source": {
         "source": "local",
