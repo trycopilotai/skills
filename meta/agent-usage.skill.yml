@@ -19,6 +19,7 @@ triggers:
 aliases: []
 clients:
   - claude-code
+  - codex
 example: https://github.com/trycopilotai/agent-usage/blob/v0.2.1/evidence/transcripts/demo-session.txt
 upstream: github.com/trycopilotai/agent-usage
 upstream_ref: v0.2.1
@@ -28,6 +29,7 @@ vendored_path: plugins/agent-usage/skills/agent-usage
 vendored_sha256: 968a2151bf6c4d5fee00d251f593fb9a2be0a8049b237ae140a422f1b260b0ab
 tested_agents:
   - Claude Code 2.1.220
+  - Codex CLI 0.146.0
 writes: true
 network: true
 executes: true
