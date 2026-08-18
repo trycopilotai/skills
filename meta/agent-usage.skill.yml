@@ -1,0 +1,33 @@
+name: agent-usage
+order: 4
+displayName: agent-usage
+status: published
+category: observability
+license: MIT
+use: >-
+  Read how much of each AI provider's usage limit is left,
+  when it resets, and which provider still has headroom.
+  Answers from measured readings and declines when it cannot:
+  a provider that did not respond is reported as not
+  responding, never as zero usage, and a forecast with too
+  little history returns a reason instead of a number.
+triggers:
+  - agent-usage
+  - usage
+  - quota
+  - rate limit
+aliases: []
+clients:
+  - claude-code
+example: https://github.com/trycopilotai/agent-usage/blob/v0.1.0/evidence/transcripts/demo-session.txt
+upstream: github.com/trycopilotai/agent-usage
+upstream_ref: v0.1.0
+upstream_sha: 74c28ef808d438b40256e1ef2f0c45fdc9bd4bcd
+upstream_path: skills/agent-usage
+vendored_path: plugins/agent-usage/skills/agent-usage
+vendored_sha256: 968a2151bf6c4d5fee00d251f593fb9a2be0a8049b237ae140a422f1b260b0ab
+tested_agents:
+  - Claude Code 2.1.220
+writes: true
+network: true
+executes: true
