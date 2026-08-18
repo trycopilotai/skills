@@ -19,10 +19,10 @@ triggers:
 aliases: []
 clients:
   - claude-code
-example: https://github.com/trycopilotai/agent-usage/blob/v0.1.0/evidence/transcripts/demo-session.txt
+example: https://github.com/trycopilotai/agent-usage/blob/v0.2.1/evidence/transcripts/demo-session.txt
 upstream: github.com/trycopilotai/agent-usage
-upstream_ref: v0.1.0
-upstream_sha: 74c28ef808d438b40256e1ef2f0c45fdc9bd4bcd
+upstream_ref: v0.2.1
+upstream_sha: 6ecc3fe154d38a4641679447dad05f21d0b02b61
 upstream_path: skills/agent-usage
 vendored_path: plugins/agent-usage/skills/agent-usage
 vendored_sha256: 968a2151bf6c4d5fee00d251f593fb9a2be0a8049b237ae140a422f1b260b0ab
