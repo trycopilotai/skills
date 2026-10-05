@@ -23,6 +23,54 @@ The marketplace name is `trycopilotai`, so skills are
 installed as `<skill>@trycopilotai`. Update the catalogue
 later with `/plugin marketplace update`.
 
+## what-next v1.0.0 staging snapshot
+
+The signed `v0.5.1` marketplace snapshot above does not
+include `what-next`. Its new entry is pinned to standalone
+v1.0.0, commit `34fe5a0847866d7f4764c4e909a4876276d0ece2`.
+The upstream remains private, so the entry is
+`pending-publication`: its example and standalone release
+require access. The vendored plugin does not require that
+access. `make release-gate` intentionally holds this entry;
+that is not a failed package check or public authorization.
+
+For a repeatable plugin install, clone this immutable
+marketplace snapshot in an empty working directory:
+
+```sh
+git clone https://github.com/trycopilotai/skills what-next-marketplace
+git -C what-next-marketplace checkout --detach \
+  e5457401c563126434c962385bed9178f483739f
+```
+
+In Claude Code 2.1.289, from that working directory:
+
+```text
+/plugin marketplace add ./what-next-marketplace
+/plugin install what-next@trycopilotai
+```
+
+Invoke `/what-next:what-next`. In Codex CLI 0.160.0:
+
+```sh
+npx --yes --package @openai/codex@0.160.0 -- codex \
+  plugin marketplace add ./what-next-marketplace
+npx --yes --package @openai/codex@0.160.0 -- codex \
+  plugin add what-next@trycopilotai
+```
+
+Invoke `$what-next:what-next`, not `@what-next`. Direct
+standalone installations use `/what-next` and `$what-next`;
+the [upstream README](https://github.com/trycopilotai/what-next#use-it)
+documents those tag-pinned routes for users with access.
+Both plugins load one regular package at
+`plugins/what-next/skills/what-next`; its version, upstream
+commit and digest are in `meta/what-next.skill.yml`.
+
+No new marketplace release tag is created by this staging
+registration. Existing signed tags and their trust root are
+unchanged.
+
 Not every skill ships for both clients. Each one lists the
 clients it was actually installed and invoked under, in the
 table below and in `catalogue.json`; a skill missing from
@@ -184,7 +232,8 @@ becomes:
 make validate         # marketplace, plugin manifests, SKILL.md spec, vendor drift
 make catalogue-check  # the generated catalogue, index, and README table are current
 make test             # the tooling's own guards still fire
-make check            # all three; CI runs them as separate steps
+make product-contract # what-next's regular skills-only package agrees across hosts
+make check            # all four; CI runs them as separate steps
 
 make release-gate     # every entry against its public remote; needs network
 make install-smoke    # install into throwaway client homes; needs npx
