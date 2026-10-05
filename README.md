@@ -25,9 +25,12 @@ later with `/plugin marketplace update`.
 
 ## what-next v1.0.0 staging snapshot
 
-The signed `v0.5.1` marketplace snapshot above does not
-include `what-next`. Its new entry is pinned to standalone
-v1.0.0, commit `34fe5a0847866d7f4764c4e909a4876276d0ece2`.
+The signed `v0.5.1` marketplace snapshot above includes
+neither `agent-usage` nor `what-next`. The table below
+describes the current catalogue, not that older tag. The
+immutable staging snapshot documented here includes both.
+The new `what-next` entry is pinned to standalone v1.0.0,
+commit `34fe5a0847866d7f4764c4e909a4876276d0ece2`.
 The upstream remains private, so the entry is
 `pending-publication`: its example and standalone release
 require access. The vendored plugin does not require that
