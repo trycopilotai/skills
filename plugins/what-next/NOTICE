@@ -1,0 +1,15 @@
+plugins/what-next/skills/what-next/ is a vendored copy,
+not the source.
+
+The canonical skill and Codex interface are copied verbatim
+from trycopilotai/what-next at v1.0.0, commit
+34fe5a0847866d7f4764c4e909a4876276d0ece2.
+meta/what-next.skill.yml records the sorted package digest.
+LICENSE beside this file is the upstream MIT license.
+
+The upstream repository remains private. The public vendored
+plugin can be installed without upstream access; the worked
+example and standalone release require that access. This
+entry is pending public upstream publication, not a passed
+public release gate. No private source examples or external
+audit records are included.

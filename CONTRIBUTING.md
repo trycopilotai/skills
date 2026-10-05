@@ -53,6 +53,13 @@ not been pushed yet records `upstream_sha: UNRESOLVED` and
 expect the tag to have: a guess makes every later check pass,
 which is worse than the field being empty.
 
+A private upstream may be staged as `pending-publication`
+with a real, access-verified tag and full commit pin. State
+that access is required for its upstream example and release.
+Vendoring does not make that upstream public, and the public
+release gate remains held until explicit publication. Do not
+mark such an entry `published` merely to clear the gate.
+
 **It declares the clients it ships for.** `clients` lists
 `claude-code`, `codex`, or both, and it means the skill was
 installed and invoked under each one. Claude Code needs

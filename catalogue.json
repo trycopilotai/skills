@@ -128,6 +128,39 @@
       "writes": true,
       "network": true,
       "executes": true
+    },
+    {
+      "name": "what-next",
+      "order": 5,
+      "displayName": "What Next",
+      "status": "pending-publication",
+      "category": "triage",
+      "license": "MIT",
+      "use": "Split open work into agent and human lanes with consistent action IDs, concrete tool calls, and evidence for each human gap.",
+      "triggers": [
+        "what next",
+        "what's left",
+        "what do you need from me"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/what-next/blob/v1.0.0/evidence/transcripts/2026-10-05-codex-mixed.txt",
+      "upstream": "github.com/trycopilotai/what-next",
+      "upstream_ref": "v1.0.0",
+      "upstream_sha": "34fe5a0847866d7f4764c4e909a4876276d0ece2",
+      "upstream_path": "skills/what-next",
+      "vendored_path": "plugins/what-next/skills/what-next",
+      "vendored_sha256": "13069dd756993e1590617980ed66d1d76384a8a309f6d099cd0be0549666adba",
+      "tested_agents": [
+        "Claude Code 2.1.289",
+        "Codex CLI 0.160.0"
+      ],
+      "writes": false,
+      "network": true,
+      "executes": true
     }
   ]
 }

@@ -30,6 +30,9 @@ jobs:
       - name: Prove the guards fire
         run: make test
 
+      - name: Verify the skills-only product contract
+        run: make product-contract
+
       # The generator must not be what makes its own check pass.
       # catalogue-check used to regenerate before diffing, so a
       # stale committed catalogue was rewritten and then compared

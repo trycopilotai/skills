@@ -75,8 +75,9 @@ def main() -> int:
     name = marketplace["name"]
     codex_name = codex_marketplace["name"]
     count = len(catalogue["skills"])
+    pending = sum(s.get("status") != "published" for s in catalogue["skills"])
     tagline = "%d agent skill%s, pinned and checked." % (
-        count, "" if count == 1 else "s")
+        count, "" if count == 1 else "s") if not pending else "%d agent skills, %d upstream pending." % (count, pending)
 
     # The card prints one marketplace name for two client
     # files. If those ever disagree, the card is advertising a
@@ -100,7 +101,7 @@ def main() -> int:
         encoding="utf-8")
     subprocess.run(
         [CHROME, "--headless", "--disable-gpu", "--hide-scrollbars",
-         "--force-device-scale-factor=2", "--screenshot=" + str(out),
+         "--force-device-scale-factor=1", "--screenshot=" + str(out),
          "--window-size=1280,640", "file://" + str(src)],
         check=True, capture_output=True)
     src.unlink()

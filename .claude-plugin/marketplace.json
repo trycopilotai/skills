@@ -9,6 +9,21 @@
   },
   "plugins": [
     {
+      "name": "what-next",
+      "displayName": "What Next",
+      "source": "./plugins/what-next",
+      "description": "Split open work into agent and human lanes with consistent action IDs, concrete tool calls, and evidence for each human gap.",
+      "version": "1.0.0",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/what-next#readme",
+      "repository": "https://github.com/trycopilotai/what-next",
+      "license": "MIT",
+      "category": "triage",
+      "tags": ["agent-skills", "handoff", "triage"]
+    },
+    {
       "name": "htmlify",
       "displayName": "htmlify",
       "source": "./plugins/htmlify",

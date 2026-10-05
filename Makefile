@@ -19,7 +19,10 @@ sync: ## Refresh vendored skill packages from their pinned upstream refs.
 test: ## Prove the tooling's guards fire, on a throwaway copy.
 	@python3 tools/test_guards.gpt.py
 
-check: validate catalogue-check test ## Everything CI runs.
+product-contract: ## Verify the what-next skills-only integration contract.
+	@python3 -m unittest discover -s tests
+
+check: validate catalogue-check test product-contract ## Everything CI runs.
 
 release-gate: ## Verify every entry against its public remote. Needs network.
 	@python3 tools/release_gate.gpt.py
@@ -31,4 +34,4 @@ asset-check: ## Rebuild the social preview and fail on byte drift.
 	@python3 assets/check_rebuild.gpt.py
 
 .PHONY: help validate catalogue catalogue-check sync test check \
-        release-gate install-smoke asset-check
+        release-gate install-smoke asset-check product-contract

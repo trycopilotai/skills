@@ -5,6 +5,18 @@
   },
   "plugins": [
     {
+      "name": "what-next",
+      "source": {
+        "source": "local",
+        "path": "./plugins/what-next"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
       "name": "agent-usage",
       "source": {
         "source": "local",

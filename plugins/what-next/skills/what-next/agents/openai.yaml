@@ -1,0 +1,4 @@
+interface:
+  display_name: "What Next"
+  short_description: "Split open work into agent and human lanes"
+  default_prompt: "Use $what-next to split this thread's open work into agent and human lanes."

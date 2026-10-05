@@ -1,0 +1,33 @@
+{
+  "name": "what-next",
+  "version": "1.0.0",
+  "description": "Split open work into agent and human lanes with consistent action IDs, concrete tool calls, and evidence for each human gap.",
+  "author": {
+    "name": "trycopilot.ai"
+  },
+  "homepage": "https://github.com/trycopilotai/what-next#readme",
+  "repository": "https://github.com/trycopilotai/what-next",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "handoff",
+    "triage"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "What Next",
+    "shortDescription": "Split open work into agent and human lanes",
+    "longDescription": "Check open work against bounded discovery and six capability gaps, then return agent and human tables with A1/H1 identifiers and up to four next choices.",
+    "developerName": "trycopilot.ai",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive"
+    ],
+    "websiteURL": "https://github.com/trycopilotai/what-next",
+    "defaultPrompt": [
+      "Use $what-next to split this thread's open work into agent and human lanes."
+    ]
+  }
+}
