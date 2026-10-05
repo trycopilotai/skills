@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "trycopilotai",
   "description": "Agent skills maintained by trycopilot.ai.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "owner": {
     "name": "Pramod Kotipalli",
     "url": "https://github.com/trycopilotai"
@@ -90,7 +90,7 @@
       "displayName": "agent-usage",
       "source": "./plugins/agent-usage",
       "description": "Read how much of each AI provider's usage limit is left, when it resets, and which provider still has headroom. Answers from measured readings and declines when it cannot: a provider that did not respond is reported as not responding, never as zero usage, and a forecast with too little history returns a reason instead of a number.",
-      "version": "0.1.0",
+      "version": "0.2.1",
       "author": {
         "name": "Pramod Kotipalli"
       },

@@ -428,6 +428,13 @@ def main() -> int:
                     f"marketplace entry",
                 )
                 claude_manifest = manifest
+                check(
+                    str(entry.get("version", "")).strip()
+                    == str(manifest.get("version", "")).strip(),
+                    f"plugin {pname!r}: marketplace version "
+                    f"{entry.get('version')!r} disagrees with plugin.json "
+                    f"version {manifest.get('version')!r}",
+                )
             elif manifest is not None:
                 check(False, f"plugin {pname!r}: plugin.json is not an object")
 

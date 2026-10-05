@@ -1,5 +1,9 @@
 """Check actual cross-client package closure, without network or models."""
 import json
+import shutil
+import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -7,6 +11,24 @@ ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins/what-next"
 
 class TestWhatNextPackage(unittest.TestCase):
+    def test_all_catalogue_versions_match_their_manifests(self):
+        entries = json.loads((ROOT / ".claude-plugin/marketplace.json").read_text())["plugins"]
+        for entry in entries:
+            manifest = json.loads((ROOT / entry["source"] / ".claude-plugin/plugin.json").read_text())
+            self.assertEqual(entry["version"], manifest["version"], entry["name"])
+
+    def test_validator_rejects_catalogue_version_drift(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            clone = Path(tmp) / "repository"
+            shutil.copytree(ROOT, clone, ignore=shutil.ignore_patterns(".git", "__pycache__"))
+            path = clone / ".claude-plugin/marketplace.json"
+            catalogue = json.loads(path.read_text())
+            next(p for p in catalogue["plugins"] if p["name"] == "agent-usage")["version"] = "0.1.0"
+            path.write_text(json.dumps(catalogue))
+            result = subprocess.run([sys.executable, "tools/validate.gpt.py"], cwd=clone, capture_output=True, text=True)
+            self.assertNotEqual(0, result.returncode)
+            self.assertIn("marketplace version '0.1.0' disagrees with plugin.json version '0.2.1'", result.stdout)
+
     def test_common_metadata_and_native_paths_agree(self):
         portable = json.loads((PLUGIN / "plugin.json").read_text())
         for host in ("claude", "codex"):

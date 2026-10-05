@@ -23,7 +23,9 @@
     "developerName": "trycopilot.ai",
     "category": "Developer Tools",
     "capabilities": [
-      "Interactive"
+      "Interactive",
+      "Network",
+      "Execute"
     ],
     "websiteURL": "https://github.com/trycopilotai/what-next",
     "defaultPrompt": [

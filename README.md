@@ -13,9 +13,9 @@ In Claude Code:
 In Codex:
 
 ```sh
-npx -y @openai/codex@0.146.0 plugin marketplace add \
+npx --yes --package @openai/codex@0.146.0 -- codex plugin marketplace add \
   trycopilotai/skills --ref v0.5.1
-npx -y @openai/codex@0.146.0 plugin add \
+npx --yes --package @openai/codex@0.146.0 -- codex plugin add \
   lint@trycopilotai
 ```
 
@@ -70,6 +70,8 @@ commit and digest are in `meta/what-next.skill.yml`.
 No new marketplace release tag is created by this staging
 registration. Existing signed tags and their trust root are
 unchanged.
+The current catalogue metadata is `0.5.2` (unreleased), not
+the signed `v0.5.1` catalogue's version label.
 
 Not every skill ships for both clients. Each one lists the
 clients it was actually installed and invoked under, in the

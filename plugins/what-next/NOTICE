@@ -1,7 +1,7 @@
 plugins/what-next/skills/what-next/ is a vendored copy,
 not the source.
 
-The canonical skill and Codex interface are copied verbatim
+The canonical skill and agents/openai.yaml are copied verbatim
 from trycopilotai/what-next at v1.0.0, commit
 34fe5a0847866d7f4764c4e909a4876276d0ece2.
 meta/what-next.skill.yml records the sorted package digest.
@@ -13,3 +13,8 @@ example and standalone release require that access. This
 entry is pending public upstream publication, not a passed
 public release gate. No private source examples or external
 audit records are included.
+
+The marketplace Codex manifest adds Network and Execute UI
+labels alongside Interactive to surface discovery side
+effects. These descriptive labels grant no tool permission
+and do not change the canonical skill instructions.
