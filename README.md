@@ -44,7 +44,7 @@ marketplace snapshot in an empty working directory:
 ```sh
 git clone https://github.com/trycopilotai/skills what-next-marketplace
 git -C what-next-marketplace checkout --detach \
-  dba6056bece224a0f10e04bbbedf8df6a57e71a2
+  6b6eb5aa808e9a7cc0dddf9a4fc8e98928621c33
 ```
 
 In Claude Code 2.1.289, from that working directory:
