@@ -1,0 +1,32 @@
+name: swe-it
+order: 11
+displayName: swe-it
+status: published
+category: workflow
+license: MIT
+use: >-
+  Turn an approved implementation plan into a JSON execution
+  contract and a dispatch prompt for a swe-day, multi-swe-day
+  or m2 run, with a needs_human stop and a clean-HEAD
+  verifier.
+triggers:
+  - swe it
+  - execute the approved plan
+  - execution contract
+aliases: []
+clients:
+  - claude-code
+  - codex
+example: https://github.com/trycopilotai/swe-it/blob/v0.1.7/evidence/transcripts/2026-10-05-claude-code-invocation.txt
+upstream: github.com/trycopilotai/swe-it
+upstream_ref: v0.1.7
+upstream_sha: 8fe25fbee544cf8b623e377cfe26944aa27f142f
+upstream_path: skills/swe-it
+vendored_path: plugins/swe-it/skills/swe-it
+vendored_sha256: d7bde8955fb52137d18043dc284be10c6a3ea3c43bc8e09204a4d78e4400350e
+tested_agents:
+  - Claude Code 2.1.220
+  - Codex CLI 0.146.0
+writes: true
+network: true
+executes: true

@@ -1,0 +1,9 @@
+plugins/multi-swe-day/skills/multi-swe-day/ is a vendored copy,
+not the source.
+
+skills/multi-swe-day/ is copied verbatim from trycopilotai/multi-swe-day
+at v0.1.8, commit 10dd291a9ecbe724997c1688cc2b40deb77e4d9c,
+as recorded in meta/multi-swe-day.skill.yml. The two plugin
+manifests are copied from the same tag. LICENSE beside this
+file is that repository's licence, carried along because MIT
+requires the notice to travel with a substantial copy.

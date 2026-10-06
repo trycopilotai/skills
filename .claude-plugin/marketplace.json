@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "trycopilotai",
   "description": "Agent skills maintained by trycopilot.ai.",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "owner": {
     "name": "Pramod Kotipalli",
     "url": "https://github.com/trycopilotai"
@@ -104,6 +104,126 @@
         "rate-limits",
         "ai-agents",
         "developer-tools"
+      ]
+    },
+    {
+      "name": "swe-day",
+      "displayName": "swe-day",
+      "source": "./plugins/swe-day",
+      "description": "Run one self-contained SWE day of work end to end, with a human gate at every judgment call and a hard rule that the agent never pushes to the shared repo.",
+      "version": "0.1.8",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/swe-day",
+      "repository": "https://github.com/trycopilotai/swe-day",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "workflow"
+      ]
+    },
+    {
+      "name": "gitchat",
+      "displayName": "gitchat",
+      "source": "./plugins/gitchat",
+      "description": "Exchange agent messages through Git branches on a shared remote: one side sends a prompt, the other polls for it and pushes back a response.",
+      "version": "0.1.5",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/gitchat",
+      "repository": "https://github.com/trycopilotai/gitchat",
+      "license": "MIT",
+      "category": "messaging",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "git"
+      ]
+    },
+    {
+      "name": "m2",
+      "displayName": "m2",
+      "source": "./plugins/m2",
+      "description": "Reference text for m2, a manager-of-managers protocol for coding agents. Four protocol documents and no runnable code.",
+      "version": "0.1.2",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/m2",
+      "repository": "https://github.com/trycopilotai/m2",
+      "license": "MIT",
+      "category": "reference",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "multi-agent"
+      ]
+    },
+    {
+      "name": "swe-it",
+      "displayName": "swe-it",
+      "source": "./plugins/swe-it",
+      "description": "Turn an approved implementation plan into a JSON execution contract and a dispatch prompt for a swe-day, multi-swe-day or m2 run, with a needs_human stop and a clean-HEAD verifier.",
+      "version": "0.1.7",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/swe-it",
+      "repository": "https://github.com/trycopilotai/swe-it",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "workflow"
+      ]
+    },
+    {
+      "name": "extended-adversarial-code-review",
+      "displayName": "extended-adversarial-code-review",
+      "source": "./plugins/extended-adversarial-code-review",
+      "description": "Decide whether a multi-round adversarial code review is worth running, shape each round so it terminates, and evaluate a checkable stopping rule from the per-round yield.",
+      "version": "0.1.9",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/extended-adversarial-code-review",
+      "repository": "https://github.com/trycopilotai/extended-adversarial-code-review",
+      "license": "MIT",
+      "category": "review",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "code-review",
+        "codex"
+      ]
+    },
+    {
+      "name": "multi-swe-day",
+      "displayName": "multi-swe-day",
+      "source": "./plugins/multi-swe-day",
+      "description": "Instructions and helper programs for splitting software work across a leader chat, builder chats and an auditor chat over gitchat. The lane registry refuses overlapping lanes.",
+      "version": "0.1.8",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/multi-swe-day",
+      "repository": "https://github.com/trycopilotai/multi-swe-day",
+      "license": "MIT",
+      "category": "multi-agent",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "multi-agent"
       ]
     }
   ]

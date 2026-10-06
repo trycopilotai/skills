@@ -1,0 +1,7 @@
+interface:
+  display_name: "m2"
+  short_description:
+    "Manager-of-managers protocol reference text"
+  default_prompt:
+    "Use $m2 to read the m2 manager-of-managers protocol
+    reference before planning a multi-lane run."

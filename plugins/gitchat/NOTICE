@@ -1,0 +1,9 @@
+plugins/gitchat/skills/gitchat/ is a vendored copy,
+not the source.
+
+skills/gitchat/ is copied verbatim from trycopilotai/gitchat
+at v0.1.5, commit 16c7b6a691edee4cd1fc0a000d6724ce6854a687,
+as recorded in meta/gitchat.skill.yml. The two plugin
+manifests are copied from the same tag. LICENSE beside this
+file is that repository's licence, carried along because MIT
+requires the notice to travel with a substantial copy.

@@ -161,6 +161,206 @@
       "writes": false,
       "network": true,
       "executes": true
+    },
+    {
+      "name": "extended-adversarial-code-review",
+      "order": 6,
+      "displayName": "extended-adversarial-code-review",
+      "status": "published",
+      "category": "review",
+      "license": "MIT",
+      "use": "Decide whether a multi-round adversarial code review is worth running, shape each round so it terminates, and evaluate a checkable stopping rule from the per-round yield.",
+      "triggers": [
+        "adversarial review",
+        "red-team review",
+        "find every bug",
+        "when to stop reviewing"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/extended-adversarial-code-review/blob/v0.1.9/evidence/transcripts/2026-10-05-claude-code-invocation.txt",
+      "upstream": "github.com/trycopilotai/extended-adversarial-code-review",
+      "upstream_ref": "v0.1.9",
+      "upstream_sha": "26babf317818f45c1dd4116cae20eaa2c84bc069",
+      "upstream_path": "skills/extended-adversarial-code-review",
+      "vendored_path": "plugins/extended-adversarial-code-review/skills/extended-adversarial-code-review",
+      "vendored_sha256": "a352fdba869fffd1d72d30f9a14cf1e1a1253e2ed0440572d52918f92c5163f4",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": true,
+      "network": false,
+      "executes": true
+    },
+    {
+      "name": "swe-day",
+      "order": 7,
+      "displayName": "swe-day",
+      "status": "published",
+      "category": "workflow",
+      "license": "MIT",
+      "use": "Run one self-contained SWE day of work end to end, with a human gate at every judgment call and a hard rule that the agent never pushes to the shared repo.",
+      "triggers": [
+        "swe day",
+        "run a swe day",
+        "work item end to end"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/swe-day/blob/v0.1.8/evidence/transcripts/2026-10-05-claude-code-invocation.txt",
+      "upstream": "github.com/trycopilotai/swe-day",
+      "upstream_ref": "v0.1.8",
+      "upstream_sha": "357aa21747ca8419f0ba0211c75060ae87b2e024",
+      "upstream_path": "skills/swe-day",
+      "vendored_path": "plugins/swe-day/skills/swe-day",
+      "vendored_sha256": "dde41cf7cd98399a9d9d42572e9671781da18ca0a4f1c623967154e1f28396cb",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": true,
+      "network": true,
+      "executes": true
+    },
+    {
+      "name": "gitchat",
+      "order": 8,
+      "displayName": "gitchat",
+      "status": "published",
+      "category": "messaging",
+      "license": "MIT",
+      "use": "Exchange agent messages through Git branches on a shared remote: one side sends a prompt, the other polls for it and pushes back a response.",
+      "triggers": [
+        "gitchat",
+        "send a prompt to another machine",
+        "poll for a reply"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/gitchat/blob/v0.1.5/evidence/transcripts/2026-10-05-claude-code-invocation.txt",
+      "upstream": "github.com/trycopilotai/gitchat",
+      "upstream_ref": "v0.1.5",
+      "upstream_sha": "16c7b6a691edee4cd1fc0a000d6724ce6854a687",
+      "upstream_path": "skills/gitchat",
+      "vendored_path": "plugins/gitchat/skills/gitchat",
+      "vendored_sha256": "18862f126e80b838d67f0603ab68063ca3c06da492d9eee556ad34c5db86bc2d",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": true,
+      "network": true,
+      "executes": true
+    },
+    {
+      "name": "multi-swe-day",
+      "order": 9,
+      "displayName": "multi-swe-day",
+      "status": "published",
+      "category": "multi-agent",
+      "license": "MIT",
+      "use": "Instructions and helper programs for splitting software work across a leader chat, builder chats and an auditor chat over gitchat. The lane registry refuses overlapping lanes.",
+      "triggers": [
+        "multi swe day",
+        "delegation network",
+        "builder lanes"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/multi-swe-day/blob/v0.1.8/evidence/transcripts/2026-10-05-claude-code-invocation.txt",
+      "upstream": "github.com/trycopilotai/multi-swe-day",
+      "upstream_ref": "v0.1.8",
+      "upstream_sha": "10dd291a9ecbe724997c1688cc2b40deb77e4d9c",
+      "upstream_path": "skills/multi-swe-day",
+      "vendored_path": "plugins/multi-swe-day/skills/multi-swe-day",
+      "vendored_sha256": "18e6e27ae31e35dab1696aa38fc51b2999269c04ee41e96a175d611485c7aec3",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": true,
+      "network": true,
+      "executes": true
+    },
+    {
+      "name": "m2",
+      "order": 10,
+      "displayName": "m2",
+      "status": "published",
+      "category": "reference",
+      "license": "MIT",
+      "use": "Reference text for m2, a manager-of-managers protocol for coding agents. Four protocol documents and no runnable code.",
+      "triggers": [
+        "m2 protocol",
+        "manager of managers",
+        "m1 protocol",
+        "writeAC"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/m2/blob/v0.1.2/evidence/transcripts/2026-10-06-claude-code-invocation.txt",
+      "upstream": "github.com/trycopilotai/m2",
+      "upstream_ref": "v0.1.2",
+      "upstream_sha": "1bc2babcf592c3e3dd0d3b6834b5b067cf440777",
+      "upstream_path": "skills/m2",
+      "vendored_path": "plugins/m2/skills/m2",
+      "vendored_sha256": "30e086b3b10ffbf1d9c4f2f47636df06221928f1464de5c3c9c437aa3865e24d",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": false,
+      "network": false,
+      "executes": false
+    },
+    {
+      "name": "swe-it",
+      "order": 11,
+      "displayName": "swe-it",
+      "status": "published",
+      "category": "workflow",
+      "license": "MIT",
+      "use": "Turn an approved implementation plan into a JSON execution contract and a dispatch prompt for a swe-day, multi-swe-day or m2 run, with a needs_human stop and a clean-HEAD verifier.",
+      "triggers": [
+        "swe it",
+        "execute the approved plan",
+        "execution contract"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/swe-it/blob/v0.1.7/evidence/transcripts/2026-10-05-claude-code-invocation.txt",
+      "upstream": "github.com/trycopilotai/swe-it",
+      "upstream_ref": "v0.1.7",
+      "upstream_sha": "8fe25fbee544cf8b623e377cfe26944aa27f142f",
+      "upstream_path": "skills/swe-it",
+      "vendored_path": "plugins/swe-it/skills/swe-it",
+      "vendored_sha256": "d7bde8955fb52137d18043dc284be10c6a3ea3c43bc8e09204a4d78e4400350e",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": true,
+      "network": true,
+      "executes": true
     }
   ]
 }

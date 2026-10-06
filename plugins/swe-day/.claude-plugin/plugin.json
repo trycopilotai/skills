@@ -1,0 +1,18 @@
+{
+  "name": "swe-day",
+  "version": "0.1.8",
+  "description": "Run one self-contained SWE day of work end to end, with a human gate at every judgment call and a hard rule that the agent never pushes to the shared repo.",
+  "author": {
+    "name": "trycopilot.ai"
+  },
+  "homepage": "https://github.com/trycopilotai/swe-day#readme",
+  "repository": "https://github.com/trycopilotai/swe-day",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "workflow"
+  ],
+  "skills": "./skills/"
+}

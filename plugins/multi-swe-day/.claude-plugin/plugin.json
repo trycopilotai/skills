@@ -1,0 +1,18 @@
+{
+  "name": "multi-swe-day",
+  "version": "0.1.8",
+  "description": "Instructions and helper programs for splitting software work across a leader chat, builder chats and an auditor chat over gitchat. The lane registry refuses overlapping lanes.",
+  "author": {
+    "name": "trycopilot.ai"
+  },
+  "homepage": "https://github.com/trycopilotai/multi-swe-day#readme",
+  "repository": "https://github.com/trycopilotai/multi-swe-day",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "multi-agent"
+  ],
+  "skills": "./skills/"
+}

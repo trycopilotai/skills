@@ -1,0 +1,32 @@
+{
+  "name": "m2",
+  "version": "0.1.2",
+  "description": "Reference text for m2, a manager-of-managers protocol for coding agents. Four protocol documents and no runnable code.",
+  "author": {
+    "name": "trycopilot.ai"
+  },
+  "homepage": "https://github.com/trycopilotai/m2#readme",
+  "repository": "https://github.com/trycopilotai/m2",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "multi-agent"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "m2",
+    "shortDescription": "Manager-of-managers protocol reference text",
+    "longDescription": "Reference text for m2, a manager-of-managers protocol for coding agents. Four protocol documents and no runnable code.",
+    "developerName": "trycopilot.ai",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read"
+    ],
+    "websiteURL": "https://github.com/trycopilotai/m2",
+    "defaultPrompt": [
+      "Use $m2 to read the m2 manager-of-managers protocol reference before planning a multi-lane run."
+    ]
+  }
+}

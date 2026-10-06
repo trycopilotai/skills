@@ -1,0 +1,32 @@
+name: extended-adversarial-code-review
+order: 6
+displayName: extended-adversarial-code-review
+status: published
+category: review
+license: MIT
+use: >-
+  Decide whether a multi-round adversarial code review is
+  worth running, shape each round so it terminates, and
+  evaluate a checkable stopping rule from the per-round yield.
+triggers:
+  - adversarial review
+  - red-team review
+  - find every bug
+  - when to stop reviewing
+aliases: []
+clients:
+  - claude-code
+  - codex
+example: https://github.com/trycopilotai/extended-adversarial-code-review/blob/v0.1.9/evidence/transcripts/2026-10-05-claude-code-invocation.txt
+upstream: github.com/trycopilotai/extended-adversarial-code-review
+upstream_ref: v0.1.9
+upstream_sha: 26babf317818f45c1dd4116cae20eaa2c84bc069
+upstream_path: skills/extended-adversarial-code-review
+vendored_path: plugins/extended-adversarial-code-review/skills/extended-adversarial-code-review
+vendored_sha256: a352fdba869fffd1d72d30f9a14cf1e1a1253e2ed0440572d52918f92c5163f4
+tested_agents:
+  - Claude Code 2.1.220
+  - Codex CLI 0.146.0
+writes: true
+network: false
+executes: true

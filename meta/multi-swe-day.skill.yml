@@ -1,0 +1,31 @@
+name: multi-swe-day
+order: 9
+displayName: multi-swe-day
+status: published
+category: multi-agent
+license: MIT
+use: >-
+  Instructions and helper programs for splitting software work
+  across a leader chat, builder chats and an auditor chat over
+  gitchat. The lane registry refuses overlapping lanes.
+triggers:
+  - multi swe day
+  - delegation network
+  - builder lanes
+aliases: []
+clients:
+  - claude-code
+  - codex
+example: https://github.com/trycopilotai/multi-swe-day/blob/v0.1.8/evidence/transcripts/2026-10-05-claude-code-invocation.txt
+upstream: github.com/trycopilotai/multi-swe-day
+upstream_ref: v0.1.8
+upstream_sha: 10dd291a9ecbe724997c1688cc2b40deb77e4d9c
+upstream_path: skills/multi-swe-day
+vendored_path: plugins/multi-swe-day/skills/multi-swe-day
+vendored_sha256: 18e6e27ae31e35dab1696aa38fc51b2999269c04ee41e96a175d611485c7aec3
+tested_agents:
+  - Claude Code 2.1.220
+  - Codex CLI 0.146.0
+writes: true
+network: true
+executes: true
