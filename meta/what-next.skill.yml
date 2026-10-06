@@ -1,7 +1,7 @@
 name: what-next
 order: 5
 displayName: What Next
-status: pending-publication
+status: published
 category: triage
 license: MIT
 use: >-

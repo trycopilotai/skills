@@ -23,19 +23,20 @@ The marketplace name is `trycopilotai`, so skills are
 installed as `<skill>@trycopilotai`. Update the catalogue
 later with `/plugin marketplace update`.
 
-## what-next v1.0.0 staging snapshot
+## what-next v1.0.0 installation snapshot
 
 The signed `v0.5.1` marketplace snapshot above includes
 neither `agent-usage` nor `what-next`. The table below
 describes the current catalogue, not that older tag. The
-immutable staging snapshot documented here includes both.
+immutable installation snapshot documented here includes both.
 The new `what-next` entry is pinned to standalone v1.0.0,
 commit `34fe5a0847866d7f4764c4e909a4876276d0ece2`.
-The upstream remains private, so the entry is
-`pending-publication`: its example and standalone release
-require access. The vendored plugin does not require that
-access. `make release-gate` intentionally holds this entry;
-that is not a failed package check or public authorization.
+The upstream and its v1.0.0 release are public. This entry
+is `published`; `make release-gate` verifies its exact tag,
+commit and package bytes against the real upstream. The
+original tag retains its private-staging documentation;
+the upstream's current README and SECURITY policy describe
+public use and private vulnerability reporting.
 
 For a repeatable plugin install, clone this immutable
 marketplace snapshot in an empty working directory:
@@ -70,7 +71,7 @@ Both plugins load one regular package at
 `plugins/what-next/skills/what-next`; its version, upstream
 commit and digest are in `meta/what-next.skill.yml`.
 
-No new marketplace release tag is created by this staging
+No new marketplace release tag is created by this public
 registration. Existing signed tags and their trust root are
 unchanged.
 The current catalogue metadata is `0.5.2` (unreleased), not
@@ -121,7 +122,7 @@ version.
 | [`htmlify`](https://github.com/trycopilotai/htmlify)         | Claude Code, Codex | Turn dense Markdown into source-checked HTML timelines, decision surfaces, system explainers, visual progressions, evidence reviews, or deterministic formal HTML with optional PDF export.                                                                                                                                                  |
 | [`lint`](https://github.com/trycopilotai/lint)               | Claude Code, Codex | Check or apply canonical formatting across mixed-language repositories with a read-only default.                                                                                                                                                                                                                                             |
 | [`agent-usage`](https://github.com/trycopilotai/agent-usage) | Claude Code, Codex | Read how much of each AI provider's usage limit is left, when it resets, and which provider still has headroom. Answers from measured readings and declines when it cannot: a provider that did not respond is reported as not responding, never as zero usage, and a forecast with too little history returns a reason instead of a number. |
-| `what-next`                                                  | Claude Code, Codex | Split open work into agent and human lanes with consistent action IDs, concrete tool calls, and evidence for each human gap.                                                                                                                                                                                                                 |
+| [`what-next`](https://github.com/trycopilotai/what-next)     | Claude Code, Codex | Split open work into agent and human lanes with consistent action IDs, concrete tool calls, and evidence for each human gap.                                                                                                                                                                                                                 |
 
 <!-- End generated table. -->
 
