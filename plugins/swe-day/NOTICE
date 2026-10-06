@@ -1,0 +1,9 @@
+plugins/swe-day/skills/swe-day/ is a vendored copy,
+not the source.
+
+skills/swe-day/ is copied verbatim from trycopilotai/swe-day
+at v0.1.8, commit 357aa21747ca8419f0ba0211c75060ae87b2e024,
+as recorded in meta/swe-day.skill.yml. The two plugin
+manifests are copied from the same tag. LICENSE beside this
+file is that repository's licence, carried along because MIT
+requires the notice to travel with a substantial copy.

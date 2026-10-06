@@ -1,0 +1,13 @@
+{
+  "name": "extended-adversarial-code-review",
+  "version": "0.1.9",
+  "description": "Decide whether a multi-round adversarial code review is worth running, shape each round so it terminates, and evaluate a checkable stopping rule from the per-round yield.",
+  "author": {
+    "name": "trycopilot.ai"
+  },
+  "homepage": "https://github.com/trycopilotai/extended-adversarial-code-review#readme",
+  "repository": "https://github.com/trycopilotai/extended-adversarial-code-review",
+  "license": "MIT",
+  "keywords": ["agent-skills", "claude-code", "code-review", "codex"],
+  "skills": "./skills/"
+}

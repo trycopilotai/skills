@@ -1,0 +1,9 @@
+plugins/extended-adversarial-code-review/skills/extended-adversarial-code-review/ is a vendored copy,
+not the source.
+
+skills/extended-adversarial-code-review/ is copied verbatim from trycopilotai/extended-adversarial-code-review
+at v0.1.9, commit 26babf317818f45c1dd4116cae20eaa2c84bc069,
+as recorded in meta/extended-adversarial-code-review.skill.yml. The two plugin
+manifests are copied from the same tag. LICENSE beside this
+file is that repository's licence, carried along because MIT
+requires the notice to travel with a substantial copy.

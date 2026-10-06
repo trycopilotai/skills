@@ -1,0 +1,31 @@
+name: swe-day
+order: 7
+displayName: swe-day
+status: published
+category: workflow
+license: MIT
+use: >-
+  Run one self-contained SWE day of work end to end, with a
+  human gate at every judgment call and a hard rule that the
+  agent never pushes to the shared repo.
+triggers:
+  - swe day
+  - run a swe day
+  - work item end to end
+aliases: []
+clients:
+  - claude-code
+  - codex
+example: https://github.com/trycopilotai/swe-day/blob/v0.1.8/evidence/transcripts/2026-10-05-claude-code-invocation.txt
+upstream: github.com/trycopilotai/swe-day
+upstream_ref: v0.1.8
+upstream_sha: 357aa21747ca8419f0ba0211c75060ae87b2e024
+upstream_path: skills/swe-day
+vendored_path: plugins/swe-day/skills/swe-day
+vendored_sha256: dde41cf7cd98399a9d9d42572e9671781da18ca0a4f1c623967154e1f28396cb
+tested_agents:
+  - Claude Code 2.1.220
+  - Codex CLI 0.146.0
+writes: true
+network: true
+executes: true

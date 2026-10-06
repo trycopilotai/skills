@@ -1,0 +1,7 @@
+interface:
+  display_name: "Extended Adversarial Code Review"
+  short_description:
+    "Adversarial review rounds with a stopping rule"
+  default_prompt:
+    "Use $extended-adversarial-code-review to decide whether
+    this review loop should run another round."

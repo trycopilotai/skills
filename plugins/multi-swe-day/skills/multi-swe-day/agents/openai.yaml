@@ -1,0 +1,7 @@
+interface:
+  display_name: "Multi SWE Day"
+  short_description:
+    "A leader, builders and an auditor over gitchat"
+  default_prompt:
+    "Use $multi-swe-day to bring up this chat as the leader, a
+    builder or the auditor."

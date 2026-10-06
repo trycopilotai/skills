@@ -1,0 +1,9 @@
+plugins/swe-it/skills/swe-it/ is a vendored copy,
+not the source.
+
+skills/swe-it/ is copied verbatim from trycopilotai/swe-it
+at v0.1.7, commit 8fe25fbee544cf8b623e377cfe26944aa27f142f,
+as recorded in meta/swe-it.skill.yml. The two plugin
+manifests are copied from the same tag. LICENSE beside this
+file is that repository's licence, carried along because MIT
+requires the notice to travel with a substantial copy.

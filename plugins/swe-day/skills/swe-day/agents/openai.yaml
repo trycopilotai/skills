@@ -1,0 +1,7 @@
+interface:
+  display_name: "SWE Day"
+  short_description:
+    "One human-gated unit of software work"
+  default_prompt:
+    "Use $swe-day to run this work item as one human-gated SWE
+    day."

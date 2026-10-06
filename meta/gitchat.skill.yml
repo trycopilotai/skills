@@ -1,0 +1,31 @@
+name: gitchat
+order: 8
+displayName: gitchat
+status: published
+category: messaging
+license: MIT
+use: >-
+  Exchange agent messages through Git branches on a shared
+  remote: one side sends a prompt, the other polls for it and
+  pushes back a response.
+triggers:
+  - gitchat
+  - send a prompt to another machine
+  - poll for a reply
+aliases: []
+clients:
+  - claude-code
+  - codex
+example: https://github.com/trycopilotai/gitchat/blob/v0.1.5/evidence/transcripts/2026-10-05-claude-code-invocation.txt
+upstream: github.com/trycopilotai/gitchat
+upstream_ref: v0.1.5
+upstream_sha: 16c7b6a691edee4cd1fc0a000d6724ce6854a687
+upstream_path: skills/gitchat
+vendored_path: plugins/gitchat/skills/gitchat
+vendored_sha256: 18862f126e80b838d67f0603ab68063ca3c06da492d9eee556ad34c5db86bc2d
+tested_agents:
+  - Claude Code 2.1.220
+  - Codex CLI 0.146.0
+writes: true
+network: true
+executes: true
