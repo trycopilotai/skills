@@ -65,11 +65,18 @@ git -c gpg.format=ssh \
   verify-tag v0.6.0
 ```
 
-The trusted ED25519 fingerprint is
-`SHA256:DfKMRhe4zXosajTxEcDqVDi7dnQ/pwtvj/lLBDn7a9k`. The
-`lint` home repository publishes the same key for its own
-releases, so the file here is byte identical to the one
-there.
+The file trusts two ED25519 keys under one principal,
+`trycopilotai-release`:
+
+- `SHA256:DfKMRhe4zXosajTxEcDqVDi7dnQ/pwtvj/lLBDn7a9k`
+  signed `v0.5.0` and `v0.5.1`. The `lint` home repository
+  publishes this key for its own releases.
+- `SHA256:XET2ACYTh+jpgo2bM2djvgrlPBsadpsKFWHUFzXWTRs`
+  signs from `v0.6.0` on. It was added because the first
+  key was not on the machine that cut that release.
+
+Because of the second line, this file is no longer byte
+identical to the one in `lint`.
 
 That command proves the tag matches the key in the
 checked-out file, and nothing further. The key, the
