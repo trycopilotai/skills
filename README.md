@@ -6,7 +6,7 @@ one command installs any skill in it.
 In Claude Code:
 
 ```sh
-/plugin marketplace add trycopilotai/skills@v0.6.0
+/plugin marketplace add trycopilotai/skills@v0.6.1
 /plugin install lint@trycopilotai
 ```
 
@@ -14,7 +14,7 @@ In Codex:
 
 ```sh
 npx --yes --package @openai/codex@0.146.0 -- codex plugin marketplace add \
-  trycopilotai/skills --ref v0.6.0
+  trycopilotai/skills --ref v0.6.1
 npx --yes --package @openai/codex@0.146.0 -- codex plugin add \
   lint@trycopilotai
 ```
@@ -33,9 +33,11 @@ and `$<skill>:<skill>` in Codex, for example
 Three entries are listed with limits their home
 repositories state:
 
-- `swe-day` sequences nine companion skills that this
-  catalogue does not ship. Until each resolves, a run stops
-  at its step 0 preflight and names what is missing.
+- `swe-day` sequences nine companion skills. One of them,
+  its step 8 fix loop, is `replx` from this catalogue; the
+  other eight are not shipped here. Until each resolves, a
+  run stops at its step 0 preflight and names what is
+  missing.
 - `multi-swe-day` needs `swe-day`, `gitchat` and the same
   companions. Its recorded Claude Code runs searched outside
   the operational repository for a missing dependency; its
@@ -62,7 +64,7 @@ can check a tag against it:
 ```sh
 git -c gpg.format=ssh \
   -c gpg.ssh.allowedSignersFile=.github/release-allowed-signers \
-  verify-tag v0.6.0
+  verify-tag v0.6.1
 ```
 
 The file trusts two ED25519 keys under one principal,
