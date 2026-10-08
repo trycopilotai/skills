@@ -32,10 +32,10 @@ no lock; every run that goes past step 0 holds the lock.
   | `improve-coverage` | step 10 | coverage improver |
   | `plan-commits` | steps 10, 13, 16 | commit planner, called as `planCommits()` |
   | `mutation-testing` | step 11 | mutation-testing audit |
-  | `result-visualizer` | step 12 | result visualizer |
+  | `htmlify` | step 12 | result visualizer |
   | `review-watch` | step 12 | review watcher |
   | `address-comments` | steps 10, 12, 13 | operator-comment ingest |
-  | `code-review` | steps 10, 13 | multi-persona code review |
+  | `multi-persona-code-review` | steps 10, 13 | multi-persona code review |
   | `handoff` | step 16 | handoff recorder |
 
 - If any of them is missing, this is a hard stop: acquire
@@ -177,7 +177,7 @@ behavior:
   rock-solid, measure honestly (mind the path-based false zero
   above), fan out one agent per uncovered file to workshop
   tests toward 100%, then review the new tests with fresh
-  code-review and address-comments agents. Stay tests-only —
+  multi-persona-code-review and address-comments agents. Stay tests-only —
   never modify production behavior solely for coverage or
   weaken meaningful branches — and keep scope inside the
   day's plan, not a broad expansion. Honestly report any
@@ -211,8 +211,9 @@ silently.
 Render a scripted, repeatable local web UI of the day's
 results - tests, absolute coverage, incremental coverage
 proof, uncovered changed-code gaps, mutation score, and an
-explicit list of anything `NOT-RUN` - using the result
-visualizer. If the repo binds a temporary artifact policy,
+explicit list of anything `NOT-RUN` - by writing them as a
+Markdown summary and rendering it with `htmlify` as an
+evidence review. If the repo binds a temporary artifact policy,
 keep the UI out of the shared implementation repo and record
 the URL or path in the private operational record. Open an
 editor in `impl_worktree`.
@@ -261,7 +262,7 @@ _(gate: human reviews the code and visible result.)_
 On the operator's request, ingest operator-directed comments
 with the `address-comments` skill (operator-attribution and
 `agent`-directed labels for every comment leader). Then run
-the multi-persona code review over `impl_worktree`, passing
+`multi-persona-code-review` over `impl_worktree`, passing
 explicit absolute doc paths so the opt-in personas activate:
 `plan_doc` (plan persona), `cuj_doc` (journey persona), and
 `compliance_doc` (legal/compliance persona). Write the

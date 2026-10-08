@@ -1,0 +1,34 @@
+name: multi-persona-code-review
+order: 16
+displayName: multi-persona-code-review
+status: published
+category: review
+license: MIT
+use: >-
+  A multi-persona code review skill for Claude Code and Codex.
+  It tells the agent to run each external CLI persona lane
+  through a bundled runner with hard and idle timeouts, to
+  take subagent lanes from the host's own result mechanism,
+  and to write verified findings back as
+  TODO(code-review:<id>) comments.
+triggers:
+  - multi-persona code review
+  - code review personas
+  - review this diff
+aliases: []
+clients:
+  - claude-code
+  - codex
+example: https://github.com/trycopilotai/multi-persona-code-review/blob/v0.1.2/evidence/transcripts/2026-10-08-claude-code-invocation.txt
+upstream: github.com/trycopilotai/multi-persona-code-review
+upstream_ref: v0.1.2
+upstream_sha: 4a1a68b29cb1b1588b39404b0e73af2e495cb26c
+upstream_path: skills/multi-persona-code-review
+vendored_path: plugins/multi-persona-code-review/skills/multi-persona-code-review
+vendored_sha256: 0cf9188cd28b277deeff40fcd24d546bc3205e3b85e05ce527cca61a17027c5e
+tested_agents:
+  - Claude Code 2.1.220
+  - Codex CLI 0.146.0
+writes: true
+network: true
+executes: true

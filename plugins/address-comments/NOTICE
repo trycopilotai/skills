@@ -1,0 +1,9 @@
+plugins/address-comments/skills/address-comments/ is a vendored copy,
+not the source.
+
+skills/address-comments/ is copied verbatim from trycopilotai/address-comments
+at v0.1.2, commit 08e46bf9a232d10a480440ef623544d1a35b3f7f,
+as recorded in meta/address-comments.skill.yml. The two plugin
+manifests are copied from the same tag. LICENSE beside this
+file is that repository's licence, carried along because MIT
+requires the notice to travel with a substantial copy.

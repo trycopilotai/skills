@@ -1,0 +1,9 @@
+plugins/improve-coverage/skills/improve-coverage/ is a vendored copy,
+not the source.
+
+skills/improve-coverage/ is copied verbatim from trycopilotai/improve-coverage
+at v0.1.2, commit b5395c22b949674b684f67d9893912c245167f7f,
+as recorded in meta/improve-coverage.skill.yml. The two plugin
+manifests are copied from the same tag. LICENSE beside this
+file is that repository's licence, carried along because MIT
+requires the notice to travel with a substantial copy.

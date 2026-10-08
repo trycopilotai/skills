@@ -1,0 +1,6 @@
+interface:
+  display_name: "improve-coverage"
+  short_description: "Raise test coverage on a chosen scope"
+  default_prompt:
+    "Use $improve-coverage to raise test coverage on a scope I
+    choose."

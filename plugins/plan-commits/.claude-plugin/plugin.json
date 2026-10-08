@@ -1,0 +1,18 @@
+{
+  "name": "plan-commits",
+  "version": "0.1.4",
+  "description": "A skill for planning granular git commits: mechanical or semantic groups, a summary per file, line counts taken from git diff --numstat or wc -l (with documented limits), and an approval section. It tells the agent not to stage or commit.",
+  "author": {
+    "name": "trycopilot.ai"
+  },
+  "homepage": "https://github.com/trycopilotai/plan-commits#readme",
+  "repository": "https://github.com/trycopilotai/plan-commits",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "git"
+  ],
+  "skills": "./skills/"
+}

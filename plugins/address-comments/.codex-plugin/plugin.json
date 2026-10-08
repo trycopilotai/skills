@@ -1,0 +1,34 @@
+{
+  "name": "address-comments",
+  "version": "0.1.2",
+  "description": "Instructions for a coding agent to find AGENT:, TODO(agent) and TODO(code-review:<id>) markers, address them, remove them and log the work. One spec file and no runnable code.",
+  "author": {
+    "name": "trycopilot.ai"
+  },
+  "homepage": "https://github.com/trycopilotai/address-comments#readme",
+  "repository": "https://github.com/trycopilotai/address-comments",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "review"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "address-comments",
+    "shortDescription": "Address agent-directed review markers in source",
+    "longDescription": "Instructions for a coding agent to find AGENT:, TODO(agent) and TODO(code-review:<id>) markers, address them, remove them and log the work. One spec file and no runnable code.",
+    "developerName": "trycopilot.ai",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Write",
+      "Execute"
+    ],
+    "websiteURL": "https://github.com/trycopilotai/address-comments",
+    "defaultPrompt": [
+      "Use $address-comments to find and address the AGENT: and TODO(code-review:<id>) markers in this repository."
+    ]
+  }
+}

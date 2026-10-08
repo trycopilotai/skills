@@ -1,0 +1,7 @@
+interface:
+  display_name: "plan-commits"
+  short_description:
+    "Git commit plans for approval"
+  default_prompt:
+    "Use $plan-commits to plan granular commits for the
+    uncommitted changes in this repository."

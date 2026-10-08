@@ -123,6 +123,78 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Developer Tools"
+    },
+    {
+      "name": "improve-coverage",
+      "source": {
+        "source": "local",
+        "path": "./plugins/improve-coverage"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "plan-commits",
+      "source": {
+        "source": "local",
+        "path": "./plugins/plan-commits"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "address-comments",
+      "source": {
+        "source": "local",
+        "path": "./plugins/address-comments"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "review-watch",
+      "source": {
+        "source": "local",
+        "path": "./plugins/review-watch"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "multi-persona-code-review",
+      "source": {
+        "source": "local",
+        "path": "./plugins/multi-persona-code-review"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "handoff",
+      "source": {
+        "source": "local",
+        "path": "./plugins/handoff"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
     }
   ]
 }

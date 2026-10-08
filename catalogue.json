@@ -214,13 +214,13 @@
         "claude-code",
         "codex"
       ],
-      "example": "https://github.com/trycopilotai/swe-day/blob/v0.1.9/evidence/transcripts/2026-10-07-claude-code-invocation.txt",
+      "example": "https://github.com/trycopilotai/swe-day/blob/v0.1.10/evidence/transcripts/2026-10-07-claude-code-invocation.txt",
       "upstream": "github.com/trycopilotai/swe-day",
-      "upstream_ref": "v0.1.9",
-      "upstream_sha": "b05cc6d5c2acc672336c1ee3a82b237fecf69ae6",
+      "upstream_ref": "v0.1.10",
+      "upstream_sha": "fb1c535a85c60f4ad9113a6aac8a6f92aa639fc6",
       "upstream_path": "skills/swe-day",
       "vendored_path": "plugins/swe-day/skills/swe-day",
-      "vendored_sha256": "bd13a0c598c51fbb91be85ca228e133d1fe8ad55256e16a8c8cae597573b20dc",
+      "vendored_sha256": "1371dd53c9aeed0d6b9ae5c680e5076944132cff34315b08d1cbf9a115022e24",
       "tested_agents": [
         "Claude Code 2.1.220",
         "Codex CLI 0.146.0"
@@ -360,6 +360,204 @@
       ],
       "writes": true,
       "network": true,
+      "executes": true
+    },
+    {
+      "name": "improve-coverage",
+      "order": 12,
+      "displayName": "improve-coverage",
+      "status": "published",
+      "category": "testing",
+      "license": "MIT",
+      "use": "An agent skill that raises test coverage on a scope you choose, with one agent per uncovered file, writing test code only unless you approve a source change. A calling skill can pass the scope instead of the interview.",
+      "triggers": [
+        "improve coverage",
+        "raise test coverage",
+        "cover the changed code"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/improve-coverage/blob/v0.1.2/evidence/transcripts/2026-10-08-claude-code-invocation.txt",
+      "upstream": "github.com/trycopilotai/improve-coverage",
+      "upstream_ref": "v0.1.2",
+      "upstream_sha": "b5395c22b949674b684f67d9893912c245167f7f",
+      "upstream_path": "skills/improve-coverage",
+      "vendored_path": "plugins/improve-coverage/skills/improve-coverage",
+      "vendored_sha256": "0237dd8d9c2de6ad26816817a8cb87abee4c3805d6953299e5b3f7503e9d08a3",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": true,
+      "network": false,
+      "executes": true
+    },
+    {
+      "name": "plan-commits",
+      "order": 13,
+      "displayName": "plan-commits",
+      "status": "published",
+      "category": "git",
+      "license": "MIT",
+      "use": "A skill for planning granular git commits: mechanical or semantic groups, a summary per file, line counts taken from git diff --numstat or wc -l (with documented limits), and an approval section. It tells the agent not to stage or commit.",
+      "triggers": [
+        "plan commits",
+        "commit plan",
+        "planCommits"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/plan-commits/blob/v0.1.4/evidence/transcripts/2026-10-08-claude-code-invocation.txt",
+      "upstream": "github.com/trycopilotai/plan-commits",
+      "upstream_ref": "v0.1.4",
+      "upstream_sha": "b31cb9689c7f45e5ec3c12971963dd26b65ac346",
+      "upstream_path": "skills/plan-commits",
+      "vendored_path": "plugins/plan-commits/skills/plan-commits",
+      "vendored_sha256": "919f68ab668ac9edbb593851e0904faae79ffb3b64f40e7c3c2a8607da7a18ae",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": true,
+      "network": false,
+      "executes": true
+    },
+    {
+      "name": "address-comments",
+      "order": 14,
+      "displayName": "address-comments",
+      "status": "published",
+      "category": "review",
+      "license": "MIT",
+      "use": "Instructions for a coding agent to find AGENT:, TODO(agent) and TODO(code-review:<id>) markers, address them, remove them and log the work. One spec file and no runnable code.",
+      "triggers": [
+        "address comments",
+        "resolve review markers",
+        "TODO(agent)"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/address-comments/blob/v0.1.2/evidence/transcripts/2026-10-08-claude-code-invocation.txt",
+      "upstream": "github.com/trycopilotai/address-comments",
+      "upstream_ref": "v0.1.2",
+      "upstream_sha": "08e46bf9a232d10a480440ef623544d1a35b3f7f",
+      "upstream_path": "skills/address-comments",
+      "vendored_path": "plugins/address-comments/skills/address-comments",
+      "vendored_sha256": "b72aa7397b23f208aa44235125f7b47d0561f63e05fde2a7b21764943cbfdf93",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": true,
+      "network": false,
+      "executes": true
+    },
+    {
+      "name": "review-watch",
+      "order": 15,
+      "displayName": "review-watch",
+      "status": "published",
+      "category": "review",
+      "license": "MIT",
+      "use": "Watch a worktree while a person reviews it, report the agent-directed review markers present at each scan, and hand each one to the separately installed address-comments skill, with a poller that uses ripgrep or grep and does not edit.",
+      "triggers": [
+        "review watch",
+        "watch for review markers",
+        "address markers live"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/review-watch/blob/v0.1.2/evidence/transcripts/2026-10-08-claude-code-invocation.txt",
+      "upstream": "github.com/trycopilotai/review-watch",
+      "upstream_ref": "v0.1.2",
+      "upstream_sha": "5fa36590bca51b1bf666bf05710e976eeebff5ed",
+      "upstream_path": "skills/review-watch",
+      "vendored_path": "plugins/review-watch/skills/review-watch",
+      "vendored_sha256": "e5988163a1bdb65a790e076db38b14e051079a3f0222dda7cd1bac5a427f3d8e",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": true,
+      "network": false,
+      "executes": true
+    },
+    {
+      "name": "multi-persona-code-review",
+      "order": 16,
+      "displayName": "multi-persona-code-review",
+      "status": "published",
+      "category": "review",
+      "license": "MIT",
+      "use": "A multi-persona code review skill for Claude Code and Codex. It tells the agent to run each external CLI persona lane through a bundled runner with hard and idle timeouts, to take subagent lanes from the host's own result mechanism, and to write verified findings back as TODO(code-review:<id>) comments.",
+      "triggers": [
+        "multi-persona code review",
+        "code review personas",
+        "review this diff"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/multi-persona-code-review/blob/v0.1.2/evidence/transcripts/2026-10-08-claude-code-invocation.txt",
+      "upstream": "github.com/trycopilotai/multi-persona-code-review",
+      "upstream_ref": "v0.1.2",
+      "upstream_sha": "4a1a68b29cb1b1588b39404b0e73af2e495cb26c",
+      "upstream_path": "skills/multi-persona-code-review",
+      "vendored_path": "plugins/multi-persona-code-review/skills/multi-persona-code-review",
+      "vendored_sha256": "0cf9188cd28b277deeff40fcd24d546bc3205e3b85e05ce527cca61a17027c5e",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": true,
+      "network": true,
+      "executes": true
+    },
+    {
+      "name": "handoff",
+      "order": 17,
+      "displayName": "handoff",
+      "status": "published",
+      "category": "workflow",
+      "license": "MIT",
+      "use": "Has an agent record a repository's state for the next agent: a HANDOFF.md snapshot, a log of state transitions, an optional agent registry, and a git state collector.",
+      "triggers": [
+        "handoff",
+        "write a handoff checkpoint",
+        "resume from handoff"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/handoff/blob/v0.1.2/evidence/transcripts/2026-10-08-claude-code-invocation.txt",
+      "upstream": "github.com/trycopilotai/handoff",
+      "upstream_ref": "v0.1.2",
+      "upstream_sha": "f3583865f66666b58b1eea59e4e8a00b1c49a4dd",
+      "upstream_path": "skills/handoff",
+      "vendored_path": "plugins/handoff/skills/handoff",
+      "vendored_sha256": "62ce1ed30fac5ee63a62175d0780f90b6da0a87d201bea85e9ae91686da6a7bd",
+      "tested_agents": [
+        "Claude Code 2.1.220",
+        "Codex CLI 0.146.0"
+      ],
+      "writes": true,
+      "network": false,
       "executes": true
     }
   ]

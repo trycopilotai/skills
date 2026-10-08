@@ -1,0 +1,31 @@
+name: address-comments
+order: 14
+displayName: address-comments
+status: published
+category: review
+license: MIT
+use: >-
+  Instructions for a coding agent to find AGENT:, TODO(agent)
+  and TODO(code-review:<id>) markers, address them, remove
+  them and log the work. One spec file and no runnable code.
+triggers:
+  - address comments
+  - resolve review markers
+  - TODO(agent)
+aliases: []
+clients:
+  - claude-code
+  - codex
+example: https://github.com/trycopilotai/address-comments/blob/v0.1.2/evidence/transcripts/2026-10-08-claude-code-invocation.txt
+upstream: github.com/trycopilotai/address-comments
+upstream_ref: v0.1.2
+upstream_sha: 08e46bf9a232d10a480440ef623544d1a35b3f7f
+upstream_path: skills/address-comments
+vendored_path: plugins/address-comments/skills/address-comments
+vendored_sha256: b72aa7397b23f208aa44235125f7b47d0561f63e05fde2a7b21764943cbfdf93
+tested_agents:
+  - Claude Code 2.1.220
+  - Codex CLI 0.146.0
+writes: true
+network: false
+executes: true

@@ -16,13 +16,13 @@ aliases: []
 clients:
   - claude-code
   - codex
-example: https://github.com/trycopilotai/swe-day/blob/v0.1.9/evidence/transcripts/2026-10-07-claude-code-invocation.txt
+example: https://github.com/trycopilotai/swe-day/blob/v0.1.10/evidence/transcripts/2026-10-07-claude-code-invocation.txt
 upstream: github.com/trycopilotai/swe-day
-upstream_ref: v0.1.9
-upstream_sha: b05cc6d5c2acc672336c1ee3a82b237fecf69ae6
+upstream_ref: v0.1.10
+upstream_sha: fb1c535a85c60f4ad9113a6aac8a6f92aa639fc6
 upstream_path: skills/swe-day
 vendored_path: plugins/swe-day/skills/swe-day
-vendored_sha256: bd13a0c598c51fbb91be85ca228e133d1fe8ad55256e16a8c8cae597573b20dc
+vendored_sha256: 1371dd53c9aeed0d6b9ae5c680e5076944132cff34315b08d1cbf9a115022e24
 tested_agents:
   - Claude Code 2.1.220
   - Codex CLI 0.146.0
