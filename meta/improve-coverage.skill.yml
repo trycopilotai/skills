@@ -17,10 +17,10 @@ aliases: []
 clients:
   - claude-code
   - codex
-example: https://github.com/trycopilotai/improve-coverage/blob/v0.1.2/evidence/transcripts/2026-10-08-claude-code-invocation.txt
+example: https://github.com/trycopilotai/improve-coverage/blob/v0.1.6/evidence/transcripts/2026-10-08-claude-code-invocation.txt
 upstream: github.com/trycopilotai/improve-coverage
-upstream_ref: v0.1.2
-upstream_sha: b5395c22b949674b684f67d9893912c245167f7f
+upstream_ref: v0.1.6
+upstream_sha: 856305111a30589e0a303bf72ba96bd7edffeb0e
 upstream_path: skills/improve-coverage
 vendored_path: plugins/improve-coverage/skills/improve-coverage
 vendored_sha256: 0237dd8d9c2de6ad26816817a8cb87abee4c3805d6953299e5b3f7503e9d08a3

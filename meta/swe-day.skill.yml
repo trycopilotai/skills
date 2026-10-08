@@ -16,10 +16,10 @@ aliases: []
 clients:
   - claude-code
   - codex
-example: https://github.com/trycopilotai/swe-day/blob/v0.1.10/evidence/transcripts/2026-10-07-claude-code-invocation.txt
+example: https://github.com/trycopilotai/swe-day/blob/v0.1.11/evidence/transcripts/2026-10-08-claude-code-invocation.txt
 upstream: github.com/trycopilotai/swe-day
-upstream_ref: v0.1.10
-upstream_sha: fb1c535a85c60f4ad9113a6aac8a6f92aa639fc6
+upstream_ref: v0.1.11
+upstream_sha: c3d641023283fd47a33ae759bbd0dc2b1acf0fbb
 upstream_path: skills/swe-day
 vendored_path: plugins/swe-day/skills/swe-day
 vendored_sha256: 1371dd53c9aeed0d6b9ae5c680e5076944132cff34315b08d1cbf9a115022e24

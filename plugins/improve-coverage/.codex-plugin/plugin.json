@@ -1,6 +1,6 @@
 {
   "name": "improve-coverage",
-  "version": "0.1.2",
+  "version": "0.1.6",
   "description": "An agent skill that raises test coverage on a scope you choose, with one agent per uncovered file, writing test code only unless you approve a source change. A calling skill can pass the scope instead of the interview.",
   "author": {
     "name": "trycopilot.ai"

@@ -2,7 +2,7 @@ plugins/handoff/skills/handoff/ is a vendored copy,
 not the source.
 
 skills/handoff/ is copied verbatim from trycopilotai/handoff
-at v0.1.2, commit f3583865f66666b58b1eea59e4e8a00b1c49a4dd,
+at v0.1.3, commit 2ccd9586040397d4ddd9a1eea0b9d5cf299bdd24,
 as recorded in meta/handoff.skill.yml. The two plugin
 manifests are copied from the same tag. LICENSE beside this
 file is that repository's licence, carried along because MIT

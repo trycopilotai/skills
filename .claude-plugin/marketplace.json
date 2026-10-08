@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "trycopilotai",
   "description": "Agent skills maintained by trycopilot.ai.",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "owner": {
     "name": "Pramod Kotipalli",
     "url": "https://github.com/trycopilotai"
@@ -111,7 +111,7 @@
       "displayName": "swe-day",
       "source": "./plugins/swe-day",
       "description": "Run one self-contained SWE day of work end to end, with a human gate at every judgment call and a hard rule that the agent never pushes to the shared repo.",
-      "version": "0.1.10",
+      "version": "0.1.11",
       "author": {
         "name": "trycopilot.ai"
       },
@@ -231,7 +231,7 @@
       "displayName": "improve-coverage",
       "source": "./plugins/improve-coverage",
       "description": "An agent skill that raises test coverage on a scope you choose, with one agent per uncovered file, writing test code only unless you approve a source change. A calling skill can pass the scope instead of the interview.",
-      "version": "0.1.2",
+      "version": "0.1.6",
       "author": {
         "name": "trycopilot.ai"
       },
@@ -311,7 +311,7 @@
       "displayName": "multi-persona-code-review",
       "source": "./plugins/multi-persona-code-review",
       "description": "A multi-persona code review skill for Claude Code and Codex. It tells the agent to run each external CLI persona lane through a bundled runner with hard and idle timeouts, to take subagent lanes from the host's own result mechanism, and to write verified findings back as TODO(code-review:<id>) comments.",
-      "version": "0.1.2",
+      "version": "0.1.5",
       "author": {
         "name": "trycopilot.ai"
       },
@@ -331,7 +331,7 @@
       "displayName": "handoff",
       "source": "./plugins/handoff",
       "description": "Has an agent record a repository's state for the next agent: a HANDOFF.md snapshot, a log of state transitions, an optional agent registry, and a git state collector.",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "author": {
         "name": "trycopilot.ai"
       },

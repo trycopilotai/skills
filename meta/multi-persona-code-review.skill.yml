@@ -19,13 +19,13 @@ aliases: []
 clients:
   - claude-code
   - codex
-example: https://github.com/trycopilotai/multi-persona-code-review/blob/v0.1.2/evidence/transcripts/2026-10-08-claude-code-invocation.txt
+example: https://github.com/trycopilotai/multi-persona-code-review/blob/v0.1.5/evidence/transcripts/2026-10-08-claude-code-invocation.txt
 upstream: github.com/trycopilotai/multi-persona-code-review
-upstream_ref: v0.1.2
-upstream_sha: 4a1a68b29cb1b1588b39404b0e73af2e495cb26c
+upstream_ref: v0.1.5
+upstream_sha: 15a99980846bc3f784d6dfe49d38f543ef999d2c
 upstream_path: skills/multi-persona-code-review
 vendored_path: plugins/multi-persona-code-review/skills/multi-persona-code-review
-vendored_sha256: 0cf9188cd28b277deeff40fcd24d546bc3205e3b85e05ce527cca61a17027c5e
+vendored_sha256: 1a34125d8ec359402d2071bf32eb7bbeaab130bd7920b84bb2f7a4696432e45b
 tested_agents:
   - Claude Code 2.1.220
   - Codex CLI 0.146.0

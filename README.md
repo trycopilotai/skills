@@ -6,7 +6,7 @@ one command installs any skill in it.
 In Claude Code:
 
 ```sh
-/plugin marketplace add trycopilotai/skills@v0.7.0
+/plugin marketplace add trycopilotai/skills@v0.7.1
 /plugin install lint@trycopilotai
 ```
 
@@ -14,7 +14,7 @@ In Codex:
 
 ```sh
 npx --yes --package @openai/codex@0.146.0 -- codex plugin marketplace add \
-  trycopilotai/skills --ref v0.7.0
+  trycopilotai/skills --ref v0.7.1
 npx --yes --package @openai/codex@0.146.0 -- codex plugin add \
   lint@trycopilotai
 ```
@@ -48,10 +48,12 @@ repositories state:
 - `m2` is reference text. It ships four protocol documents
   and no runnable code.
 - `multi-persona-code-review` runs its persona lanes as
-  nested Claude Code or Codex processes. In both recorded
-  runs no lane completed, and each agent finished with a
-  manual review instead; its README describes both runs
-  under Agent invocations.
+  nested Claude Code or Codex processes. In its recorded
+  Claude Code run two lanes completed through the runner; in
+  its recorded Codex run, inside Codex's sandbox, no lane
+  completed and the agent finished with a manual review. Its
+  README describes both runs under Agent invocations and
+  Known limits.
 
 `gitchat` executes prompts pushed to its remote when a host
 serves it, so its README and SECURITY policy limit it to a
@@ -72,7 +74,7 @@ can check a tag against it:
 ```sh
 git -c gpg.format=ssh \
   -c gpg.ssh.allowedSignersFile=.github/release-allowed-signers \
-  verify-tag v0.7.0
+  verify-tag v0.7.1
 ```
 
 The file trusts two ED25519 keys under one principal,
