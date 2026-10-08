@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "trycopilotai",
   "description": "Agent skills maintained by trycopilot.ai.",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "owner": {
     "name": "Pramod Kotipalli",
     "url": "https://github.com/trycopilotai"
@@ -111,7 +111,7 @@
       "displayName": "swe-day",
       "source": "./plugins/swe-day",
       "description": "Run one self-contained SWE day of work end to end, with a human gate at every judgment call and a hard rule that the agent never pushes to the shared repo.",
-      "version": "0.1.8",
+      "version": "0.1.9",
       "author": {
         "name": "trycopilot.ai"
       },

@@ -28,7 +28,7 @@ no lock; every run that goes past step 0 holds the lock.
 
   | Skill | Serves | Role |
   | --- | --- | --- |
-  | `fix-loop` | step 8 | bounded fix loop |
+  | `replx` | step 8 | bounded fix loop |
   | `improve-coverage` | step 10 | coverage improver |
   | `plan-commits` | steps 10, 13, 16 | commit planner, called as `planCommits()` |
   | `mutation-testing` | step 11 | mutation-testing audit |
@@ -128,9 +128,10 @@ will gate completion.
 
 ### 8. Fix loop — `owner: agent`
 
-Run the bounded fix loop to drive the prescribed and added
-test cases to green, with an iteration cap of 8 (raise to at
-most 16 for a heavy day).
+Run `replx` to drive the prescribed and added test cases to
+green: the test command is its target, all cases passing is
+its success condition, and its iteration budget is 8 (raise
+to at most 16 for a heavy day).
 On exhaustion, stop and surface the failing case to the
 operator rather than looping further.
 
