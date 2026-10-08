@@ -1,0 +1,32 @@
+name: plan-commits
+order: 13
+displayName: plan-commits
+status: published
+category: git
+license: MIT
+use: >-
+  A skill for planning granular git commits: mechanical or
+  semantic groups, a summary per file, line counts taken from
+  git diff --numstat or wc -l (with documented limits), and an
+  approval section. It tells the agent not to stage or commit.
+triggers:
+  - plan commits
+  - commit plan
+  - planCommits
+aliases: []
+clients:
+  - claude-code
+  - codex
+example: https://github.com/trycopilotai/plan-commits/blob/v0.1.4/evidence/transcripts/2026-10-08-claude-code-invocation.txt
+upstream: github.com/trycopilotai/plan-commits
+upstream_ref: v0.1.4
+upstream_sha: b31cb9689c7f45e5ec3c12971963dd26b65ac346
+upstream_path: skills/plan-commits
+vendored_path: plugins/plan-commits/skills/plan-commits
+vendored_sha256: 919f68ab668ac9edbb593851e0904faae79ffb3b64f40e7c3c2a8607da7a18ae
+tested_agents:
+  - Claude Code 2.1.220
+  - Codex CLI 0.146.0
+writes: true
+network: false
+executes: true

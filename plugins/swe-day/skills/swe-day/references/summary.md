@@ -102,7 +102,7 @@ as an independent perspective when possible.
 When presenting a completed implementation for human review,
 open the implementation worktree in the editor, reopen the
 live app when the work has UI-visible behavior, and open the
-result-visualizer evidence artifact when one was produced. Then
+`htmlify` evidence artifact when one was produced. Then
 print a `New UX To Test` block with the review location,
 role/persona, visible changes, manual test interactions,
 expected result, unchanged compatibility surfaces, and any

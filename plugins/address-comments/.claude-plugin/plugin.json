@@ -1,0 +1,18 @@
+{
+  "name": "address-comments",
+  "version": "0.1.2",
+  "description": "Instructions for a coding agent to find AGENT:, TODO(agent) and TODO(code-review:<id>) markers, address them, remove them and log the work. One spec file and no runnable code.",
+  "author": {
+    "name": "trycopilot.ai"
+  },
+  "homepage": "https://github.com/trycopilotai/address-comments#readme",
+  "repository": "https://github.com/trycopilotai/address-comments",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "review"
+  ],
+  "skills": "./skills/"
+}

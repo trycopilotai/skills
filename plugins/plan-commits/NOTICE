@@ -1,0 +1,9 @@
+plugins/plan-commits/skills/plan-commits/ is a vendored copy,
+not the source.
+
+skills/plan-commits/ is copied verbatim from trycopilotai/plan-commits
+at v0.1.4, commit b31cb9689c7f45e5ec3c12971963dd26b65ac346,
+as recorded in meta/plan-commits.skill.yml. The two plugin
+manifests are copied from the same tag. LICENSE beside this
+file is that repository's licence, carried along because MIT
+requires the notice to travel with a substantial copy.

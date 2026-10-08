@@ -1,0 +1,32 @@
+name: review-watch
+order: 15
+displayName: review-watch
+status: published
+category: review
+license: MIT
+use: >-
+  Watch a worktree while a person reviews it, report the
+  agent-directed review markers present at each scan, and hand
+  each one to the separately installed address-comments skill,
+  with a poller that uses ripgrep or grep and does not edit.
+triggers:
+  - review watch
+  - watch for review markers
+  - address markers live
+aliases: []
+clients:
+  - claude-code
+  - codex
+example: https://github.com/trycopilotai/review-watch/blob/v0.1.2/evidence/transcripts/2026-10-08-claude-code-invocation.txt
+upstream: github.com/trycopilotai/review-watch
+upstream_ref: v0.1.2
+upstream_sha: 5fa36590bca51b1bf666bf05710e976eeebff5ed
+upstream_path: skills/review-watch
+vendored_path: plugins/review-watch/skills/review-watch
+vendored_sha256: e5988163a1bdb65a790e076db38b14e051079a3f0222dda7cd1bac5a427f3d8e
+tested_agents:
+  - Claude Code 2.1.220
+  - Codex CLI 0.146.0
+writes: true
+network: false
+executes: true

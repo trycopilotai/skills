@@ -1,0 +1,9 @@
+plugins/multi-persona-code-review/skills/multi-persona-code-review/ is a vendored copy,
+not the source.
+
+skills/multi-persona-code-review/ is copied verbatim from trycopilotai/multi-persona-code-review
+at v0.1.2, commit 4a1a68b29cb1b1588b39404b0e73af2e495cb26c,
+as recorded in meta/multi-persona-code-review.skill.yml. The two plugin
+manifests are copied from the same tag. LICENSE beside this
+file is that repository's licence, carried along because MIT
+requires the notice to travel with a substantial copy.

@@ -6,7 +6,7 @@ one command installs any skill in it.
 In Claude Code:
 
 ```sh
-/plugin marketplace add trycopilotai/skills@v0.6.1
+/plugin marketplace add trycopilotai/skills@v0.7.0
 /plugin install lint@trycopilotai
 ```
 
@@ -14,7 +14,7 @@ In Codex:
 
 ```sh
 npx --yes --package @openai/codex@0.146.0 -- codex plugin marketplace add \
-  trycopilotai/skills --ref v0.6.1
+  trycopilotai/skills --ref v0.7.0
 npx --yes --package @openai/codex@0.146.0 -- codex plugin add \
   lint@trycopilotai
 ```
@@ -30,20 +30,28 @@ and `$<skill>:<skill>` in Codex, for example
 
 ## Entries with stated limits
 
-Three entries are listed with limits their home
+Four entries are listed with limits their home
 repositories state:
 
-- `swe-day` sequences nine companion skills. One of them,
-  its step 8 fix loop, is `replx` from this catalogue; the
-  other eight are not shipped here. Until each resolves, a
-  run stops at its step 0 preflight and names what is
-  missing.
+- `swe-day` sequences nine companion skills. Eight of them
+  are in this catalogue: `replx`, `improve-coverage`,
+  `plan-commits`, `htmlify`, `review-watch`,
+  `address-comments`, `multi-persona-code-review` and
+  `handoff`. The ninth, `mutation-testing`, is not
+  published, so a run still stops at its step 0 preflight
+  and names it unless the operator agrees to go on without
+  it.
 - `multi-swe-day` needs `swe-day`, `gitchat` and the same
   companions. Its recorded Claude Code runs searched outside
   the operational repository for a missing dependency; its
   README says so under Known limits.
 - `m2` is reference text. It ships four protocol documents
   and no runnable code.
+- `multi-persona-code-review` runs its persona lanes as
+  nested Claude Code or Codex processes. In both recorded
+  runs no lane completed, and each agent finished with a
+  manual review instead; its README describes both runs
+  under Agent invocations.
 
 `gitchat` executes prompts pushed to its remote when a host
 serves it, so its README and SECURITY policy limit it to a
@@ -64,7 +72,7 @@ can check a tag against it:
 ```sh
 git -c gpg.format=ssh \
   -c gpg.ssh.allowedSignersFile=.github/release-allowed-signers \
-  verify-tag v0.6.1
+  verify-tag v0.7.0
 ```
 
 The file trusts two ED25519 keys under one principal,
@@ -108,6 +116,12 @@ version.
 | [`multi-swe-day`](https://github.com/trycopilotai/multi-swe-day)                                       | Claude Code, Codex | Instructions and helper programs for splitting software work across a leader chat, builder chats and an auditor chat over gitchat. The lane registry refuses overlapping lanes.                                                                                                                                                              |
 | [`m2`](https://github.com/trycopilotai/m2)                                                             | Claude Code, Codex | Reference text for m2, a manager-of-managers protocol for coding agents. Four protocol documents and no runnable code.                                                                                                                                                                                                                       |
 | [`swe-it`](https://github.com/trycopilotai/swe-it)                                                     | Claude Code, Codex | Turn an approved implementation plan into a JSON execution contract and a dispatch prompt for a swe-day, multi-swe-day or m2 run, with a needs_human stop and a clean-HEAD verifier.                                                                                                                                                         |
+| [`improve-coverage`](https://github.com/trycopilotai/improve-coverage)                                 | Claude Code, Codex | An agent skill that raises test coverage on a scope you choose, with one agent per uncovered file, writing test code only unless you approve a source change. A calling skill can pass the scope instead of the interview.                                                                                                                   |
+| [`plan-commits`](https://github.com/trycopilotai/plan-commits)                                         | Claude Code, Codex | A skill for planning granular git commits: mechanical or semantic groups, a summary per file, line counts taken from git diff --numstat or wc -l (with documented limits), and an approval section. It tells the agent not to stage or commit.                                                                                               |
+| [`address-comments`](https://github.com/trycopilotai/address-comments)                                 | Claude Code, Codex | Instructions for a coding agent to find AGENT:, TODO(agent) and TODO(code-review:<id>) markers, address them, remove them and log the work. One spec file and no runnable code.                                                                                                                                                              |
+| [`review-watch`](https://github.com/trycopilotai/review-watch)                                         | Claude Code, Codex | Watch a worktree while a person reviews it, report the agent-directed review markers present at each scan, and hand each one to the separately installed address-comments skill, with a poller that uses ripgrep or grep and does not edit.                                                                                                  |
+| [`multi-persona-code-review`](https://github.com/trycopilotai/multi-persona-code-review)               | Claude Code, Codex | A multi-persona code review skill for Claude Code and Codex. It tells the agent to run each external CLI persona lane through a bundled runner with hard and idle timeouts, to take subagent lanes from the host's own result mechanism, and to write verified findings back as TODO(code-review:<id>) comments.                             |
+| [`handoff`](https://github.com/trycopilotai/handoff)                                                   | Claude Code, Codex | Has an agent record a repository's state for the next agent: a HANDOFF.md snapshot, a log of state transitions, an optional agent registry, and a git state collector.                                                                                                                                                                       |
 
 <!-- End generated table. -->
 

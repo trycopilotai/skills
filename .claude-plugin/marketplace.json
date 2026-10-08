@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "trycopilotai",
   "description": "Agent skills maintained by trycopilot.ai.",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "owner": {
     "name": "Pramod Kotipalli",
     "url": "https://github.com/trycopilotai"
@@ -111,7 +111,7 @@
       "displayName": "swe-day",
       "source": "./plugins/swe-day",
       "description": "Run one self-contained SWE day of work end to end, with a human gate at every judgment call and a hard rule that the agent never pushes to the shared repo.",
-      "version": "0.1.9",
+      "version": "0.1.10",
       "author": {
         "name": "trycopilot.ai"
       },
@@ -224,6 +224,126 @@
         "claude-code",
         "codex",
         "multi-agent"
+      ]
+    },
+    {
+      "name": "improve-coverage",
+      "displayName": "improve-coverage",
+      "source": "./plugins/improve-coverage",
+      "description": "An agent skill that raises test coverage on a scope you choose, with one agent per uncovered file, writing test code only unless you approve a source change. A calling skill can pass the scope instead of the interview.",
+      "version": "0.1.2",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/improve-coverage",
+      "repository": "https://github.com/trycopilotai/improve-coverage",
+      "license": "MIT",
+      "category": "testing",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "testing"
+      ]
+    },
+    {
+      "name": "plan-commits",
+      "displayName": "plan-commits",
+      "source": "./plugins/plan-commits",
+      "description": "A skill for planning granular git commits: mechanical or semantic groups, a summary per file, line counts taken from git diff --numstat or wc -l (with documented limits), and an approval section. It tells the agent not to stage or commit.",
+      "version": "0.1.4",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/plan-commits",
+      "repository": "https://github.com/trycopilotai/plan-commits",
+      "license": "MIT",
+      "category": "git",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "git"
+      ]
+    },
+    {
+      "name": "address-comments",
+      "displayName": "address-comments",
+      "source": "./plugins/address-comments",
+      "description": "Instructions for a coding agent to find AGENT:, TODO(agent) and TODO(code-review:<id>) markers, address them, remove them and log the work. One spec file and no runnable code.",
+      "version": "0.1.2",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/address-comments",
+      "repository": "https://github.com/trycopilotai/address-comments",
+      "license": "MIT",
+      "category": "review",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "review"
+      ]
+    },
+    {
+      "name": "review-watch",
+      "displayName": "review-watch",
+      "source": "./plugins/review-watch",
+      "description": "Watch a worktree while a person reviews it, report the agent-directed review markers present at each scan, and hand each one to the separately installed address-comments skill, with a poller that uses ripgrep or grep and does not edit.",
+      "version": "0.1.2",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/review-watch",
+      "repository": "https://github.com/trycopilotai/review-watch",
+      "license": "MIT",
+      "category": "review",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "review"
+      ]
+    },
+    {
+      "name": "multi-persona-code-review",
+      "displayName": "multi-persona-code-review",
+      "source": "./plugins/multi-persona-code-review",
+      "description": "A multi-persona code review skill for Claude Code and Codex. It tells the agent to run each external CLI persona lane through a bundled runner with hard and idle timeouts, to take subagent lanes from the host's own result mechanism, and to write verified findings back as TODO(code-review:<id>) comments.",
+      "version": "0.1.2",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/multi-persona-code-review",
+      "repository": "https://github.com/trycopilotai/multi-persona-code-review",
+      "license": "MIT",
+      "category": "review",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "review"
+      ]
+    },
+    {
+      "name": "handoff",
+      "displayName": "handoff",
+      "source": "./plugins/handoff",
+      "description": "Has an agent record a repository's state for the next agent: a HANDOFF.md snapshot, a log of state transitions, an optional agent registry, and a git state collector.",
+      "version": "0.1.2",
+      "author": {
+        "name": "trycopilot.ai"
+      },
+      "homepage": "https://github.com/trycopilotai/handoff",
+      "repository": "https://github.com/trycopilotai/handoff",
+      "license": "MIT",
+      "category": "workflow",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "workflow"
       ]
     }
   ]

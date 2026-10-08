@@ -1,0 +1,7 @@
+interface:
+  display_name: "address-comments"
+  short_description:
+    "Address agent-directed review markers in source"
+  default_prompt:
+    "Use $address-comments to find and address the AGENT: and
+    TODO(code-review:<id>) markers in this repository."

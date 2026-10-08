@@ -1,0 +1,4 @@
+interface:
+  display_name: "Handoff"
+  short_description: "Resumable handoff checkpoints"
+  default_prompt: "Use $handoff to update the current handoff snapshot and append a state-transition log entry for this explicit checkpoint."

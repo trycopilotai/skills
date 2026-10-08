@@ -1,0 +1,9 @@
+plugins/review-watch/skills/review-watch/ is a vendored copy,
+not the source.
+
+skills/review-watch/ is copied verbatim from trycopilotai/review-watch
+at v0.1.2, commit 5fa36590bca51b1bf666bf05710e976eeebff5ed,
+as recorded in meta/review-watch.skill.yml. The two plugin
+manifests are copied from the same tag. LICENSE beside this
+file is that repository's licence, carried along because MIT
+requires the notice to travel with a substantial copy.

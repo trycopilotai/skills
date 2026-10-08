@@ -1,0 +1,33 @@
+{
+  "name": "handoff",
+  "version": "0.1.2",
+  "description": "Has an agent record a repository's state for the next agent: a HANDOFF.md snapshot, a log of state transitions, an optional agent registry, and a git state collector.",
+  "author": {
+    "name": "trycopilot.ai"
+  },
+  "homepage": "https://github.com/trycopilotai/handoff#readme",
+  "repository": "https://github.com/trycopilotai/handoff",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Handoff",
+    "shortDescription": "Resumable handoff checkpoints",
+    "longDescription": "Has an agent record a repository's state for the next agent: a HANDOFF.md snapshot, a log of state transitions, an optional agent registry, and a git state collector.",
+    "developerName": "trycopilot.ai",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Write",
+      "Execute"
+    ],
+    "websiteURL": "https://github.com/trycopilotai/handoff",
+    "defaultPrompt": [
+      "Use $handoff to update the current handoff snapshot and append a state-transition log entry for this explicit checkpoint."
+    ]
+  }
+}
