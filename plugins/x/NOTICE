@@ -1,7 +1,7 @@
 plugins/x/skills/x/ is a vendored copy, not the source.
 
-skills/x/ is copied verbatim from trycopilotai/x at v0.1.1,
-commit 22e21a2b6162ff7f155f5b94ff251e9b308a0a40, as recorded
+skills/x/ is copied verbatim from trycopilotai/x at v0.1.2,
+commit 4af3b09d329e2b8c1d1a1446520e804c7e6c4414, as recorded
 in meta/x.skill.yml, which also holds the sorted package
 digest. The two plugin manifests are copied from the same
 tag. LICENSE beside this file is that repository's MIT

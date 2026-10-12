@@ -579,13 +579,13 @@
         "claude-code",
         "codex"
       ],
-      "example": "https://github.com/trycopilotai/x/blob/v0.1.1/evidence/transcripts/codex-skill.jsonl",
+      "example": "https://github.com/trycopilotai/x/blob/v0.1.2/evidence/transcripts/claude-skill.jsonl",
       "upstream": "github.com/trycopilotai/x",
-      "upstream_ref": "v0.1.1",
-      "upstream_sha": "22e21a2b6162ff7f155f5b94ff251e9b308a0a40",
+      "upstream_ref": "v0.1.2",
+      "upstream_sha": "4af3b09d329e2b8c1d1a1446520e804c7e6c4414",
       "upstream_path": "skills/x",
       "vendored_path": "plugins/x/skills/x",
-      "vendored_sha256": "08561bfe4ad4c497bfc11ad6fa6025dc8e3e28d813fc8702e4bb25d7eb5c3641",
+      "vendored_sha256": "5fae754967bfb8c59ae9079a8dffea6744fb82fc71d0670056d441f6dac5e8e4",
       "tested_agents": [
         "Claude Code 2.1.296",
         "Codex CLI 0.162.1"
