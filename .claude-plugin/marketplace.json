@@ -30,7 +30,7 @@
       "description": "Turn dense Markdown into source-checked HTML timelines, decision surfaces, system explainers, visual progressions, evidence reviews, or deterministic formal HTML with optional PDF export.",
       "version": "0.2.3",
       "author": {
-        "name": "Pramod Kotipalli"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/htmlify",
       "repository": "https://github.com/trycopilotai/htmlify",
@@ -51,7 +51,7 @@
       "description": "Drive a failing build, test, lint, or health check to a success condition you declare, in bounded iterations. The condition can be stated in prose, so a goal the command does not measure is still a valid target, and the protocol refuses the repairs that make a command pass without fixing the defect.",
       "version": "0.2.0",
       "author": {
-        "name": "Pramod Kotipalli"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/replx",
       "repository": "https://github.com/trycopilotai/replx",
@@ -72,7 +72,7 @@
       "description": "Check or apply canonical formatting across mixed-language repositories with a read-only default.",
       "version": "0.1.6",
       "author": {
-        "name": "Pramod Kotipalli"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/lint",
       "repository": "https://github.com/trycopilotai/lint",
@@ -92,7 +92,7 @@
       "description": "Read how much of each AI provider's usage limit is left, when it resets, and which provider still has headroom. Answers from measured readings and declines when it cannot: a provider that did not respond is reported as not responding, never as zero usage, and a forecast with too little history returns a reason instead of a number.",
       "version": "0.2.1",
       "author": {
-        "name": "Pramod Kotipalli"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/agent-usage",
       "repository": "https://github.com/trycopilotai/agent-usage",
@@ -353,7 +353,7 @@
       "description": "Find, run, add and change a repository's commands through x, a dispatcher driven by an x.toml file.",
       "version": "0.1.1",
       "author": {
-        "name": "Pramod Kotipalli"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/x",
       "repository": "https://github.com/trycopilotai/x",
