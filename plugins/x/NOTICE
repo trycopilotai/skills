@@ -1,0 +1,13 @@
+plugins/x/skills/x/ is a vendored copy, not the source.
+
+skills/x/ is copied verbatim from trycopilotai/x at v0.1.1,
+commit 22e21a2b6162ff7f155f5b94ff251e9b308a0a40, as recorded
+in meta/x.skill.yml, which also holds the sorted package
+digest. The two plugin manifests are copied from the same
+tag. LICENSE beside this file is that repository's MIT
+license, carried along because it requires the notice to
+travel with a substantial copy.
+
+The skill runs the published npm package @tryc.ai/x at the
+version a repository's x.toml pins. The package is fetched by
+npx at run time and is not part of this vendored copy.

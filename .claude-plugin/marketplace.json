@@ -345,6 +345,21 @@
         "codex",
         "workflow"
       ]
+    },
+    {
+      "name": "x",
+      "displayName": "x",
+      "source": "./plugins/x",
+      "description": "Find, run, add and change a repository's commands through x, a dispatcher driven by an x.toml file.",
+      "version": "0.1.1",
+      "author": {
+        "name": "Pramod Kotipalli"
+      },
+      "homepage": "https://github.com/trycopilotai/x",
+      "repository": "https://github.com/trycopilotai/x",
+      "license": "MIT",
+      "category": "tooling",
+      "tags": ["cli", "task-runner", "makefile", "toml", "developer-tools"]
     }
   ]
 }
