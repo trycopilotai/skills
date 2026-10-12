@@ -306,5 +306,5 @@ and a vendored skill also carries that repository's
 
 `trycopilot.ai LLC` is an independent project. It is not
 affiliated with, endorsed by, or connected to GitHub,
-Microsoft, or GitHub Copilot. The name is a domain the
-author owns and predates this repository.
+Microsoft, or GitHub Copilot. The name `trycopilot.ai` is a
+domain the author owns and predates this repository.
