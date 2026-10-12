@@ -559,6 +559,40 @@
       "writes": true,
       "network": false,
       "executes": true
+    },
+    {
+      "name": "x",
+      "order": 18,
+      "displayName": "x",
+      "status": "published",
+      "category": "tooling",
+      "license": "MIT",
+      "use": "Find, run, add and change a repository's commands through x, a dispatcher driven by an x.toml file.",
+      "triggers": [
+        "what commands does this repo have",
+        "run a repo command",
+        "add a command to x.toml",
+        "x makefile --check"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/x/blob/v0.1.1/evidence/transcripts/codex-skill.jsonl",
+      "upstream": "github.com/trycopilotai/x",
+      "upstream_ref": "v0.1.1",
+      "upstream_sha": "22e21a2b6162ff7f155f5b94ff251e9b308a0a40",
+      "upstream_path": "skills/x",
+      "vendored_path": "plugins/x/skills/x",
+      "vendored_sha256": "08561bfe4ad4c497bfc11ad6fa6025dc8e3e28d813fc8702e4bb25d7eb5c3641",
+      "tested_agents": [
+        "Claude Code 2.1.296",
+        "Codex CLI 0.162.1"
+      ],
+      "writes": true,
+      "network": true,
+      "executes": true
     }
   ]
 }
