@@ -1,10 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "trycopilotai",
-  "description": "Agent skills maintained by trycopilot.ai.",
+  "description": "Agent skills maintained by trycopilot.ai LLC.",
   "version": "0.7.1",
   "owner": {
-    "name": "Pramod Kotipalli",
+    "name": "trycopilot.ai LLC",
     "url": "https://github.com/trycopilotai"
   },
   "plugins": [
@@ -15,7 +15,7 @@
       "description": "Split open work into agent and human lanes with consistent action IDs, concrete tool calls, and evidence for each human gap.",
       "version": "1.0.0",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/what-next#readme",
       "repository": "https://github.com/trycopilotai/what-next",
@@ -113,7 +113,7 @@
       "description": "Run one self-contained SWE day of work end to end, with a human gate at every judgment call and a hard rule that the agent never pushes to the shared repo.",
       "version": "0.1.11",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/swe-day",
       "repository": "https://github.com/trycopilotai/swe-day",
@@ -133,7 +133,7 @@
       "description": "Exchange agent messages through Git branches on a shared remote: one side sends a prompt, the other polls for it and pushes back a response.",
       "version": "0.1.5",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/gitchat",
       "repository": "https://github.com/trycopilotai/gitchat",
@@ -153,7 +153,7 @@
       "description": "Reference text for m2, a manager-of-managers protocol for coding agents. Four protocol documents and no runnable code.",
       "version": "0.1.2",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/m2",
       "repository": "https://github.com/trycopilotai/m2",
@@ -173,7 +173,7 @@
       "description": "Turn an approved implementation plan into a JSON execution contract and a dispatch prompt for a swe-day, multi-swe-day or m2 run, with a needs_human stop and a clean-HEAD verifier.",
       "version": "0.1.7",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/swe-it",
       "repository": "https://github.com/trycopilotai/swe-it",
@@ -193,7 +193,7 @@
       "description": "Decide whether a multi-round adversarial code review is worth running, shape each round so it terminates, and evaluate a checkable stopping rule from the per-round yield.",
       "version": "0.1.9",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/extended-adversarial-code-review",
       "repository": "https://github.com/trycopilotai/extended-adversarial-code-review",
@@ -213,7 +213,7 @@
       "description": "Instructions and helper programs for splitting software work across a leader chat, builder chats and an auditor chat over gitchat. The lane registry refuses overlapping lanes.",
       "version": "0.1.8",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/multi-swe-day",
       "repository": "https://github.com/trycopilotai/multi-swe-day",
@@ -233,7 +233,7 @@
       "description": "An agent skill that raises test coverage on a scope you choose, with one agent per uncovered file, writing test code only unless you approve a source change. A calling skill can pass the scope instead of the interview.",
       "version": "0.1.6",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/improve-coverage",
       "repository": "https://github.com/trycopilotai/improve-coverage",
@@ -253,7 +253,7 @@
       "description": "A skill for planning granular git commits: mechanical or semantic groups, a summary per file, line counts taken from git diff --numstat or wc -l (with documented limits), and an approval section. It tells the agent not to stage or commit.",
       "version": "0.1.4",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/plan-commits",
       "repository": "https://github.com/trycopilotai/plan-commits",
@@ -273,7 +273,7 @@
       "description": "Instructions for a coding agent to find AGENT:, TODO(agent) and TODO(code-review:<id>) markers, address them, remove them and log the work. One spec file and no runnable code.",
       "version": "0.1.2",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/address-comments",
       "repository": "https://github.com/trycopilotai/address-comments",
@@ -293,7 +293,7 @@
       "description": "Watch a worktree while a person reviews it, report the agent-directed review markers present at each scan, and hand each one to the separately installed address-comments skill, with a poller that uses ripgrep or grep and does not edit.",
       "version": "0.1.2",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/review-watch",
       "repository": "https://github.com/trycopilotai/review-watch",
@@ -313,7 +313,7 @@
       "description": "A multi-persona code review skill for Claude Code and Codex. It tells the agent to run each external CLI persona lane through a bundled runner with hard and idle timeouts, to take subagent lanes from the host's own result mechanism, and to write verified findings back as TODO(code-review:<id>) comments.",
       "version": "0.1.5",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/multi-persona-code-review",
       "repository": "https://github.com/trycopilotai/multi-persona-code-review",
@@ -333,7 +333,7 @@
       "description": "Has an agent record a repository's state for the next agent: a HANDOFF.md snapshot, a log of state transitions, an optional agent registry, and a git state collector.",
       "version": "0.1.3",
       "author": {
-        "name": "trycopilot.ai"
+        "name": "trycopilot.ai LLC"
       },
       "homepage": "https://github.com/trycopilotai/handoff",
       "repository": "https://github.com/trycopilotai/handoff",
