@@ -297,7 +297,7 @@ has to clear before it is listed here.
 
 ## License
 
-MIT for this repository. Each skill carries its own
+MIT license for this repository. Each skill carries its own
 `license` in its `meta/` entry and in its home repository,
 and a vendored skill also carries that repository's
 `LICENSE` and a `NOTICE` beside the copy.
