@@ -1,0 +1,36 @@
+{
+  "name": "agent-he",
+  "version": "0.1.0",
+  "description": "Run a heuristic evaluation on a UI with measured evidence against the thirteen-heuristic CS147 checklist.",
+  "author": {
+    "name": "trycopilot.ai"
+  },
+  "homepage": "https://github.com/trycopilotai/agent-heuristic-analysis#readme",
+  "repository": "https://github.com/trycopilotai/agent-heuristic-analysis",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "heuristic-evaluation",
+    "usability",
+    "accessibility"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Agent HE",
+    "shortDescription": "Run a heuristic evaluation on a UI and produce a severity-ranked findings report",
+    "longDescription": "Run Nielsen heuristic evaluation on a live UI with agent-specific measurement rules and emit a severity-ranked findings report.",
+    "developerName": "trycopilot.ai",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Network",
+      "Execute"
+    ],
+    "websiteURL": "https://github.com/trycopilotai/agent-heuristic-analysis",
+    "defaultPrompt": [
+      "Use $agent-he to run a heuristic evaluation on this UI and write the findings report."
+    ]
+  }
+}

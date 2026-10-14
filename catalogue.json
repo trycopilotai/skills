@@ -593,6 +593,40 @@
       "writes": true,
       "network": true,
       "executes": true
+    },
+    {
+      "name": "agent-he",
+      "order": 19,
+      "displayName": "Agent HE",
+      "status": "pending-publication",
+      "category": "evaluation",
+      "license": "MIT",
+      "use": "Run a heuristic evaluation on a UI with measured evidence against the thirteen-heuristic CS147 checklist, using agent-specific measurement rules.",
+      "triggers": [
+        "heuristic evaluation",
+        "usability review",
+        "Nielsen heuristics",
+        "UX audit"
+      ],
+      "aliases": [],
+      "clients": [
+        "claude-code",
+        "codex"
+      ],
+      "example": "https://github.com/trycopilotai/agent-heuristic-analysis/blob/v0.1.0/evidence/transcripts/2026-10-13-fixture-he.txt",
+      "upstream": "github.com/trycopilotai/agent-heuristic-analysis",
+      "upstream_ref": "v0.1.0",
+      "upstream_sha": "6bd68f4ddeadb1eb7e9f3d588bd229e35a9e3228",
+      "upstream_path": "skills/agent-he",
+      "vendored_path": "plugins/agent-he/skills/agent-he",
+      "vendored_sha256": "b9d143104e60cf0dc4db300dbcdb2ddc05f7df738a292ae524b4031330374bfd",
+      "tested_agents": [
+        "Claude Code 2.1.289",
+        "Codex CLI 0.160.0"
+      ],
+      "writes": true,
+      "network": true,
+      "executes": true
     }
   ]
 }
