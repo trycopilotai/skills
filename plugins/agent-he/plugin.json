@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "agent-he",
+  "version": "0.1.0",
+  "description": "Run a heuristic evaluation on a UI with measured evidence against the thirteen-heuristic CS147 checklist.",
+  "author": {
+    "name": "trycopilot.ai"
+  },
+  "homepage": "https://github.com/trycopilotai/agent-heuristic-analysis#readme",
+  "repository": "https://github.com/trycopilotai/agent-heuristic-analysis",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "heuristic-evaluation",
+    "usability",
+    "accessibility"
+  ]
+}

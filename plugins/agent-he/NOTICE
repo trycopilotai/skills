@@ -1,0 +1,21 @@
+plugins/agent-he/skills/agent-he/ is a vendored copy,
+not the source.
+
+The canonical skill and agents/openai.yaml are copied verbatim
+from trycopilotai/agent-heuristic-analysis at v0.1.0, commit
+6bd68f4ddeadb1eb7e9f3d588bd229e35a9e3228.
+meta/agent-he.skill.yml records the sorted package digest.
+LICENSE beside this file is the upstream MIT license.
+
+The upstream repository is private staging at
+trycopilotai/agent-heuristic-analysis (alias
+trycopilotai/agent-he). Access is required for the upstream
+example and release-gate. Vendoring does not make that
+upstream public. The vendored plugin installs without
+fetching upstream. No private source examples or external
+audit records are included.
+
+The marketplace Codex manifest adds Network and Execute UI
+labels alongside Interactive to surface discovery side
+effects. These descriptive labels grant no tool permission
+and do not change the canonical skill instructions.

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Agent HE"
+  short_description:
+    "Run a heuristic evaluation on a UI and produce a
+    severity-ranked findings report"
+  default_prompt:
+    "Use $agent-he to run a heuristic evaluation on this UI
+    and write the findings report."
