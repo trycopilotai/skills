@@ -598,7 +598,7 @@
       "name": "agent-he",
       "order": 19,
       "displayName": "Agent HE",
-      "status": "pending-publication",
+      "status": "published",
       "category": "evaluation",
       "license": "MIT",
       "use": "Run a heuristic evaluation on a UI with measured evidence against the thirteen-heuristic CS147 checklist, using agent-specific measurement rules.",

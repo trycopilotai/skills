@@ -1,7 +1,7 @@
 name: agent-he
 order: 19
 displayName: Agent HE
-status: pending-publication
+status: published
 category: evaluation
 license: MIT
 use: >-

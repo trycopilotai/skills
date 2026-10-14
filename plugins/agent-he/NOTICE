@@ -7,11 +7,9 @@ from trycopilotai/agent-heuristic-analysis at v0.1.0, commit
 meta/agent-he.skill.yml records the sorted package digest.
 LICENSE beside this file is the upstream MIT license.
 
-The upstream repository is private staging at
+The upstream repository and v0.1.0 release are public at
 trycopilotai/agent-heuristic-analysis (alias
-trycopilotai/agent-he). Access is required for the upstream
-example and release-gate. Vendoring does not make that
-upstream public. The vendored plugin installs without
+trycopilotai/agent-he). The vendored plugin installs without
 fetching upstream. No private source examples or external
 audit records are included.
 
