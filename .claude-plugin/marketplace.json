@@ -390,6 +390,27 @@
         "usability",
         "accessibility"
       ]
+    },
+    {
+      "name": "mechanical-summarize",
+      "version": "0.1.0",
+      "description": "Shorten prose to a word budget by deleting words only. The skill tells the agent to keep the source's wording, order, claims, qualifications, and voice, and a bundled verifier checks that the copy is an ordered subsequence of the source and meets the word-count floor.",
+      "author": {
+        "name": "trycopilot.ai LLC"
+      },
+      "homepage": "https://github.com/trycopilotai/mechanical-summarize#readme",
+      "repository": "https://github.com/trycopilotai/mechanical-summarize",
+      "license": "MIT",
+      "displayName": "Mechanical Summarize",
+      "source": "./plugins/mechanical-summarize",
+      "category": "writing",
+      "tags": [
+        "agent-skills",
+        "claude-code",
+        "codex",
+        "summarization",
+        "text-compression"
+      ]
     }
   ]
 }

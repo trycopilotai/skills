@@ -1,0 +1,35 @@
+{
+  "name": "mechanical-summarize",
+  "version": "0.1.0",
+  "description": "Shorten prose to a word budget by deleting words only. The skill tells the agent to keep the source's wording, order, claims, qualifications, and voice, and a bundled verifier checks that the copy is an ordered subsequence of the source and meets the word-count floor.",
+  "author": {
+    "name": "trycopilot.ai LLC"
+  },
+  "homepage": "https://github.com/trycopilotai/mechanical-summarize#readme",
+  "repository": "https://github.com/trycopilotai/mechanical-summarize",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "claude-code",
+    "codex",
+    "summarization",
+    "text-compression"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Mechanical Summarize",
+    "shortDescription": "Deletion-only compression by raw word count",
+    "longDescription": "Shorten prose to a word budget by deleting words only. The skill tells the agent to keep the source's wording, order, claims, qualifications, and voice, and a bundled verifier checks that the copy is an ordered subsequence of the source and meets the word-count floor.",
+    "developerName": "trycopilot.ai LLC",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write",
+      "Execute"
+    ],
+    "websiteURL": "https://github.com/trycopilotai/mechanical-summarize",
+    "defaultPrompt": [
+      "Use $mechanical-summarize to create a 50% deletion-only copy of this document without changing its voice or claims."
+    ]
+  }
+}

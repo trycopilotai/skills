@@ -219,6 +219,18 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Developer Tools"
+    },
+    {
+      "name": "mechanical-summarize",
+      "source": {
+        "source": "local",
+        "path": "./plugins/mechanical-summarize"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
     }
   ]
 }

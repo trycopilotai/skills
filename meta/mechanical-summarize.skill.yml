@@ -1,0 +1,30 @@
+name: mechanical-summarize
+order: 20
+displayName: Mechanical Summarize
+status: published
+category: writing
+license: MIT
+use: >-
+  Shorten prose to a word budget by deleting words only. The skill tells the agent to keep the source's wording, order, claims, qualifications, and voice, and a bundled verifier checks that the copy is an ordered subsequence of the source and meets the word-count floor.
+triggers:
+  - deletion-only shortening
+  - linear summarization
+  - .50per copy
+  - fixed percentage reduction
+aliases: []
+clients:
+  - claude-code
+  - codex
+example: https://github.com/trycopilotai/mechanical-summarize/blob/v0.1.0/evidence/transcripts/claude-code-invocation.txt
+upstream: github.com/trycopilotai/mechanical-summarize
+upstream_ref: v0.1.0
+upstream_sha: 79c274d1002f9801fd475a43aa3f31809a523332
+upstream_path: skills/mechanical-summarize
+vendored_path: plugins/mechanical-summarize/skills/mechanical-summarize
+vendored_sha256: aee862309a5c8ed7ce949880a3c940ddb3b9cd523b7f8d019055b1d4b33ebe2d
+tested_agents:
+  - Claude Code 2.1.302
+  - Codex CLI 0.163.0
+writes: true
+network: false
+executes: true

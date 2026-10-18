@@ -1,0 +1,8 @@
+interface:
+  display_name: "Mechanical Summarize"
+  short_description:
+    "Deletion-only compression by raw word count"
+  default_prompt:
+    "Use $mechanical-summarize to create a 50% deletion-only
+    copy of this document without changing its voice or
+    claims."
