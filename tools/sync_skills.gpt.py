@@ -111,12 +111,27 @@ def main(argv=None):
             # network from a unit test.
             url = repo if "://" in repo else f"https://{repo}"
             clone = subprocess.run(
-                ["git", "-c", "advice.detachedHead=false", "clone", "--quiet",
-                 "--depth", "1", "--branch", ref, url, f"{td}/src"],
-                capture_output=True, text=True)
+                [
+                    "git",
+                    "-c",
+                    "advice.detachedHead=false",
+                    "clone",
+                    "--quiet",
+                    "--depth",
+                    "1",
+                    "--branch",
+                    ref,
+                    url,
+                    f"{td}/src",
+                ],
+                capture_output=True,
+                text=True,
+            )
             if clone.returncode != 0:
-                print(f"  {meta.name}: cannot fetch {url}@{ref}\n"
-                      f"      {clone.stderr.strip().splitlines()[-1] if clone.stderr.strip() else 'clone failed'}")
+                print(
+                    f"  {meta.name}: cannot fetch {url}@{ref}\n"
+                    f"      {clone.stderr.strip().splitlines()[-1] if clone.stderr.strip() else 'clone failed'}"
+                )
                 return 1
             # `upstream_path` is meta/ data like any other, so it
             # is contained against the clone rather than joined to
@@ -124,8 +139,10 @@ def main(argv=None):
             # outside the repository being vendored.
             try:
                 src = PATHS.resolve_inside(
-                    Path(td) / "src", upstream_path,
-                    source=f"{meta.name}: upstream_path")
+                    Path(td) / "src",
+                    upstream_path,
+                    source=f"{meta.name}: upstream_path",
+                )
             except PATHS.UnsafePath as exc:
                 print(f"  refusing to read outside the clone: {exc}")
                 return 1
@@ -134,7 +151,10 @@ def main(argv=None):
                 return 1
             sha_upstream = subprocess.run(
                 ["git", "-C", f"{td}/src", "rev-parse", "HEAD"],
-                capture_output=True, text=True, check=True).stdout.strip()
+                capture_output=True,
+                text=True,
+                check=True,
+            ).stdout.strip()
 
             # Verify the pin before copying anything in. A tag is
             # mutable, so "clone --branch v0.1.0" is not evidence
@@ -192,7 +212,9 @@ def main(argv=None):
         t = meta.read_text()
         t = re.sub(r"^vendored_sha256:.*$", f"vendored_sha256: {sha}", t, flags=re.M)
         if not recorded or args.repin:
-            t = re.sub(r"^upstream_sha:.*$", f"upstream_sha: {sha_upstream}", t, flags=re.M)
+            t = re.sub(
+                r"^upstream_sha:.*$", f"upstream_sha: {sha_upstream}", t, flags=re.M
+            )
         meta.write_text(t)
 
         if before != sha:

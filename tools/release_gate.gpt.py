@@ -82,9 +82,7 @@ def examine(fm: dict) -> tuple:
             f"pin is {UNRESOLVED}; {repo}@{ref} has not been published",
         )
     if fm.get("status") != "published":
-        return held(
-            name, f"status is {fm.get('status')!r}, not 'published'"
-        )
+        return held(name, f"status is {fm.get('status')!r}, not 'published'")
     if not re.fullmatch(r"[0-9a-f]{40}", pinned or ""):
         return held(name, f"upstream_sha {pinned!r} is not a commit id")
 
@@ -95,9 +93,16 @@ def examine(fm: dict) -> tuple:
     # and answers it without trusting a local clone that may
     # carry a tag which was never pushed.
     listed = subprocess.run(
-        ["git", "ls-remote", "--tags", url, f"refs/tags/{ref}",
-         f"refs/tags/{ref}^{{}}"],
-        capture_output=True, text=True,
+        [
+            "git",
+            "ls-remote",
+            "--tags",
+            url,
+            f"refs/tags/{ref}",
+            f"refs/tags/{ref}^{{}}",
+        ],
+        capture_output=True,
+        text=True,
     )
     if listed.returncode != 0:
         detail = "unreachable"
@@ -126,9 +131,21 @@ def examine(fm: dict) -> tuple:
 
     with tempfile.TemporaryDirectory() as td:
         clone = subprocess.run(
-            ["git", "-c", "advice.detachedHead=false", "clone", "--quiet",
-             "--depth", "1", "--branch", ref, url, f"{td}/src"],
-            capture_output=True, text=True,
+            [
+                "git",
+                "-c",
+                "advice.detachedHead=false",
+                "clone",
+                "--quiet",
+                "--depth",
+                "1",
+                "--branch",
+                ref,
+                url,
+                f"{td}/src",
+            ],
+            capture_output=True,
+            text=True,
         )
         if clone.returncode != 0:
             detail = "clone failed"

@@ -67,23 +67,19 @@ def resolve_vendored(root: Path, rel: str, source: str = "meta") -> Path:
         raise UnsafePath(f"{source}: vendored_path {rel!r} is padded")
     if "\\" in rel:
         raise UnsafePath(
-            f"{source}: vendored_path {rel!r} uses backslashes; "
-            f"use forward slashes"
+            f"{source}: vendored_path {rel!r} uses backslashes; " f"use forward slashes"
         )
 
     pure = PurePosixPath(rel)
     if pure.is_absolute():
         raise UnsafePath(f"{source}: vendored_path {rel!r} is absolute")
     if len(rel) > 1 and rel[1] == ":":
-        raise UnsafePath(
-            f"{source}: vendored_path {rel!r} looks like a drive path"
-        )
+        raise UnsafePath(f"{source}: vendored_path {rel!r} looks like a drive path")
     if ".." in pure.parts:
         raise UnsafePath(f"{source}: vendored_path {rel!r} traverses upward")
     if pure.parts and pure.parts[0] != PLUGIN_ROOT:
         raise UnsafePath(
-            f"{source}: vendored_path {rel!r} must start with "
-            f"{PLUGIN_ROOT}/"
+            f"{source}: vendored_path {rel!r} must start with " f"{PLUGIN_ROOT}/"
         )
 
     allowed = (root / PLUGIN_ROOT).resolve()

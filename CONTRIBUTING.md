@@ -21,8 +21,9 @@ but not its trigger will not fire.
 **It has at least one worked example**, produced by running
 the skill rather than written by hand, with a manifest
 recording the agent, version, input, and date. The `meta/`
-entry records where it is, in `example:`, and `make validate`
-requires the field. A claim nothing points at is not a bar.
+entry records where it is, in `example:`, and
+`make validate` requires the field. A claim nothing points
+at is not a bar.
 
 **Its side effects are declared.** The `meta/` entry records
 `writes`, `network`, and `executes`. A skill that reads and
@@ -31,9 +32,9 @@ an adopter should not have to read the prompt to find out
 which they are getting.
 
 **It treats what it reads as evidence, not instruction.** A
-skill that processes repository content is a prompt-injection
-surface. If a hostile `AGENTS.md` or code comment can change
-what the skill does, it is not ready.
+skill that processes repository content is a
+prompt-injection surface. If a hostile `AGENTS.md` or code
+comment can change what the skill does, it is not ready.
 
 **It has a license**, both in the home repository and in the
 `meta/` entry.
@@ -41,8 +42,8 @@ what the skill does, it is not ready.
 **It is pinned.** Remote sources carry a `ref` or a `sha`.
 Never a mutable default branch, because a future upstream
 commit would silently change what a user's agent is told to
-do. A vendored skill records both the tag and the commit that
-tag pointed at, plus a digest of the bytes copied in.
+do. A vendored skill records both the tag and the commit
+that tag pointed at, plus a digest of the bytes copied in.
 
 **Its upstream tag exists in public.** `make release-gate`
 resolves the tag on the real remote, requires it to point at
@@ -50,58 +51,60 @@ the recorded commit, and re-digests the upstream package to
 confirm it matches the vendored copy. A skill whose tag has
 not been pushed yet records `upstream_sha: UNRESOLVED` and
 `status: pending-publication`. Do not write a commit id you
-expect the tag to have: a guess makes every later check pass,
-which is worse than the field being empty.
+expect the tag to have: a guess makes every later check
+pass, which is worse than the field being empty.
 
 A private upstream may be staged as `pending-publication`
 with a real, access-verified tag and full commit pin. State
-that access is required for its upstream example and release.
-Vendoring does not make that upstream public, and the public
-release gate remains held until explicit publication. Do not
-mark such an entry `published` merely to clear the gate.
+that access is required for its upstream example and
+release. Vendoring does not make that upstream public, and
+the public release gate remains held until explicit
+publication. Do not mark such an entry `published` merely to
+clear the gate.
 
 **It declares the clients it ships for.** `clients` lists
 `claude-code`, `codex`, or both, and it means the skill was
 installed and invoked under each one. Claude Code needs
 `.claude-plugin/plugin.json`; Codex additionally needs
 `.codex-plugin/plugin.json`, an entry in
-`.agents/plugins/marketplace.json`, and an `agents/openai.yaml`
-beside `SKILL.md`. `make validate` requires the declaration
-and the files to agree in both directions, so a skill cannot
-ship for a client it never claimed, or claim one it cannot
-load into.
+`.agents/plugins/marketplace.json`, and an
+`agents/openai.yaml` beside `SKILL.md`. `make validate`
+requires the declaration and the files to agree in both
+directions, so a skill cannot ship for a client it never
+claimed, or claim one it cannot load into.
 
 ## Adding one
 
-1. Create `meta/<name>.skill.yml`. Copy an existing entry for
-   the field set. Four fields are easy to miss: `order`, an
-   integer that fixes the skill's position in the generated
-   index and must be unique; `example`, a link to the worked
-   example; `clients`, the list of clients it ships for; and
-   `upstream_path`, where the package sits in the upstream
-   repository, which defaults to `skill/SKILL.md`. All are
-   required except `upstream_path`, and `make validate` fails
-   without them.
+1. Create `meta/<name>.skill.yml`. Copy an existing entry
+   for the field set. Four fields are easy to miss: `order`,
+   an integer that fixes the skill's position in the
+   generated index and must be unique; `example`, a link to
+   the worked example; `clients`, the list of clients it
+   ships for; and `upstream_path`, where the package sits in
+   the upstream repository, which defaults to
+   `skill/SKILL.md`. All are required except
+   `upstream_path`, and `make validate` fails without them.
 2. Add the plugin under `plugins/<name>/` with a
    `.claude-plugin/plugin.json` and `skills/<name>/`, plus a
-   `.codex-plugin/plugin.json` when it ships for Codex. Carry
-   the upstream `LICENSE` and a `NOTICE` beside them.
-3. Add the entry to `.claude-plugin/marketplace.json`, and to
-   `.agents/plugins/marketplace.json` when it ships for
+   `.codex-plugin/plugin.json` when it ships for Codex.
+   Carry the upstream `LICENSE` and a `NOTICE` beside them.
+3. Add the entry to `.claude-plugin/marketplace.json`, and
+   to `.agents/plugins/marketplace.json` when it ships for
    Codex. Write `source` out in full as `./plugins/<name>`;
    `metadata.pluginRoot` is not honoured and is refused.
-4. Run `make check`. It validates both catalogues, the plugin
-   manifests, every `SKILL.md` against the Agent Skills spec,
-   and vendor drift, then confirms the generated surfaces are
-   current. Then run `make install-smoke` to confirm each
-   client actually loads the skill, and `make release-gate`
-   to confirm the upstream tag is public and matches.
+4. Run `make check`. It validates both catalogues, the
+   plugin manifests, every `SKILL.md` against the Agent
+   Skills spec, and vendor drift, then confirms the
+   generated surfaces are current. Then run
+   `make install-smoke` to confirm each client actually
+   loads the skill, and `make release-gate` to confirm the
+   upstream tag is public and matches.
 5. Commit `meta/`, the plugin, and the regenerated
    `catalogue.json`, `INDEX.md`, and `README.md` together.
 
 Never hand-edit `catalogue.json`, `INDEX.md`, or the table
-between the generated-table comments in `README.md`. They are
-generated by `make catalogue`.
+between the generated-table comments in `README.md`. They
+are generated by `make catalogue`.
 
 ## Renaming or removing
 
@@ -112,13 +115,18 @@ only the label the UI shows, set `displayName` and leave
 `name` alone.
 
 If the `name` really has to change, or a plugin leaves the
-catalogue, add a top-level `renames` entry mapping the former
-name to the new one, or to `null` when it is gone:
+catalogue, add a top-level `renames` entry mapping the
+former name to the new one, or to `null` when it is gone:
 
 ```json
 {
   "name": "trycopilotai",
-  "plugins": [{ "name": "code-formatter", "source": "./plugins/code-formatter" }],
+  "plugins": [
+    {
+      "name": "code-formatter",
+      "source": "./plugins/code-formatter"
+    }
+  ],
   "renames": {
     "formatter": "code-formatter",
     "legacy-linter": null
@@ -132,9 +140,10 @@ Claude Code v2.1.193 or later; a user on an older build sees
 `plugin-not-found` instead, so announce the change in the
 home repository's release notes as well.
 
-`make validate` checks the map: every key must be absent from
-`plugins`, since a name cannot be both current and former,
-and every non-null value must name a plugin that exists.
+`make validate` checks the map: every key must be absent
+from `plugins`, since a name cannot be both current and
+former, and every non-null value must name a plugin that
+exists.
 
 ## Skill authoring notes
 
@@ -142,12 +151,12 @@ Keep `SKILL.md` under 500 lines. Agents load the whole body
 on activation, so detail belongs in `references/` beside it,
 loaded only when needed.
 
-The `name` field must match its directory name, use lowercase
-letters, numbers, and single hyphens, and stay under 64
-characters. `make validate` checks all of it.
+The `name` field must match its directory name, use
+lowercase letters, numbers, and single hyphens, and stay
+under 64 characters. `make validate` checks all of it.
 
 ## Style
 
 Prose wraps at 60 columns. Do not use dashes as punctuation.
-Use a comma, a colon, parentheses, or a new sentence. Hyphens
-inside compound words are fine.
+Use a comma, a colon, parentheses, or a new sentence.
+Hyphens inside compound words are fine.

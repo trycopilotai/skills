@@ -43,9 +43,7 @@ def sha256(path: Path) -> str:
     for member in sorted(path.rglob("*")):
         if member.is_symlink():
             relative = member.relative_to(path).as_posix()
-            raise UnsafePackage(
-                f"symbolic links are not allowed: {relative}"
-            )
+            raise UnsafePackage(f"symbolic links are not allowed: {relative}")
         if not member.is_file():
             continue
         relative = member.relative_to(path).as_posix()

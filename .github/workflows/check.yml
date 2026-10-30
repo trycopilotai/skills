@@ -37,5 +37,6 @@ jobs:
       # catalogue-check used to regenerate before diffing, so a
       # stale committed catalogue was rewritten and then compared
       # against itself.
-      - name: Confirm nothing above modified the working tree
+      - name:
+          Confirm nothing above modified the working tree
         run: git diff --exit-code
