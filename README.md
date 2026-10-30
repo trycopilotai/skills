@@ -3,6 +3,10 @@
 The trycopilot.ai skill marketplace. One command adds it,
 one command installs any skill in it.
 
+[![auto-lint-pr](https://github.com/trycopilotai/skills/actions/workflows/auto-lint-pr.yml/badge.svg)](https://github.com/trycopilotai/skills/actions/workflows/auto-lint-pr.yml)
+[![check](https://github.com/trycopilotai/skills/actions/workflows/check.yml/badge.svg)](https://github.com/trycopilotai/skills/actions/workflows/check.yml)
+[![lint](https://github.com/trycopilotai/skills/actions/workflows/lint.yml/badge.svg)](https://github.com/trycopilotai/skills/actions/workflows/lint.yml)
+
 In Claude Code:
 
 ```sh
