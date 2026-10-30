@@ -24,14 +24,14 @@ installed as `<skill>@trycopilotai`. Update the catalogue
 later with `/plugin marketplace update`.
 
 A skill installed from this marketplace is namespaced by its
-plugin, so it is invoked as `/<skill>:<skill>` in Claude Code
-and `$<skill>:<skill>` in Codex, for example
+plugin, so it is invoked as `/<skill>:<skill>` in Claude
+Code and `$<skill>:<skill>` in Codex, for example
 `/what-next:what-next`.
 
 ## Entries with stated limits
 
-Four entries are listed with limits their home
-repositories state:
+Four entries are listed with limits their home repositories
+state:
 
 - `swe-day` sequences nine companion skills. Eight of them
   are in this catalogue: `replx`, `improve-coverage`,
@@ -83,9 +83,9 @@ The file trusts two ED25519 keys under one principal,
 - `SHA256:DfKMRhe4zXosajTxEcDqVDi7dnQ/pwtvj/lLBDn7a9k`
   signed `v0.5.0` and `v0.5.1`. The `lint` home repository
   publishes this key for its own releases.
-- `SHA256:XET2ACYTh+jpgo2bM2djvgrlPBsadpsKFWHUFzXWTRs`
-  signs from `v0.6.0` on. It was added because the first
-  key was not on the machine that cut that release.
+- `SHA256:XET2ACYTh+jpgo2bM2djvgrlPBsadpsKFWHUFzXWTRs` signs
+  from `v0.6.0` on. It was added because the first key was
+  not on the machine that cut that release.
 
 Because of the second line, this file is no longer byte
 identical to the one in `lint`.

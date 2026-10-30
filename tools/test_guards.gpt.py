@@ -46,8 +46,7 @@ REPLX_PUBLISHED = {
     "upstream_ref": "v0.2.0",
     "upstream_sha": "8669615675a920b7c8926e0377cc75b4d963ee7b",
     "vendored_path": "plugins/replx/skills/replx/SKILL.md",
-    "vendored_sha256":
-        "7c885fd38801e3d0d84879c9ddc46730e975ea5116ea4e7783f58712fc577e61",
+    "vendored_sha256": "7c885fd38801e3d0d84879c9ddc46730e975ea5116ea4e7783f58712fc577e61",
 }
 
 
@@ -74,7 +73,8 @@ class ReplxNonRegressionTest(unittest.TestCase):
             if key == "version":
                 continue
             self.assertEqual(
-                fields.get(key), expected,
+                fields.get(key),
+                expected,
                 f"replx {key} moved away from the published entry",
             )
 
@@ -109,26 +109,20 @@ class ReplxNonRegressionTest(unittest.TestCase):
             (ROOT / "plugins/replx/.codex-plugin").exists(),
             "replx grew a Codex manifest it was never tested with",
         )
-        codex = json.loads(
-            (ROOT / ".agents/plugins/marketplace.json").read_text()
-        )
+        codex = json.loads((ROOT / ".agents/plugins/marketplace.json").read_text())
         self.assertNotIn(
             "replx",
             {p.get("name") for p in codex["plugins"]},
             "replx is listed for Codex without shipping Codex metadata",
         )
         catalogue = json.loads((ROOT / "catalogue.json").read_text())
-        entry = next(
-            s for s in catalogue["skills"] if s["name"] == "replx"
-        )
+        entry = next(s for s in catalogue["skills"] if s["name"] == "replx")
         self.assertEqual(entry["clients"], ["claude-code"])
 
     def test_its_marketplace_entry_still_describes_the_same_plugin(
         self,
     ) -> None:
-        mkt = json.loads(
-            (ROOT / ".claude-plugin/marketplace.json").read_text()
-        )
+        mkt = json.loads((ROOT / ".claude-plugin/marketplace.json").read_text())
         entry = next(p for p in mkt["plugins"] if p["name"] == "replx")
         self.assertEqual(entry["version"], REPLX_PUBLISHED["version"])
         self.assertEqual(entry["license"], "MIT")
@@ -162,7 +156,8 @@ class UnresolvedEntryTest(unittest.TestCase):
     def test_an_unresolved_entry_is_not_called_published(self) -> None:
         for fields in self.unresolved():
             self.assertEqual(
-                fields.get("status"), "pending-publication",
+                fields.get("status"),
+                "pending-publication",
                 f"{fields.get('name')} has no pin but calls itself "
                 f"{fields.get('status')!r}",
             )
@@ -189,13 +184,13 @@ class UnresolvedEntryTest(unittest.TestCase):
             for member in sorted(package.rglob("*")):
                 if not member.is_file():
                     continue
-                digest.update(
-                    member.relative_to(package).as_posix().encode())
+                digest.update(member.relative_to(package).as_posix().encode())
                 digest.update(b"\0")
                 digest.update(member.read_bytes())
                 digest.update(b"\0")
             self.assertEqual(
-                digest.hexdigest(), fields["vendored_sha256"],
+                digest.hexdigest(),
+                fields["vendored_sha256"],
                 f"{fields['name']} vendored bytes do not match meta/",
             )
 
@@ -207,7 +202,8 @@ class GuardTest(unittest.TestCase):
         self.tmp = Path(tempfile.mkdtemp())
         self.repo = self.tmp / "skills"
         shutil.copytree(
-            ROOT, self.repo,
+            ROOT,
+            self.repo,
             ignore=shutil.ignore_patterns(".git", "__pycache__"),
         )
         # A canary beside the copy, so an escaping write lands
@@ -223,7 +219,9 @@ class GuardTest(unittest.TestCase):
     def run_tool(self, name: str, *args: str):
         return subprocess.run(
             [sys.executable, f"tools/{name}", *args],
-            cwd=self.repo, capture_output=True, text=True,
+            cwd=self.repo,
+            capture_output=True,
+            text=True,
         )
 
     def edit_meta(self, key: str, value: str | None) -> None:
@@ -335,10 +333,11 @@ class GuardTest(unittest.TestCase):
         (up / "skill" / "SKILL.md").write_text(
             (self.repo / "plugins/replx/skills/replx/SKILL.md").read_text()
         )
+
         def git(*a):
             return subprocess.run(
-                ["git", *a], cwd=up, capture_output=True, text=True,
-                check=True)
+                ["git", *a], cwd=up, capture_output=True, text=True, check=True
+            )
 
         git("init", "-q")
         git("config", "user.email", "t@example.com")
@@ -347,9 +346,13 @@ class GuardTest(unittest.TestCase):
         git("add", "-A")
         git("commit", "-q", "-m", "upstream")
         git("tag", "v0.2.0")
-        head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=up,
-                              capture_output=True, text=True,
-                              check=True).stdout.strip()
+        head = subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            cwd=up,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
         self.edit_meta("upstream", up.as_uri())
         return head
 
@@ -400,9 +403,7 @@ class GuardTest(unittest.TestCase):
 
     def test_plugin_entry_without_a_source_is_reported(self) -> None:
         """It used to raise TypeError and hide every other error."""
-        self.edit_marketplace(
-            lambda d: d["plugins"].append({"name": "sourceless"})
-        )
+        self.edit_marketplace(lambda d: d["plugins"].append({"name": "sourceless"}))
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
         self.assertNotIn("Traceback", result.stderr)
@@ -438,9 +439,7 @@ class GuardTest(unittest.TestCase):
 
         self.run_tool("build_catalogue.gpt.py")
         index = (self.repo / "INDEX.md").read_text()
-        self.assertNotIn(
-            "ture", index, "a malformed flag reached the rendered index"
-        )
+        self.assertNotIn("ture", index, "a malformed flag reached the rendered index")
 
     # -- the two copies of one fact --------------------------
 
@@ -464,7 +463,8 @@ class GuardTest(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("stale", result.stdout)
         self.assertEqual(
-            before, index.read_bytes(),
+            before,
+            index.read_bytes(),
             "--check rewrote the file it was checking",
         )
 
@@ -496,17 +496,27 @@ class GuardTest(unittest.TestCase):
         The check was `"ref" in src`, so {"ref": "main"} passed
         as a pin and the promise was documentation only.
         """
-        self.edit_marketplace(lambda d: d["plugins"].append(
-            {"name": "remote-thing",
-             "source": {"source": "github", "repo": "a/b", "ref": "main"}}))
+        self.edit_marketplace(
+            lambda d: d["plugins"].append(
+                {
+                    "name": "remote-thing",
+                    "source": {"source": "github", "repo": "a/b", "ref": "main"},
+                }
+            )
+        )
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("branch", result.stdout)
 
     def test_an_empty_ref_is_not_accepted_as_a_pin(self) -> None:
-        self.edit_marketplace(lambda d: d["plugins"].append(
-            {"name": "remote-thing",
-             "source": {"source": "github", "repo": "a/b", "ref": ""}}))
+        self.edit_marketplace(
+            lambda d: d["plugins"].append(
+                {
+                    "name": "remote-thing",
+                    "source": {"source": "github", "repo": "a/b", "ref": ""},
+                }
+            )
+        )
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("no ref or sha pin", result.stdout)
@@ -525,37 +535,41 @@ class GuardTest(unittest.TestCase):
     def test_plugin_root_cannot_escape_the_checkout(self) -> None:
         self.edit_marketplace(
             lambda d: d.setdefault("metadata", {}).__setitem__(
-                "pluginRoot", "../../../../etc"))
+                "pluginRoot", "../../../../etc"
+            )
+        )
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
         self.assertNotIn("Traceback", result.stderr)
 
     def test_plugin_source_cannot_escape_the_plugin_root(self) -> None:
-        self.edit_marketplace(lambda d: d["plugins"].append(
-            {"name": "escapee", "source": "../../../../etc"}))
+        self.edit_marketplace(
+            lambda d: d["plugins"].append(
+                {"name": "escapee", "source": "../../../../etc"}
+            )
+        )
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
         self.assertNotIn("Traceback", result.stderr)
 
     def test_renames_cannot_point_at_a_live_name(self) -> None:
         """A name cannot be both current and former."""
-        self.edit_marketplace(
-            lambda d: d.__setitem__("renames", {"replx": "replx"}))
+        self.edit_marketplace(lambda d: d.__setitem__("renames", {"replx": "replx"}))
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("still a live plugin name", result.stdout)
 
     def test_renames_cannot_point_at_a_missing_plugin(self) -> None:
         self.edit_marketplace(
-            lambda d: d.__setitem__("renames", {"old-name": "nonexistent"}))
+            lambda d: d.__setitem__("renames", {"old-name": "nonexistent"})
+        )
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("not a plugin in this marketplace", result.stdout)
 
     def test_a_removal_rename_is_accepted(self) -> None:
         """Mapping to null records that a plugin is gone."""
-        self.edit_marketplace(
-            lambda d: d.__setitem__("renames", {"old-name": None}))
+        self.edit_marketplace(lambda d: d.__setitem__("renames", {"old-name": None}))
         result = self.run_tool("validate.gpt.py")
         self.assertEqual(result.returncode, 0, result.stdout)
 
@@ -584,7 +598,8 @@ class GuardTest(unittest.TestCase):
         """The key that made the broken form look deliberate."""
         self.edit_marketplace(
             lambda d: d.setdefault("metadata", {}).__setitem__(
-                "pluginRoot", "./plugins")
+                "pluginRoot", "./plugins"
+            )
         )
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
@@ -607,8 +622,7 @@ class GuardTest(unittest.TestCase):
         self,
     ) -> None:
         """Codex installs the plugin, then cannot invoke the skill."""
-        (self.repo
-         / "plugins/htmlify/skills/htmlify/agents/openai.yaml").unlink()
+        (self.repo / "plugins/htmlify/skills/htmlify/agents/openai.yaml").unlink()
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("agents/openai.yaml", result.stdout)
@@ -628,20 +642,21 @@ class GuardTest(unittest.TestCase):
 
     def test_a_codex_entry_for_no_such_plugin_is_reported(self) -> None:
         self.edit_codex_marketplace(
-            lambda d: d["plugins"].append({
-                "name": "ghost",
-                "source": {"source": "local", "path": "./plugins/ghost"},
-                "policy": {
-                    "installation": "AVAILABLE",
-                    "authentication": "ON_INSTALL",
-                },
-                "category": "Developer Tools",
-            })
+            lambda d: d["plugins"].append(
+                {
+                    "name": "ghost",
+                    "source": {"source": "local", "path": "./plugins/ghost"},
+                    "policy": {
+                        "installation": "AVAILABLE",
+                        "authentication": "ON_INSTALL",
+                    },
+                    "category": "Developer Tools",
+                }
+            )
         )
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("not a plugin in the Claude Code marketplace",
-                      result.stdout)
+        self.assertIn("not a plugin in the Claude Code marketplace", result.stdout)
 
     def test_manifests_that_disagree_are_reported(self) -> None:
         """Two manifests are two copies of one plugin's identity."""
@@ -658,15 +673,15 @@ class GuardTest(unittest.TestCase):
         self.edit_json(
             "plugins/htmlify/.codex-plugin/plugin.json",
             lambda d: d["interface"].__setitem__(
-                "shortDescription", "a different summary"),
+                "shortDescription", "a different summary"
+            ),
         )
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("short_description", result.stdout)
 
     def test_a_default_prompt_naming_another_skill_is_reported(self) -> None:
-        path = (self.repo
-                / "plugins/htmlify/skills/htmlify/agents/openai.yaml")
+        path = self.repo / "plugins/htmlify/skills/htmlify/agents/openai.yaml"
         path.write_text(path.read_text().replace("$htmlify", "$something"))
         result = self.run_tool("validate.gpt.py")
         self.assertNotEqual(result.returncode, 0)
@@ -748,9 +763,7 @@ class GuardTest(unittest.TestCase):
                 for line in meta.read_text().splitlines()
                 if ":" in line and not line.startswith((" ", "#"))
             )
-            expected.append(
-                (int(fields["order"].strip()), fields["name"].strip())
-            )
+            expected.append((int(fields["order"].strip()), fields["name"].strip()))
         expected.sort()
         names_in_order = [name for _, name in expected]
 
@@ -765,8 +778,7 @@ class GuardTest(unittest.TestCase):
         index = (self.repo / "INDEX.md").read_text()
         readme = (self.repo / "README.md").read_text()
         self.assertIn(
-            f"{len(names_in_order)} skills in the `trycopilotai` "
-            f"marketplace.",
+            f"{len(names_in_order)} skills in the `trycopilotai` " f"marketplace.",
             index,
         )
         for name in names_in_order:
@@ -777,8 +789,7 @@ class GuardTest(unittest.TestCase):
         """--check has to notice a row that was never rendered."""
         source = (self.repo / HTMLIFY_META).read_text()
         (self.repo / "meta/zzz.skill.yml").write_text(
-            source.replace("name: htmlify", "name: zzz").replace(
-                "order: 2", "order: 9")
+            source.replace("name: htmlify", "name: zzz").replace("order: 2", "order: 9")
         )
         result = self.run_tool("build_catalogue.gpt.py", "--check")
         self.assertNotEqual(result.returncode, 0)
@@ -811,9 +822,7 @@ class GuardTest(unittest.TestCase):
         self.run_tool("build_catalogue.gpt.py")
         index = (self.repo / "INDEX.md").read_text()
         self.assertIn("`htmlify`", index)
-        self.assertNotIn(
-            "[`htmlify`](https://github.com/trycopilotai/htmlify)", index
-        )
+        self.assertNotIn("[`htmlify`](https://github.com/trycopilotai/htmlify)", index)
 
     def test_an_unknown_status_is_reported(self) -> None:
         self.edit_meta_file(HTMLIFY_META, "status", "probably-fine")
@@ -850,9 +859,7 @@ class GuardTest(unittest.TestCase):
 
     def test_the_committed_repository_passes(self) -> None:
         """The guards above must not be firing on the real tree."""
-        self.assertEqual(
-            self.run_tool("validate.gpt.py").returncode, 0
-        )
+        self.assertEqual(self.run_tool("validate.gpt.py").returncode, 0)
         self.assertEqual(
             self.run_tool("build_catalogue.gpt.py", "--check").returncode, 0
         )
@@ -873,22 +880,25 @@ class ReleaseGateTest(GuardTest):
     fail for reasons that have nothing to do with the gate.
     """
 
-    def remote(self, package_bytes: str | None = None,
-               tag: str | None = "v0.2.3") -> str:
+    def remote(
+        self, package_bytes: str | None = None, tag: str | None = "v0.2.3"
+    ) -> str:
         """A git repository laid out the way htmlify is."""
         up = self.tmp / "remote"
         package = up / "skills" / "htmlify"
         package.mkdir(parents=True)
         shutil.copytree(
             self.repo / "plugins/htmlify/skills/htmlify",
-            package, dirs_exist_ok=True,
+            package,
+            dirs_exist_ok=True,
         )
         if package_bytes is not None:
             (package / "SKILL.md").write_text(package_bytes)
+
         def git(*a):
             return subprocess.run(
-                ["git", *a], cwd=up, capture_output=True, text=True,
-                check=True)
+                ["git", *a], cwd=up, capture_output=True, text=True, check=True
+            )
 
         git("init", "-q")
         git("config", "user.email", "t@example.com")
@@ -899,14 +909,17 @@ class ReleaseGateTest(GuardTest):
         if tag:
             git("tag", tag)
         head = subprocess.run(
-            ["git", "rev-parse", "HEAD"], cwd=up,
-            capture_output=True, text=True, check=True).stdout.strip()
+            ["git", "rev-parse", "HEAD"],
+            cwd=up,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
         self.edit_meta_file(HTMLIFY_META, "upstream", up.as_uri())
         return head
 
     def gate(self, *args: str):
-        return self.run_tool("release_gate.gpt.py", "--entry", "htmlify",
-                             *args)
+        return self.run_tool("release_gate.gpt.py", "--entry", "htmlify", *args)
 
     def test_it_passes_when_the_remote_matches(self) -> None:
         """The positive control. Without it the rest proves nothing."""

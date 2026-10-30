@@ -36,13 +36,22 @@ ROOT = Path(__file__).resolve().parent.parent
 
 # Reserved by Anthropic; re-checked on every marketplace load.
 RESERVED = {
-    "claude-code-marketplace", "claude-code-plugins",
-    "claude-plugins-official", "claude-plugins-community",
-    "claude-community", "anthropic-marketplace", "anthropic-plugins",
-    "agent-skills", "anthropic-agent-skills", "knowledge-work-plugins",
-    "life-sciences", "claude-for-legal",
-    "claude-for-financial-services", "financial-services-plugins",
-    "first-party-plugins", "healthcare",
+    "claude-code-marketplace",
+    "claude-code-plugins",
+    "claude-plugins-official",
+    "claude-plugins-community",
+    "claude-community",
+    "anthropic-marketplace",
+    "anthropic-plugins",
+    "agent-skills",
+    "anthropic-agent-skills",
+    "knowledge-work-plugins",
+    "life-sciences",
+    "claude-for-legal",
+    "claude-for-financial-services",
+    "financial-services-plugins",
+    "first-party-plugins",
+    "healthcare",
 }
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 
@@ -78,14 +87,20 @@ PLUGIN_JSON_FIELDS = ("name", "version", "description", "license")
 # What Codex reads in addition, to render a plugin in its own
 # installer rather than just load it.
 CODEX_INTERFACE_FIELDS = (
-    "displayName", "shortDescription", "longDescription",
-    "developerName", "category", "websiteURL",
+    "displayName",
+    "shortDescription",
+    "longDescription",
+    "developerName",
+    "category",
+    "websiteURL",
 )
 CODEX_POLICY = {"installation": "AVAILABLE", "authentication": "ON_INSTALL"}
 
 # The per-skill file Codex reads for its invocation surface.
 OPENAI_INTERFACE_FIELDS = (
-    "display_name", "short_description", "default_prompt",
+    "display_name",
+    "short_description",
+    "default_prompt",
 )
 
 errors: list[str] = []
@@ -188,9 +203,7 @@ def load_openai_interface(path: Path, label: str) -> dict | None:
                 fragments.append(lines[index].strip())
                 index += 1
             raw = " ".join(fragments)
-        if not check(
-            bool(raw), f"{label}: agents/openai.yaml {field!r} has no value"
-        ):
+        if not check(bool(raw), f"{label}: agents/openai.yaml {field!r} has no value"):
             continue
         if not check(
             field not in interface,
@@ -202,8 +215,7 @@ def load_openai_interface(path: Path, label: str) -> dict | None:
         except json.JSONDecodeError:
             check(
                 False,
-                f"{label}: agents/openai.yaml {field!r} must be a "
-                f"quoted string",
+                f"{label}: agents/openai.yaml {field!r} must be a " f"quoted string",
             )
             continue
         if not check(
@@ -370,8 +382,8 @@ def main() -> int:
         )
         try:
             pdir = PATHS.resolve_inside(
-                ROOT, src.removeprefix("./"),
-                source=f"plugin {pname!r} source")
+                ROOT, src.removeprefix("./"), source=f"plugin {pname!r} source"
+            )
         except PATHS.UnsafePath as exc:
             check(False, str(exc))
             continue
@@ -542,14 +554,14 @@ def main() -> int:
                 )
                 codex_src_path = codex_source.get("path")
                 if not isinstance(codex_src_path, str):
-                    check(
-                        False, f"Codex plugin {pname!r} source has no path"
-                    )
+                    check(False, f"Codex plugin {pname!r} source has no path")
                 else:
                     try:
                         codex_pdir = PATHS.resolve_inside(
-                            ROOT, codex_src_path.removeprefix("./"),
-                            source=f"Codex plugin {pname!r} source")
+                            ROOT,
+                            codex_src_path.removeprefix("./"),
+                            source=f"Codex plugin {pname!r} source",
+                        )
                     except PATHS.UnsafePath as exc:
                         check(False, str(exc))
                     else:
@@ -583,7 +595,10 @@ def main() -> int:
                 f"{sdir}: description is {len(desc)} chars, over the 1024 limit",
             )
             lines = len(skill_md.read_text().splitlines())
-            check(lines <= 500, f"{sdir}: SKILL.md is {lines} lines, over the 500 guideline")
+            check(
+                lines <= 500,
+                f"{sdir}: SKILL.md is {lines} lines, over the 500 guideline",
+            )
 
             # Codex loads its invocation surface from a file
             # beside SKILL.md, not from the plugin manifest, so
@@ -653,8 +668,7 @@ def main() -> int:
         status = fm.get("status", "")
         check(
             status in STATUSES,
-            f"{meta.name}: status {status!r} must be one of "
-            f"{sorted(STATUSES)}",
+            f"{meta.name}: status {status!r} must be one of " f"{sorted(STATUSES)}",
         )
 
     # Display order must be explicit, numeric, and unambiguous.
@@ -778,17 +792,14 @@ def main() -> int:
     # reusing the validated one above, so the null guard did not
     # apply and this crashed on the same input.
     by_name = {
-        e.get("name"): e
-        for e in entries
-        if isinstance(e, dict) and e.get("name")
+        e.get("name"): e for e in entries if isinstance(e, dict) and e.get("name")
     }
     for meta in sorted((ROOT / "meta").glob("*.skill.yml")):
         fm = frontmatter_yaml(meta)
         sname = fm.get("name", "")
         if not check(
             sname in by_name,
-            f"{meta.name}: name {sname!r} has no plugin entry in "
-            f"marketplace.json",
+            f"{meta.name}: name {sname!r} has no plugin entry in " f"marketplace.json",
         ):
             continue
         entry = by_name[sname]
